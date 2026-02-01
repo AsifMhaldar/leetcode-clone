@@ -13,7 +13,7 @@ const cors = require('cors');
 
 
 app.use(cors({
-    origin: ['http://localhost:5173',"https://fullstackleetcode.netlify.app/"],// '*'  multiple accesses
+    origin: ['http://localhost:5173'],// '*'  multiple accesses
     credentials:true
 }));
 
