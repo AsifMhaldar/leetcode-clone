@@ -12,22 +12,22 @@ const videoRouter = require('./Routes/videoCreator');
 const cors = require('cors');
 
 
-// app.use(cors({
-//     origin: ['http://localhost:5173'],// '*'  multiple accesses
-//     credentials:true
-// }));
-
 app.use(cors({
-  origin: "https://codifycodeasif.netlify.app",
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+    origin: ['https://codifycodeasif.netlify.app'],// '*'  multiple accesses
+    credentials:true
 }));
 
+// app.use(cors({
+//   origin: "https://codifycodeasif.netlify.app",
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
 
 
-app.use(express.json());  // this is used for the convert the data into javascript object
 app.use(cookieParser());
+app.use(express.json());  // this is used for the convert the data into javascript object
+
 
 app.use('/user', authRouter);
 app.use('/problem', problemRouter);
