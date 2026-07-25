@@ -1,22 +1,26 @@
 import {Routes, Route ,Navigate} from "react-router";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Homepage from "./pages/Homepage";
+import Login from "./pages/Login/Login";
+import Signup from "./pages/Signup/Signup";
+import Homepage from "./pages/Homepage/Homepage";
 import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from "./authSlice";
 import { useEffect } from "react";
-import AdminPanel from "./components/AdminPanel";
-import ProblemPage from "./pages/ProblemPage"
-import Admin from "./pages/Admin";
-import AdminDelete from "./components/AdminDelete";
-import AdminVideo from "./components/AdminVideo";
-import AdminUpload from "./components/AdminUpload";
-import AdminUpdate from "./components/AdminUpdate";
-import UpdateProblem from "./components/UpdateProblem"; // Add this import
-import LandingPage from './pages/LandingPage.jsx';
-import Profile from "./components/Profile";
-import UserManagement from "./components/userManagement.jsx";
-import Analytics from "./components/Analytics.jsx";
+import AdminPanel from "./components/AdminPanel/AdminPanel";
+import ProblemPage from "./pages/ProblemPage/ProblemPage"
+import Admin from "./pages/Admin/Admin";
+import AdminDelete from "./components/AdminDelete/AdminDelete";
+import AdminVideo from "./components/AdminVideo/AdminVideo";
+import AdminUpload from "./components/AdminUpload/AdminUpload";
+import AdminUpdate from "./components/AdminUpdate/AdminUpdate";
+import UpdateProblem from "./components/UpdateProblem/UpdateProblem";
+import LandingPage from './landingPages/LandingPage/LandingPage.jsx';
+import Profile from "./components/Profile/Profile";
+import UserManagement from "./components/UserManagement/UserManagement";
+import Analytics from "./components/Analytics/Analytics";
+import Execise from "./landingPages/Execise/Execise.jsx";
+import Tutorial from "./landingPages/Tutorial/Tutorial.jsx";
+import Certifications from './landingPages/Certifications/Certifications.jsx';
+import Courses from './landingPages/Courses/Courses.jsx';
 
 
 function App(){
@@ -40,6 +44,10 @@ function App(){
     <Routes>
       {/* Landing page for all users */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="exercises" element={<Execise/>}/>
+      <Route path="tutorials" element={<Tutorial/>}/>
+      <Route path="certifications" element={<Certifications/>}/>
+      <Route path="courses" element={<Courses/>}/>
       {/* Auth routes */}
       <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
       <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <Signup />} />

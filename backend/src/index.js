@@ -4,7 +4,7 @@ require('dotenv').config();
 const main = require('./config/db');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./Routes/userAuth');
-const redisClient = require('./config/redis');
+// const redisClient = require('./config/redis');
 const problemRouter = require('./Routes/problemCreator');
 const submitRouter = require('./Routes/submit');
 const aiRouter = require('./Routes/aiChatting');
@@ -13,7 +13,7 @@ const cors = require('cors');
 
 
 app.use(cors({
-    origin: ['https://codifycodeasif.netlify.app'],// '*'  multiple accesses
+    origin: ['http://localhost:5173'],// '*'  multiple accesses   'https://codifycodeasif.netlify.app'
     credentials:true
 }));
 
@@ -40,7 +40,7 @@ const initializedConnection = async(req, res)=>{
 
     try{
         
-        await Promise.all([main(), redisClient.connect()]);
+        await Promise.all([main()]);            //, redisClient.connect()
         console.log("DB connected...");
         app.listen(process.env.PORT, ()=>{
             console.log("Server listening at port "+process.env.PORT);
