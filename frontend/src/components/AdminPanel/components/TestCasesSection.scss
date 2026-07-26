@@ -1,0 +1,159 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use 'sass:color';
+
+.test-cases {
+  @include glass-card;
+  padding: 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(to right, $green-500, #059669);
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  &__section-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  &__section-desc {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__add-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: $radius-lg;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &--visible {
+      background: rgba($green-500, 0.2);
+      color: $green-400;
+      border: 1px solid rgba($green-500, 0.3);
+
+      &:hover {
+        background: rgba($green-500, 0.3);
+      }
+    }
+
+    &--hidden {
+      background: rgba($blue-500, 0.2);
+      color: $blue-400;
+      border: 1px solid rgba($blue-500, 0.3);
+
+      &:hover {
+        background: rgba($blue-500, 0.3);
+      }
+    }
+  }
+
+  &__case {
+    @include glass-card-sm;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+    }
+  }
+
+  &__case-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  &__case-title {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  &__remove-btn {
+    color: $red-400;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+
+    .group:hover & {
+      opacity: 1;
+    }
+
+    &:hover {
+      color: color.adjust($red-400, $lightness: 10%);
+      transform: scale(1.1);
+    }
+  }
+
+  &__label {
+    display: block;
+    color: $slate-400;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-sm;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: $transition-base;
+    outline: none;
+
+    &:focus {
+      border-color: $green-500;
+    }
+
+    &--mono {
+      font-family: $font-mono;
+    }
+
+    &--blue:focus {
+      border-color: $blue-500;
+    }
+  }
+
+  @include sm {
+    padding: 1.5rem;
+
+    &__case {
+      padding: 1rem;
+    }
+  }
+}

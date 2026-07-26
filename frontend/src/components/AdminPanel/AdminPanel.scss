@@ -1,0 +1,37 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.admin-panel {
+  @include page-bg;
+
+  &__container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      @include gradient-text;
+    }
+
+    p {
+      font-size: 1.25rem;
+      color: $slate-400;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+  }
+
+  @include sm {
+    &__container {
+      padding: 1.5rem 1.5rem;
+    }
+  }
+}

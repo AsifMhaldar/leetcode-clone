@@ -1,0 +1,59 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.analytics {
+  &__container {
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  @include sm {
+    padding: 0 1rem;
+  }
+
+  &__error {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 3rem;
+    text-align: center;
+    max-width: 400px;
+    margin: 4rem auto;
+  }
+
+  &__error-icon {
+    color: $red-400;
+    margin-bottom: 1rem;
+  }
+
+  &__error-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  &__error-message {
+    color: $slate-400;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__retry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    background: rgba($blue-500, 0.2);
+    color: $blue-400;
+    border-radius: $radius-lg;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba($blue-500, 0.3);
+    }
+  }
+}

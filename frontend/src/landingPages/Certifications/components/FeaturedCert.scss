@@ -1,0 +1,186 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use 'sass:color';
+
+.featured-cert {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: $gradient-landing;
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  @include md {
+    padding: 3rem;
+  }
+}
+
+.featured-cert__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.featured-cert__orb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: $radius-full;
+  filter: blur(3rem);
+}
+
+.featured-cert__inner {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+
+  @include lg {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.featured-cert__content {
+  margin-bottom: 1.5rem;
+
+  @include lg {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+}
+
+.featured-cert__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: $radius-full;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.featured-cert__badge-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.featured-cert__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+
+  @include md {
+    font-size: 2.25rem;
+  }
+}
+
+.featured-cert__description {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  max-width: 40rem;
+}
+
+.featured-cert__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.featured-cert__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: $radius-lg;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.featured-cert__pricing {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.featured-cert__price {
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.featured-cert__original-price {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+}
+
+.featured-cert__discount {
+  margin-left: 0.5rem;
+  background: $green-400;
+  color: color.adjust($green-400, $lightness: -30%);
+  padding: 0.25rem 0.5rem;
+  border-radius: $radius-lg;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.featured-cert__cta {
+  background: white;
+  color: $blue-600;
+  padding: 0.75rem 2rem;
+  border-radius: $radius-xl;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+  }
+}
+
+.featured-cert__sidebar {
+  @include lg {
+    width: 20rem;
+  }
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.featured-cert__sidebar-title {
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.featured-cert__skills {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.featured-cert__skill {
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.875rem;
+}

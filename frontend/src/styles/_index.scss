@@ -1,0 +1,9 @@
+// ═══════════════════════════════════════════════════════════════
+// Codify-CODE — SCSS Entry Point
+// Import once in main.jsx or index.css
+// ═══════════════════════════════════════════════════════════════
+
+@forward 'variables';
+@forward 'mixins';
+@forward 'animations';
+@forward 'utilities';

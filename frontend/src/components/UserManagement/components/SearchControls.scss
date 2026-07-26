@@ -1,0 +1,121 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.search-controls {
+  @include glass-card;
+  border-radius: $radius-xl;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    @include lg {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1;
+
+    @include sm {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  &__search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 28rem;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &__search-input {
+    @include input-field;
+    padding-left: 2.5rem;
+    font-size: 0.875rem;
+  }
+
+  &__filter-select {
+    padding: 0.5rem 0.75rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-lg;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    outline: none;
+    cursor: pointer;
+    min-width: 7rem;
+
+    &:focus {
+      border-color: $blue-500;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    background: $green-500;
+    box-shadow: 0 0 0 2px rgba($green-500, 0.25);
+    animation: live-pulse 2s ease-in-out infinite;
+  }
+
+  &__refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba($blue-500, 0.12);
+    color: $blue-400;
+    border-radius: $radius-lg;
+    border: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: rgba($blue-500, 0.2);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  &__refresh-spin {
+    animation: spin 0.8s linear infinite;
+  }
+}
+
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba($green-500, 0.25); }
+  50% { box-shadow: 0 0 0 4px rgba($green-500, 0.1); }
+}

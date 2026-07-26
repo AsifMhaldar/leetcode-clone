@@ -1,0 +1,216 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use 'sass:color';
+
+.search-filters {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid $slate-100;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.search-filters__top {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include lg {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.search-filters__search {
+  flex: 1;
+  position: relative;
+}
+
+.search-filters__search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  color: $slate-400;
+}
+
+.search-filters__search-input {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  border-radius: $radius-xl;
+  border: 1px solid $slate-200;
+  font-size: 0.875rem;
+  transition: $transition-base;
+
+  &:focus {
+    border-color: $blue-500;
+    box-shadow: 0 0 0 4px rgba($blue-500, 0.1);
+    outline: none;
+  }
+}
+
+.search-filters__view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background: $slate-100;
+  border-radius: $radius-xl;
+}
+
+.search-filters__view-btn {
+  padding: 0.5rem;
+  border-radius: $radius-lg;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &--active {
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: $blue-600;
+  }
+
+  &:not(.search-filters__view-btn--active) {
+    color: $slate-500;
+
+    &:hover {
+      color: $slate-700;
+    }
+  }
+}
+
+.search-filters__sort {
+  padding: 0.875rem 1rem;
+  border-radius: $radius-xl;
+  border: 1px solid $slate-200;
+  font-size: 0.875rem;
+  background: white;
+  transition: $transition-base;
+
+  &:focus {
+    border-color: $blue-500;
+    box-shadow: 0 0 0 4px rgba($blue-500, 0.1);
+    outline: none;
+  }
+}
+
+.search-filters__divider {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $slate-100;
+}
+
+.search-filters__categories {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-filters__category-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $slate-700;
+  margin-right: 0.5rem;
+}
+
+.search-filters__category-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: $radius-xl;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  background: $slate-100;
+  color: $slate-600;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $slate-200;
+  }
+
+  &--active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.search-filters__level {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  @include lg {
+    margin-top: 0;
+  }
+}
+
+.search-filters__level-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: $radius-xl;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  background: $slate-100;
+  color: $slate-600;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $slate-200;
+  }
+
+  &--active {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.search-filters__extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.search-filters__extra-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: $radius-xl;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 2px solid transparent;
+  background: $slate-100;
+  color: $slate-600;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $slate-200;
+  }
+
+  &--active {
+    background: rgba($green-500, 0.05);
+    color: color.adjust($green-500, $lightness: -15%);
+    border-color: color.adjust($green-400, $lightness: 20%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+}

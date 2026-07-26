@@ -1,145 +1,215 @@
 import React from 'react';
-import { Shield, User, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trash2, ChevronLeft, ChevronRight, ArrowUpDown, ArrowUp, ArrowDown } from 'lucide-react';
+import { ROLE_CONFIGS, STATUS_CONFIGS, TABLE_COLUMNS, DELETE_TOOLTIP, NO_USERS_FOUND, NO_USERS_DESC } from '../constants';
+import './UsersTable.scss';
 
-const UsersTable = ({ 
-  currentUsers, selectedUsers, setSelectedUsers, selectAllOnPage,
-  startIndex, usersPerPage, filteredUsers, currentPage, totalPages,
-  setCurrentPage, getUserName, getUserEmail, getUserStatus,
-  updateUserRole, deleteUser
+const UsersTable = ({
+  users, selectedUsers, setSelectedUsers, selectAllOnPage,
+  currentPage, pagination, setCurrentPage,
+  handleUpdateRole, handleDeleteUser,
+  sortField, sortOrder, toggleSort,
+  isFetching, limit,
 }) => {
-  const getRoleBadge = (role) => {
-    const roles = {
-      admin: { color: 'bg-red-500/20 text-red-400 border-red-500/30', icon: Shield, label: 'Admin' },
-      user: { color: 'bg-blue-500/20 text-blue-400 border-blue-500/30', icon: User, label: 'User' }
-    };
-    return roles[role] || roles.user;
+  const getRoleBadge = (role) => ROLE_CONFIGS[role] || ROLE_CONFIGS.user;
+  const getStatusBadge = (isActive) => STATUS_CONFIGS[isActive ? 'active' : 'inactive'];
+
+  const startIndex = (currentPage - 1) * limit;
+  const showingFrom = startIndex + 1;
+  const showingTo = Math.min(startIndex + users.length, pagination.totalCount);
+
+  const getSortIcon = (key) => {
+    if (sortField !== key) return <ArrowUpDown size={12} />;
+    return sortOrder === 'asc' ? <ArrowUp size={12} /> : <ArrowDown size={12} />;
   };
 
-  const getStatusBadge = (status) => {
-    const statuses = {
-      active: { color: 'bg-green-500/20 text-green-400 border-green-500/30', label: 'Active' },
-      inactive: { color: 'bg-gray-500/20 text-gray-400 border-gray-500/30', label: 'Inactive' }
-    };
-    return statuses[status] || statuses.inactive;
+  const formatTimeAgo = (date) => {
+    if (!date) return 'Never';
+    const now = new Date();
+    const diff = now - new Date(date);
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 30) return `${days}d ago`;
+    return new Date(date).toLocaleDateString();
   };
+
+  if (!isFetching && users.length === 0) {
+    return (
+      <div className="users-table users-table--empty">
+        <div className="users-table__empty">
+          <div className="users-table__empty-icon">👥</div>
+          <h3 className="users-table__empty-title">{NO_USERS_FOUND}</h3>
+          <p className="users-table__empty-desc">{NO_USERS_DESC}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-xl border border-white/10 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full">
+    <div className="users-table">
+      <div className="users-table__wrap">
+        <table className="users-table__table">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="px-6 py-4 text-left">
+            <tr className="users-table__header-row">
+              <th className="users-table__th">
                 <input
                   type="checkbox"
-                  checked={selectedUsers.length === currentUsers.length && currentUsers.length > 0}
+                  checked={users.length > 0 && selectedUsers.length === users.length}
                   onChange={selectAllOnPage}
-                  className="rounded bg-white/5 border-white/10 text-blue-500 focus:ring-blue-500"
+                  className="users-table__checkbox"
                 />
               </th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">User</th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">Role</th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">Status</th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">Problems Solved</th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">Joined</th>
-              <th className="px-6 py-4 text-left text-gray-400 font-medium">Actions</th>
+              {TABLE_COLUMNS.map((col) => (
+                <th
+                  key={col.key}
+                  className={`users-table__th ${col.sortable ? 'users-table__th--sortable' : ''}`}
+                  onClick={col.sortable ? () => toggleSort(col.key) : undefined}
+                >
+                  <span className="users-table__th-content">
+                    {col.label}
+                    {col.sortable && (
+                      <span className="users-table__sort-icon">{getSortIcon(col.key)}</span>
+                    )}
+                  </span>
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/10">
-            {currentUsers.map((user) => {
-              const roleBadge = getRoleBadge(user.role);
-              const status = getUserStatus(user);
-              const statusBadge = getStatusBadge(status);
-              const problemsSolved = user.problemsSolvedCount || (user.problemSolved ? user.problemSolved.length : 0);
-              
-              return (
-                <tr key={user._id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedUsers.includes(user._id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedUsers([...selectedUsers, user._id]);
-                        } else {
-                          setSelectedUsers(selectedUsers.filter(id => id !== user._id));
-                        }
-                      }}
-                      className="rounded bg-white/5 border-white/10 text-blue-500 focus:ring-blue-500"
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-semibold text-sm">
-                          {getUserName(user).charAt(0).toUpperCase()}
-                        </span>
-                      </div>
+          <tbody>
+            {isFetching && users.length === 0 ? (
+              [...Array(5)].map((_, i) => (
+                <tr key={`skeleton-${i}`} className="users-table__row users-table__row--skeleton">
+                  <td className="users-table__td"><div className="users-table__skeleton-box" /></td>
+                  <td className="users-table__td">
+                    <div className="users-table__user-cell">
+                      <div className="users-table__skeleton-avatar" />
                       <div>
-                        <div className="font-medium text-white">{getUserName(user)}</div>
-                        <div className="text-gray-400 text-sm">{getUserEmail(user)}</div>
+                        <div className="users-table__skeleton-line users-table__skeleton-line--name" />
+                        <div className="users-table__skeleton-line users-table__skeleton-line--email" />
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={user.role}
-                      onChange={(e) => updateUserRole(user._id, e.target.value)}
-                      className={`${roleBadge.color} border rounded-lg px-3 py-1 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`${statusBadge.color} border rounded-lg px-3 py-1 text-sm font-medium`}>
-                      {statusBadge.label}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-white font-medium">{problemsSolved}</span>
-                  </td>
-                  <td className="px-6 py-4 text-gray-400">
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => deleteUser(user._id)}
-                        className="p-2 text-red-400 hover:bg-red-500/20 rounded transition-colors"
-                        title="Delete User"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
+                  <td className="users-table__td"><div className="users-table__skeleton-badge" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-badge" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-text" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-text" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-text" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-text" /></td>
+                  <td className="users-table__td"><div className="users-table__skeleton-box" /></td>
                 </tr>
-              );
-            })}
+              ))
+            ) : (
+              users.map((user) => {
+                const roleBadge = getRoleBadge(user.role);
+                const statusBadge = getStatusBadge(user.isActive);
+                const userName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.emailId;
+
+                return (
+                  <tr key={user._id} className="users-table__row">
+                    <td className="users-table__td">
+                      <input
+                        type="checkbox"
+                        checked={selectedUsers.includes(user._id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedUsers([...selectedUsers, user._id]);
+                          } else {
+                            setSelectedUsers(selectedUsers.filter(id => id !== user._id));
+                          }
+                        }}
+                        className="users-table__checkbox"
+                      />
+                    </td>
+                    <td className="users-table__td">
+                      <div className="users-table__user-cell">
+                        <div className="users-table__avatar">
+                          <span className="users-table__avatar-text">
+                            {(user.firstName || '?').charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="users-table__name">{userName}</div>
+                          <div className="users-table__email">{user.emailId}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="users-table__td">
+                      <select
+                        value={user.role}
+                        onChange={(e) => handleUpdateRole(user._id, e.target.value)}
+                        className={`users-table__select ${roleBadge.cssClass}`}
+                      >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </td>
+                    <td className="users-table__td">
+                      <span className={`users-table__status ${statusBadge.cssClass}`}>
+                        {statusBadge.label}
+                      </span>
+                    </td>
+                    <td className="users-table__td">
+                      <span className="users-table__metric">{user.problemsSolvedCount || 0}</span>
+                    </td>
+                    <td className="users-table__td">
+                      <span className="users-table__metric">{user.totalSubmissions || 0}</span>
+                    </td>
+                    <td className="users-table__td">
+                      <span className={`users-table__rate ${user.acceptanceRate >= 50 ? 'users-table__rate--good' : user.acceptanceRate > 0 ? 'users-table__rate--mid' : ''}`}>
+                        {user.acceptanceRate || 0}%
+                      </span>
+                    </td>
+                    <td className="users-table__td">
+                      <span className="users-table__date">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </span>
+                    </td>
+                    <td className="users-table__td">
+                      <span className="users-table__date">{formatTimeAgo(user.lastActive)}</span>
+                    </td>
+                    <td className="users-table__td">
+                      <button
+                        onClick={() => handleDeleteUser(user._id)}
+                        className="users-table__delete-btn"
+                        title={DELETE_TOOLTIP}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
 
       {/* Pagination */}
-      <div className="px-6 py-4 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-4 ml-auto">
-          <span className="text-gray-400 text-sm">
-            Showing {startIndex + 1}-{Math.min(startIndex + usersPerPage, filteredUsers.length)} of {filteredUsers.length}
+      <div className="users-table__pagination">
+        <div className="users-table__pagination-info">
+          <span>
+            Showing {pagination.totalCount > 0 ? showingFrom : 0}–{showingTo} of {pagination.totalCount.toLocaleString()}
           </span>
-          <div className="flex gap-1">
+          <div className="users-table__pagination-btns">
             <button
               onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="p-2 rounded border border-white/10 text-gray-400 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={currentPage <= 1}
+              className="users-table__page-btn"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft size={16} />
             </button>
+            <span className="users-table__page-num">
+              {currentPage} / {pagination.totalPages || 1}
+            </span>
             <button
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="p-2 rounded border border-white/10 text-gray-400 hover:bg-white/5 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, pagination.totalPages))}
+              disabled={currentPage >= pagination.totalPages}
+              className="users-table__page-btn"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight size={16} />
             </button>
           </div>
         </div>

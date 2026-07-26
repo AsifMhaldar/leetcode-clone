@@ -1,0 +1,51 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.faq {
+  margin-top: 3rem;
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid $slate-100;
+}
+
+.faq__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $slate-900;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.faq__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.faq__item {
+  border: 1px solid $slate-200;
+  border-radius: $radius-xl;
+  padding: 1rem;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.faq__question {
+  font-weight: 600;
+  color: $slate-900;
+  margin-bottom: 0.5rem;
+}
+
+.faq__answer {
+  color: $slate-600;
+  font-size: 0.875rem;
+}

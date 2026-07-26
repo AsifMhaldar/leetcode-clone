@@ -1,0 +1,23 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.problems-list {
+  &__spinner {
+    @include spinner(4rem, 4px, $purple-500);
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 5rem 0;
+    color: rgba(white, 0.6);
+    font-size: 1.25rem;
+  }
+
+  @include md {
+    padding: 0 1rem;
+  }
+
+  @include lg {
+    padding: 0 2rem;
+  }
+}

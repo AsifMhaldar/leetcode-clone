@@ -5,6 +5,8 @@ import BasicInfoFields from './components/BasicInfoFields';
 import TestCasesSection from './components/TestCasesSection';
 import CodeTemplatesSection from './components/CodeTemplatesSection';
 import SubmitButton from './components/SubmitButton';
+import { PAGE_TITLE, PAGE_SUBTITLE } from './constants';
+import './AdminPanel.scss';
 
 function AdminPanel() {
   const {
@@ -23,18 +25,18 @@ function AdminPanel() {
   } = useAdminPanel();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="admin-panel">
       {/* Navigation Header */}
       <AdminPanelHeader onBack={() => navigate('/admin')} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="admin-panel__container">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-            Create New Problem
+        <div className="admin-panel__header">
+          <h1>
+            {PAGE_TITLE}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Add a new coding challenge to the platform with test cases and solutions
+          <p>
+            {PAGE_SUBTITLE}
           </p>
         </div>
 
@@ -60,34 +62,6 @@ function AdminPanel() {
           <SubmitButton isSubmitting={isSubmitting} />
         </form>
       </div>
-
-      {/* Custom Animations */}
-      <style jsx>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-8px); }
-          75% { transform: translateX(8px); }
-        }
-        
-        @keyframes fade-in {
-          from { 
-            opacity: 0; 
-            transform: translateY(-10px); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
-          }
-        }
-        
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }

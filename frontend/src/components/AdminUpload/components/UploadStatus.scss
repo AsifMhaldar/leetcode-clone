@@ -1,0 +1,92 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.upload-status {
+  &__error {
+    background: rgba($red-500, 0.2);
+    border: 1px solid rgba($red-500, 0.3);
+    border-radius: $radius-xl;
+    padding: 1rem;
+  }
+
+  &__error-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__error-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: $red-400;
+  }
+
+  &__error-title {
+    color: $red-400;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  &__error-text {
+    color: rgba($red-400, 0.8);
+    font-size: 0.875rem;
+  }
+
+  &__success {
+    background: rgba($green-500, 0.2);
+    border: 1px solid rgba($green-500, 0.3);
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+  }
+
+  &__success-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__success-icon {
+    width: 2rem;
+    height: 2rem;
+    color: $green-400;
+  }
+
+  &__success-title {
+    color: $green-400;
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__success-meta {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include md {
+      grid-template-columns: 1fr 1fr;
+    }
+    gap: 1rem;
+    font-size: 0.875rem;
+  }
+
+  &__success-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba($green-400, 0.8);
+  }
+
+  &__success-url {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: $radius-lg;
+  }
+
+  &__success-url-text {
+    color: rgba($green-400, 0.7);
+    font-size: 0.875rem;
+    font-family: $font-mono;
+    word-break: break-all;
+  }
+}

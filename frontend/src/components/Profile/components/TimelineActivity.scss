@@ -1,0 +1,127 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.timeline-card {
+  @include glass-card;
+  padding: 1.25rem;
+
+  &__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.875rem;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item {
+    display: flex;
+    gap: 0.75rem;
+    min-height: 3rem;
+  }
+
+  // ── Timeline track ─────────────────────────────────────────
+  &__track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 1.25rem;
+  }
+
+  &__dot {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid;
+    z-index: 1;
+
+    &--green {
+      background: rgba($green-500, 0.15);
+      border-color: rgba($green-500, 0.4);
+      color: $green-400;
+    }
+
+    &--red {
+      background: rgba($red-500, 0.15);
+      border-color: rgba($red-500, 0.4);
+      color: $red-400;
+    }
+
+    &--yellow {
+      background: rgba($yellow-400, 0.15);
+      border-color: rgba($yellow-400, 0.4);
+      color: $yellow-400;
+    }
+
+    &--blue {
+      background: rgba($blue-500, 0.15);
+      border-color: rgba($blue-500, 0.4);
+      color: $blue-400;
+    }
+  }
+
+  &__line {
+    width: 2px;
+    flex: 1;
+    background: var(--glass-border);
+    min-height: 0.75rem;
+  }
+
+  // ── Content ────────────────────────────────────────────────
+  &__content {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 0.625rem;
+  }
+
+  &__title-text {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.125rem;
+    flex-wrap: wrap;
+  }
+
+  &__diff {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: capitalize;
+
+    &--easy { color: $green-400; }
+    &--medium { color: $yellow-400; }
+    &--hard { color: $red-400; }
+  }
+
+  &__sep {
+    color: $slate-600;
+    font-size: 0.5rem;
+  }
+
+  &__lang {
+    color: var(--text-muted);
+    font-size: 0.625rem;
+  }
+
+  &__time {
+    color: var(--text-muted);
+    font-size: 0.625rem;
+  }
+}

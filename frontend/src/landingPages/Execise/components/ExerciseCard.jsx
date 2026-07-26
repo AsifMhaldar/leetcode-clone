@@ -3,92 +3,78 @@ import { Link } from 'react-router-dom';
 import { 
   CheckCircle, Clock, Star, Users, ArrowRight, Award as AwardIcon
 } from 'lucide-react';
+import { EXERCISE_CARD_SOLVED_LABEL, EXERCISE_CARD_PREMIUM_LABEL, EXERCISE_CARD_SOLVE_LINK } from '../constants';
+import './ExerciseCard.scss';
 
 const ExerciseCard = ({ exercise, viewMode, getDifficultyColor, getCategoryIcon }) => {
   return (
-    <div
-      className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden ${
-        viewMode === 'list' ? 'flex items-start' : ''
-      }`}
-    >
-      <div className={`${viewMode === 'list' ? 'flex-1' : ''} p-6`}>
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl mr-4 ${
-              exercise.difficulty === 'Easy' ? 'bg-emerald-50' :
-              exercise.difficulty === 'Medium' ? 'bg-amber-50' : 'bg-rose-50'
+    <div className={`exercise-card ${viewMode === 'list' ? 'exercise-card--list' : ''}`}>
+      <div className={`exercise-card__body ${viewMode === 'list' ? 'exercise-card__body--list' : ''}`}>
+        <div className="exercise-card__top">
+          <div className="exercise-card__info">
+            <div className={`exercise-card__icon ${
+              exercise.difficulty === 'Easy' ? 'exercise-card__icon--easy' :
+              exercise.difficulty === 'Medium' ? 'exercise-card__icon--medium' : 'exercise-card__icon--hard'
             }`}>
               {exercise.icon}
             </div>
             <div>
-              <div className="flex items-center space-x-2 mb-1">
-                <h3 className="text-xl font-bold text-gray-900">
-                  {exercise.title}
-                </h3>
+              <div className="exercise-card__title-row">
+                <h3 className="exercise-card__title">{exercise.title}</h3>
                 {exercise.solved && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                  <span className="exercise-card__solved-badge">
                     <CheckCircle className="w-3 h-3 mr-1" />
-                    Solved
+                    {EXERCISE_CARD_SOLVED_LABEL}
                   </span>
                 )}
                 {exercise.premium && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-700 border border-amber-200">
+                  <span className="exercise-card__premium-badge">
                     <AwardIcon className="w-3 h-3 mr-1" />
-                    Premium
+                    {EXERCISE_CARD_PREMIUM_LABEL}
                   </span>
                 )}
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="exercise-card__difficulty-row">
                 <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${getDifficultyColor(exercise.difficulty)}`}>
                   {exercise.difficulty}
                 </span>
-                <span className="text-sm text-gray-500 flex items-center">
+                <span className="exercise-card__time">
                   <Clock className="w-3.5 h-3.5 mr-1" />
                   {exercise.timeEstimate}
                 </span>
               </div>
             </div>
           </div>
-          <div className="flex items-center space-x-1 text-yellow-500 bg-yellow-50 px-2 py-1 rounded-lg">
+          <div className="exercise-card__rating">
             <Star className="w-4 h-4 fill-current" />
-            <span className="text-sm font-medium text-gray-700">
-              {exercise.rating}
-            </span>
+            <span className="exercise-card__rating-value">{exercise.rating}</span>
           </div>
         </div>
 
-        <p className="text-gray-600 mb-4 line-clamp-2">
+        <p className="exercise-card__description line-clamp-2">
           {exercise.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="exercise-card__tags">
           {exercise.tags.map((tag, idx) => (
-            <span
-              key={idx}
-              className="px-3 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-            >
-              #{tag}
-            </span>
+            <span key={idx} className="exercise-card__tag">#{tag}</span>
           ))}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-500 flex items-center">
+        <div className="exercise-card__footer">
+          <div className="exercise-card__stats">
+            <span className="exercise-card__stat">
               <Users className="w-4 h-4 mr-1" />
               {exercise.completions} solves
             </span>
-            <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex items-center">
+            <span className="exercise-card__category">
               {getCategoryIcon(exercise.category)}
               <span className="ml-1">{exercise.category}</span>
             </span>
           </div>
 
-          <Link
-            to={`/exercises/${exercise.id}`}
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold group"
-          >
-            Solve Challenge
+          <Link to={`/exercises/${exercise.id}`} className="exercise-card__solve-link">
+            {EXERCISE_CARD_SOLVE_LINK}
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

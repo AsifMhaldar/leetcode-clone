@@ -1,0 +1,104 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.code-templates {
+  @include glass-card;
+  padding: 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(to right, $purple-500, #6366f1);
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__lang-card {
+    @include glass-card-sm;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__lang-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  &__editor-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include lg {
+      grid-template-columns: 1fr 1fr;
+    }
+    gap: 1.5rem;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__label {
+    display: block;
+    color: $slate-400;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  &__editor {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-lg;
+    padding: 1rem;
+  }
+
+  &__textarea {
+    width: 100%;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: $font-mono;
+    font-size: 0.875rem;
+    outline: none;
+    resize: none;
+    border: none;
+  }
+
+  &__error {
+    color: $red-400;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  @include sm {
+    padding: 1.5rem;
+
+    &__lang-card {
+      padding: 1rem;
+    }
+  }
+}

@@ -1,0 +1,34 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.guidelines-banner {
+  margin-top: 2rem;
+  background: rgba($yellow-400, 0.2);
+  border: 1px solid rgba($yellow-400, 0.3);
+  border-radius: $radius-2xl;
+  padding: 1.5rem;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: $yellow-400;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-weight: 600;
+    color: $yellow-400;
+    margin-bottom: 0.25rem;
+  }
+
+  &__text {
+    color: rgba($yellow-400, 0.8);
+    font-size: 0.875rem;
+  }
+}

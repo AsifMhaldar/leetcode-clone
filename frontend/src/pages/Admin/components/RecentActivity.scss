@@ -1,0 +1,216 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.recent-activity {
+  @include glass-card;
+  padding: 1.5rem;
+  height: 400px;
+  overflow-y: scroll;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--glass-bg);
+    border-radius: $radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: var(--glass-border);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+
+    &--create {
+      background: rgba($green-500, 0.2);
+      color: $green-400;
+    }
+
+    &--user {
+      background: rgba($blue-500, 0.2);
+      color: $blue-400;
+    }
+
+    &--update {
+      background: rgba($yellow-400, 0.2);
+      color: $yellow-400;
+    }
+
+    &--video {
+      background: rgba($purple-500, 0.2);
+      color: $purple-400;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__action {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  &__user {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__time {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+}
+
+.recent-activity {
+  &__status {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: $radius-full;
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    &--accepted {
+      background: rgba($green-500, 0.15);
+      color: $green-400;
+    }
+
+    &--wrong {
+      background: rgba($red-500, 0.15);
+      color: $red-400;
+    }
+
+    &--error {
+      background: rgba($yellow-400, 0.15);
+      color: $yellow-400;
+    }
+
+    &--pending {
+      background: rgba($blue-400, 0.15);
+      color: $blue-400;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    color: $slate-400;
+    padding: 2rem;
+  }
+
+  &__item--skeleton {
+    pointer-events: none;
+  }
+
+  &__skeleton-circle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-full;
+    background: linear-gradient(90deg, var(--glass-bg) 25%, rgba(255,255,255,0.08) 50%, var(--glass-bg) 75%);
+    background-size: 200% 100%;
+    animation: recent-shimmer 1.5s infinite;
+    flex-shrink: 0;
+  }
+
+  &__skeleton-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  &__skeleton-line {
+    border-radius: $radius-md;
+    background: linear-gradient(90deg, var(--glass-bg) 25%, rgba(255,255,255,0.08) 50%, var(--glass-bg) 75%);
+    background-size: 200% 100%;
+    animation: recent-shimmer 1.5s infinite;
+
+    &--wide { width: 70%; height: 0.875rem; }
+    &--narrow { width: 40%; height: 0.75rem; }
+    &--time { width: 3rem; height: 0.75rem; }
+  }
+}
+
+@keyframes recent-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.recent-activity {
+  padding: 1rem;
+
+  @include sm {
+    padding: 1.25rem;
+  }
+
+  @include md {
+    padding: 1.5rem;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+
+    @include sm {
+      font-size: 1.375rem;
+      margin-bottom: 1.25rem;
+    }
+
+    @include md {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  &__item {
+    padding: 0.75rem;
+
+    @include sm {
+      padding: 0.875rem;
+    }
+
+    @include md {
+      padding: 1rem;
+    }
+  }
+
+  &__icon {
+    width: 2rem;
+    height: 2rem;
+
+    @include sm {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    @include md {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  &__action {
+    font-size: 0.875rem;
+
+    @include md {
+      font-size: 1rem;
+    }
+  }
+}

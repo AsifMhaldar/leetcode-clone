@@ -4,6 +4,9 @@ import HomepageHeader from './components/HomepageHeader';
 import StatsSection from './components/StatsSection';
 import FiltersSection from './components/FiltersSection';
 import ProblemsList from './components/ProblemsList';
+import { motion } from 'framer-motion';
+import { WELCOME_TITLE, WELCOME_SUBTITLE } from './constants';
+import './Homepage.scss';
 
 function Homepage() {
   const {
@@ -20,20 +23,25 @@ function Homepage() {
   } = useHomepage();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="page-bg homepage">
       <HomepageHeader user={user} onLogout={handleLogout} />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-20 py-8">
         {/* Welcome Section */}
-        <div className="text-center mb-12 animate-fade-in">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Welcome to Codify-CODE
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="homepage__welcome"
+        >
+          <h1 className="homepage__title">
+            {WELCOME_TITLE}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Sharpen your coding skills with our curated collection of programming challenges
+          <p className="homepage__subtitle">
+            {WELCOME_SUBTITLE}
           </p>
-        </div>
+        </motion.div>
 
         <StatsSection stats={stats} />
 
@@ -54,27 +62,6 @@ function Homepage() {
           filters={filters}
         />
       </div>
-
-      {/* Custom Animations */}
-      <style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.6s ease-out both;
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out both;
-        }
-      `}</style>
     </div>
   );
 }

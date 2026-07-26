@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Code } from 'lucide-react';
-import { exercises as allExercises, categories } from '../data/exercises';
+import { EXERCISES, EXERCISE_CATEGORIES } from '../constants';
 
 const useExecise = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
@@ -10,7 +10,7 @@ const useExecise = () => {
   const [sortBy, setSortBy] = useState('popular');
 
   const filteredExercises = useMemo(() => {
-    return allExercises.filter(exercise => {
+    return EXERCISES.filter(exercise => {
       const matchesCategory = selectedCategory === 'all' || exercise.category === selectedCategory;
       const matchesDifficulty = selectedDifficulty === 'all' || exercise.difficulty === selectedDifficulty;
       const matchesSearch = exercise.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -30,7 +30,7 @@ const useExecise = () => {
   };
 
   const getCategoryIcon = (category) => {
-    const cat = categories.find(c => c.id === category);
+    const cat = EXERCISE_CATEGORIES.find(c => c.id === category);
     return cat?.icon || <Code className="w-4 h-4" />;
   };
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import StatCard from './StatCard';
-import { statCardsConfig } from '../utils/homepageData';
+import { statCardsConfig } from '../constants';
+import './StatsSection.scss';
 
 const StatsSection = ({ stats }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+    <div className="stats-section">
       {statCardsConfig.map((card) => (
         <StatCard
           key={card.key}

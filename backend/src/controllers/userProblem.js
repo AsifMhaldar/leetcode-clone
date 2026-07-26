@@ -279,10 +279,10 @@ const submittedProblem = async(req, res)=>{
       const ans = await Submission.find({userId, problemId});
 
       if(ans.length == 0){
-        res.status(200).send("No submission is present.");
+        return res.status(200).send([]);
       }
 
-      res.status(200).send(ans);
+      return res.status(200).send(ans);
 
   }catch(err){  
     res.status(500).send("Internal Server Error..");

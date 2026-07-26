@@ -1,6 +1,12 @@
 import React from 'react';
 import { RefreshCw, Rocket, Search } from 'lucide-react';
 import ExerciseCard from './ExerciseCard';
+import {
+  EXERCISE_GRID_EMPTY_TITLE, EXERCISE_GRID_EMPTY_DESC,
+  EXERCISE_GRID_LOAD_MORE, EXERCISE_GRID_LOAD_MORE_NOTE_PREFIX, EXERCISE_GRID_LOAD_MORE_NOTE_SUFFIX,
+  EXERCISE_GRID_CLEAR_FILTERS, EXERCISE_GRID_FREE_SUFFIX
+} from '../constants';
+import './ExerciseGrid.scss';
 
 const ExerciseGrid = ({
   filteredExercises,
@@ -13,27 +19,24 @@ const ExerciseGrid = ({
 }) => {
   return (
     <>
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-4">
-          <h2 className="text-lg font-semibold text-gray-900">
+      <div className="exercise-grid__header">
+        <div className="exercise-grid__count">
+          <h2 className="exercise-grid__count-text">
             {filteredExercises.length} Exercises Available
           </h2>
           {hasActiveFilters && (
-            <button
-              onClick={clearFilters}
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
-            >
+            <button onClick={clearFilters} className="exercise-grid__clear-btn">
               <RefreshCw className="w-4 h-4 mr-1" />
-              Clear Filters
+              {EXERCISE_GRID_CLEAR_FILTERS}
             </button>
           )}
         </div>
-        <span className="text-sm text-gray-500">
-          <span className="font-semibold text-blue-600">{freeExercisesCount}</span> free exercises
+        <span className="exercise-grid__free-count">
+          <span className="exercise-grid__free-count-highlight">{freeExercisesCount}</span> {EXERCISE_GRID_FREE_SUFFIX}
         </span>
       </div>
 
-      <div className={`grid ${viewMode === 'grid' ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'} gap-6 mb-8`}>
+      <div className={`exercise-grid__grid exercise-grid__grid--${viewMode}`}>
         {filteredExercises.map((exercise) => (
           <ExerciseCard
             key={exercise.id}
@@ -46,33 +49,29 @@ const ExerciseGrid = ({
       </div>
 
       {filteredExercises.length > 0 && (
-        <div className="text-center mb-12">
-          <button className="group relative inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden">
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 group-hover:opacity-20 transition-opacity"></span>
+        <div className="exercise-grid__load-more">
+          <button className="exercise-grid__load-more-btn">
             <span className="relative flex items-center">
-              Load More Exercises
-              <Rocket className="w-5 h-5 ml-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              {EXERCISE_GRID_LOAD_MORE}
+              <Rocket className="w-5 h-5 ml-2" />
             </span>
           </button>
-          <p className="text-gray-500 text-sm mt-4">
-            Showing {filteredExercises.length} of 500+ exercises
+          <p className="exercise-grid__load-more-note">
+            {EXERCISE_GRID_LOAD_MORE_NOTE_PREFIX} {filteredExercises.length} {EXERCISE_GRID_LOAD_MORE_NOTE_SUFFIX}
           </p>
         </div>
       )}
 
       {filteredExercises.length === 0 && (
-        <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-white rounded-3xl border border-gray-200 mb-8">
-          <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Search className="w-12 h-12 text-gray-400" />
+        <div className="exercise-grid__empty">
+          <div className="exercise-grid__empty-icon">
+            <Search className="w-12 h-12 text-theme-muted" />
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">No exercises found</h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
-            We couldn't find any exercises matching your criteria. Try adjusting your filters or search terms.
+          <h3 className="exercise-grid__empty-title">{EXERCISE_GRID_EMPTY_TITLE}</h3>
+          <p className="exercise-grid__empty-desc">
+            {EXERCISE_GRID_EMPTY_DESC}
           </p>
-          <button
-            onClick={clearFilters}
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all"
-          >
+          <button onClick={clearFilters} className="exercise-grid__empty-btn">
             <RefreshCw className="w-5 h-5 mr-2" />
             Clear All Filters
           </button>

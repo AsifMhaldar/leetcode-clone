@@ -1,0 +1,97 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.analytics-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+
+  @include lg {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  &__title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  &__subtitle {
+    color: $slate-400;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    @include lg {
+      margin-top: 0;
+    }
+  }
+
+  &__live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba($green-500, 0.1);
+    border-radius: $radius-lg;
+  }
+
+  &__live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: $radius-full;
+    background: $green-400;
+    animation: live-pulse 1.5s ease-in-out infinite;
+  }
+
+  &__live-text {
+    color: $green-400;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  &__select {
+    padding: 0.5rem 1rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-lg;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    outline: none;
+    cursor: pointer;
+
+    &:focus {
+      border-color: $blue-500;
+    }
+  }
+
+  &__export-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba($green-500, 0.2);
+    color: $green-400;
+    border-radius: $radius-lg;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba($green-500, 0.3);
+    }
+  }
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}

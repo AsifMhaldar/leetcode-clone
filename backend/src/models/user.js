@@ -43,7 +43,24 @@ const userSchema = new Schema({
     password:{
         type: String,
         required: true,
-    }
+    },
+    bio:{
+        type: String,
+        default: 'Passionate coder solving challenges one problem at a time.',
+        maxLength: 500,
+    },
+    github:{
+        type: String,
+        default: '',
+    },
+    linkedin:{
+        type: String,
+        default: '',
+    },
+    website:{
+        type: String,
+        default: '',
+    },
 
 }, { timestamps:true })
 

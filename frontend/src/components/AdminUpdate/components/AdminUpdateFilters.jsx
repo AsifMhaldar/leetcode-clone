@@ -1,5 +1,10 @@
 import React from 'react';
 import { Search, Filter } from 'lucide-react';
+import {
+  STAT_TOTAL_LABEL, STAT_FILTERED_LABEL, SEARCH_PLACEHOLDER,
+  DIFFICULTY_OPTIONS
+} from '../constants';
+import './AdminUpdateFilters.scss';
 
 const AdminUpdateFilters = ({
   totalProblems,
@@ -10,45 +15,44 @@ const AdminUpdateFilters = ({
   setDifficultyFilter
 }) => {
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 shadow-2xl mb-8">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div className="flex items-center space-x-4">
-          <div className="text-center">
-            <p className="text-2xl font-bold text-white">{totalProblems}</p>
-            <p className="text-gray-400 text-sm">Total Problems</p>
+    <div className="filter-bar">
+      <div className="filter-bar__inner">
+        <div className="filter-bar__stats">
+          <div className="filter-bar__stat">
+            <p className="filter-bar__stat-value">{totalProblems}</p>
+            <p className="filter-bar__stat-label">{STAT_TOTAL_LABEL}</p>
           </div>
-          <div className="h-8 w-px bg-white/20"></div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-white">{filteredProblemsCount}</p>
-            <p className="text-gray-400 text-sm">Filtered</p>
+          <div className="filter-bar__divider"></div>
+          <div className="filter-bar__stat">
+            <p className="filter-bar__stat-value">{filteredProblemsCount}</p>
+            <p className="filter-bar__stat-label">{STAT_FILTERED_LABEL}</p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 flex-1 max-w-2xl">
+        <div className="filter-bar__controls">
           {/* Search Input */}
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <div className="filter-bar__search-wrap">
+            <Search className="filter-bar__search-icon" />
             <input
               type="text"
-              placeholder="Search problems by title or tag..."
+              placeholder={SEARCH_PLACEHOLDER}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+              className="filter-bar__search"
             />
           </div>
 
           {/* Difficulty Filter */}
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <div className="filter-bar__filter-wrap">
+            <Filter className="filter-bar__filter-icon" />
             <select
               value={difficultyFilter}
               onChange={(e) => setDifficultyFilter(e.target.value)}
-              className="pl-10 pr-8 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent appearance-none"
+              className="filter-bar__filter"
             >
-              <option value="all" className="bg-slate-800">All Difficulties</option>
-              <option value="easy" className="bg-slate-800">Easy</option>
-              <option value="medium" className="bg-slate-800">Medium</option>
-              <option value="hard" className="bg-slate-800">Hard</option>
+              {DIFFICULTY_OPTIONS.map(opt => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
             </select>
           </div>
         </div>

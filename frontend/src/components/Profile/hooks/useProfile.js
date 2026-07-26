@@ -1,251 +1,91 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import axiosClient from '../../../utils/axiosClient';
-import { calculateStreak, generateEmptyCalendar, formatTimeAgo } from '../utils/profileUtils';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { fetchUserProfile, updateUserProfile } from '../../../api/userProfile';
+
+const STALE_TIME = 60 * 1000;
+const REFETCH_INTERVAL = 60 * 1000;
 
 export const useProfile = () => {
   const { user } = useSelector((state) => state.auth);
-  const [userStats, setUserStats] = useState({
-    totalSolved: 0,
-    easySolved: 0,
-    mediumSolved: 0,
-    hardSolved: 0,
-    totalProblems: 0,
-    totalSubmissions: 0,
-    acceptanceRate: 0,
-    recentSubmissions: [],
-    languages: [],
-    communityStats: {
-      views: 0,
-      solutions: 0,
-      discussions: 0,
-      reputation: 0
-    },
-    streak: {
-      current: 0,
-      longest: 0,
-      lastActive: null,
-      calendar: []
-    }
-  });
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [saveLoading, setSaveLoading] = useState(false);
-  const [saveMessage, setSaveMessage] = useState('');
+  const [editForm, setEditForm] = useState({});
 
-  const [editForm, setEditForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    bio: '',
-    github: '',
-    linkedin: '',
-    website: ''
+  const {
+    data: profileData,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ['userProfile', user?._id],
+    queryFn: () => fetchUserProfile(user._id),
+    enabled: !!user?._id,
+    staleTime: STALE_TIME,
+    refetchInterval: REFETCH_INTERVAL,
   });
 
-  useEffect(() => {
-    if (user) {
+  const updateMutation = useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['userProfile', user?._id] });
+      setIsEditing(false);
+    },
+  });
+
+  const startEditing = () => {
+    if (profileData?.user) {
       setEditForm({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        bio: user.bio || 'Passionate coder solving challenges one problem at a time. 🚀',
-        github: user.github || '',
-        linkedin: user.linkedin || '',
-        website: user.website || ''
+        firstName: profileData.user.firstName || '',
+        lastName: profileData.user.lastName || '',
+        bio: profileData.user.bio || '',
+        github: profileData.user.github || '',
+        linkedin: profileData.user.linkedin || '',
+        website: profileData.user.website || '',
       });
     }
-  }, [user]);
-
-  useEffect(() => {
-    const fetchUserStats = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        if (!user) return;
-
-        const endpoints = [
-          { 
-            name: 'solvedProblems', 
-            url: '/problem/userSolvedProblems',
-            fallback: '/problem/problemSolvedByUser'
-          },
-          { 
-            name: 'submissions', 
-            url: '/problem/userSubmissions',
-            fallback: '/submission/userSubmissions'
-          },
-          { 
-            name: 'allProblems', 
-            url: '/problem/allProblems',
-            fallback: '/problem/getAllProblem'
-          }
-        ];
-
-        const results = {};
-
-        for (const endpoint of endpoints) {
-          try {
-            const response = await axiosClient.get(endpoint.url);
-            results[endpoint.name] = response.data;
-          } catch (err) {
-            try {
-              const fallbackResponse = await axiosClient.get(endpoint.fallback);
-              results[endpoint.name] = fallbackResponse.data;
-            } catch (fallbackErr) {
-              results[endpoint.name] = [];
-            }
-          }
-        }
-
-        const solvedProblems = results.solvedProblems || [];
-        const submissions = results.submissions || [];
-        const allProblems = results.allProblems || [];
-
-        const easySolved = solvedProblems.filter(p => p.difficulty?.toLowerCase() === 'easy').length;
-        const mediumSolved = solvedProblems.filter(p => p.difficulty?.toLowerCase() === 'medium').length;
-        const hardSolved = solvedProblems.filter(p => p.difficulty?.toLowerCase() === 'hard').length;
-        
-        const totalEasy = allProblems.filter(p => p.difficulty?.toLowerCase() === 'easy').length;
-        const totalMedium = allProblems.filter(p => p.difficulty?.toLowerCase() === 'medium').length;
-        const totalHard = allProblems.filter(p => p.difficulty?.toLowerCase() === 'hard').length;
-        
-        const totalSubmissions = submissions.length;
-        const acceptedSubmissions = submissions.filter(s => s.status === 'accepted').length;
-        const acceptanceRate = totalSubmissions > 0 ? Math.round((acceptedSubmissions / totalSubmissions) * 100) : 0;
-
-        const recentSubmissions = submissions.slice(0, 3).map(sub => ({
-          title: sub.problem?.title || 'Unknown Problem',
-          difficulty: sub.problem?.difficulty?.toLowerCase() || 'easy',
-          time: formatTimeAgo(sub.submittedAt || sub.createdAt)
-        }));
-
-        const streakData = calculateStreak(submissions);
-
-        setUserStats({
-          totalSolved: solvedProblems.length,
-          easySolved,
-          mediumSolved,
-          hardSolved,
-          totalProblems: allProblems.length,
-          totalEasy,
-          totalMedium,
-          totalHard,
-          totalSubmissions,
-          acceptanceRate,
-          recentSubmissions,
-          languages: [{ name: 'C++', problems: solvedProblems.length }],
-          communityStats: {
-            views: totalSubmissions,
-            solutions: acceptedSubmissions,
-            discussions: 0,
-            reputation: (easySolved * 5) + (mediumSolved * 10) + (hardSolved * 20)
-          },
-          streak: streakData
-        });
-
-      } catch (error) {
-        setError('Failed to load profile data. Please try again.');
-        
-        setUserStats({
-          totalSolved: 0,
-          easySolved: 0,
-          mediumSolved: 0,
-          hardSolved: 0,
-          totalProblems: 0,
-          totalSubmissions: 0,
-          acceptanceRate: 0,
-          recentSubmissions: [],
-          languages: [],
-          communityStats: {
-            views: 0,
-            solutions: 0,
-            discussions: 0,
-            reputation: 0
-          },
-          streak: {
-            current: 0,
-            longest: 0,
-            lastActive: null,
-            calendar: generateEmptyCalendar()
-          }
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserStats();
-  }, [user]);
+    setIsEditing(true);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setEditForm(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setEditForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSaveProfile = async () => {
-    try {
-      setSaveLoading(true);
-      setSaveMessage('');
-      
-      if (!editForm.firstName.trim() || !editForm.lastName.trim() || !editForm.email.trim()) {
-        setSaveMessage('Please fill in all required fields');
-        return;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(editForm.email)) {
-        setSaveMessage('Please enter a valid email address');
-        return;
-      }
-
-      await axiosClient.put('/user/profile', editForm);
-      
-      setSaveMessage('Profile updated successfully!');
-      setIsEditing(false);
-      
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-
-    } catch (error) {
-      setSaveMessage(error.response?.data?.message || 'Failed to update profile. Please try again.');
-    } finally {
-      setSaveLoading(false);
-    }
+  const handleSaveProfile = () => {
+    updateMutation.mutate(editForm);
   };
 
   const handleCancelEdit = () => {
-    setEditForm({
-      firstName: user.firstName || '',
-      lastName: user.lastName || '',
-      email: user.email || '',
-      bio: user.bio || 'Passionate coder solving challenges one problem at a time. 🚀',
-      github: user.github || '',
-      linkedin: user.linkedin || '',
-      website: user.website || ''
-    });
     setIsEditing(false);
-    setSaveMessage('');
+    setEditForm({});
   };
 
   return {
-    user,
-    userStats,
+    user: profileData?.user ?? user,
+    userStats: profileData?.stats ?? null,
+    languages: profileData?.languages ?? [],
+    streak: profileData?.streak ?? { current: 0, longest: 0, lastActive: null },
+    calendar: profileData?.calendar ?? [],
+    recentSubmissions: profileData?.recentSubmissions ?? [],
     isEditing,
     setIsEditing,
-    loading,
+    isLoading,
+    isError,
     error,
-    saveLoading,
-    saveMessage,
+    saveLoading: updateMutation.isPending,
+    saveMessage: updateMutation.isError
+      ? updateMutation.error?.response?.data || 'Failed to update profile'
+      : updateMutation.isSuccess
+      ? 'Profile updated successfully!'
+      : '',
     editForm,
     handleInputChange,
     handleSaveProfile,
-    handleCancelEdit
+    handleCancelEdit,
+    startEditing,
+    refetch,
   };
 };

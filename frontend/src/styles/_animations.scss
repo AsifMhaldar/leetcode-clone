@@ -1,0 +1,105 @@
+// ═══════════════════════════════════════════════════════════════
+// Codify-CODE — Keyframes & Animation Utilities
+// Moved from index.css to SCSS for single source of truth
+// ═══════════════════════════════════════════════════════════════
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-8px); }
+  75%      { transform: translateX(8px); }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-20%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+// ── Utility Classes ───────────────────────────────────────────
+.animate-shake      { animation: shake 0.5s ease-in-out; }
+.animate-fade-in    { animation: fade-in 0.3s ease-out; }
+.animate-fade-in-up { animation: fade-in-up 0.6s ease-out both; }
+.animate-spin       { animation: spin 0.8s linear infinite; }
+.animate-pulse      { animation: pulse 2s ease-in-out infinite; }
+.animate-bounce     { animation: bounce 1s ease-in-out infinite; }
+.animate-float      { animation: float 3s ease-in-out infinite; }

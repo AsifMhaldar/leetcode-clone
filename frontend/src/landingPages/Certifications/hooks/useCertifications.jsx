@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Medal, Crown } from 'lucide-react';
-import { certifications } from '../data/certifications';
+import { CERTIFICATIONS } from '../constants';
 
 export default function useCertifications() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -8,7 +8,7 @@ export default function useCertifications() {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedCert, setExpandedCert] = useState(null);
 
-  const filteredCerts = certifications.filter(cert => {
+  const filteredCerts = CERTIFICATIONS.filter(cert => {
     const matchesCategory = selectedCategory === 'all' || cert.category === selectedCategory;
     const matchesLevel = selectedLevel === 'all' || cert.level === selectedLevel;
     const matchesSearch = cert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -1,15 +1,17 @@
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
+import { WARNING_TITLE, WARNING_TEXT } from '../constants';
+import './WarningBanner.scss';
 
 const WarningBanner = () => {
   return (
-    <div className="mt-8 bg-yellow-500/20 border border-yellow-500/30 rounded-2xl p-6">
-      <div className="flex items-center space-x-3">
-        <AlertTriangle className="w-6 h-6 text-yellow-400 flex-shrink-0" />
+    <div className="warning-banner">
+      <div className="warning-banner__inner">
+        <AlertTriangle className="warning-banner__icon" />
         <div>
-          <h4 className="font-semibold text-yellow-400 mb-1">Warning</h4>
-          <p className="text-yellow-300/80 text-sm">
-            Deleting a problem will permanently remove it from the platform. This action cannot be undone and will affect all users.
+          <h4 className="warning-banner__title">{WARNING_TITLE}</h4>
+          <p className="warning-banner__text">
+            {WARNING_TEXT}
           </p>
         </div>
       </div>

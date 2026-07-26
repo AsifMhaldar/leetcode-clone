@@ -1,0 +1,70 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.analytics {
+  margin-top: 1rem;
+
+  &__section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0.75rem;
+    svg { color: $purple-400; }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @include md {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    @include glass-card;
+    padding: 1.25rem;
+  }
+
+  &__card-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 0.75rem;
+    svg { color: $blue-400; }
+  }
+
+  &__chart-wrap {
+    width: 100%;
+    min-height: 160px;
+  }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+.analytics-tooltip {
+  background: $slate-800;
+  border: 1px solid $slate-600;
+  border-radius: $radius-md;
+  padding: 0.375rem 0.625rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  &__label { font-size: 0.6875rem; font-weight: 600; color: $slate-100; margin-bottom: 0.125rem; }
+  &__val { font-size: 0.625rem; }
+}

@@ -1,25 +1,25 @@
 import React from 'react';
 import { Save } from 'lucide-react';
+import { SUBMIT_BTN_TEXT, SUBMIT_BTN_LOADING } from '../constants';
+import './UpdateSubmitButton.scss';
 
 const UpdateSubmitButton = ({ updating, loading }) => {
   return (
-    <div className="flex justify-center">
+    <div className="update-submit">
       <button
         type="submit"
         disabled={updating || loading}
-        className={`flex items-center cursor-pointer space-x-3 bg-gradient-to-r from-yellow-500 to-orange-600 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-500 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-500/50 disabled:opacity-70 disabled:cursor-not-allowed ${
-          updating ? 'animate-pulse' : ''
-        }`}
+        className={`update-submit__btn ${updating ? 'update-submit__btn--updating' : ''}`}
       >
         {updating ? (
           <>
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            <span>Updating Problem...</span>
+            <div className="update-submit__spinner"></div>
+            <span>{SUBMIT_BTN_LOADING}</span>
           </>
         ) : (
           <>
             <Save size={20} />
-            <span>Update Problem</span>
+            <span>{SUBMIT_BTN_TEXT}</span>
           </>
         )}
       </button>

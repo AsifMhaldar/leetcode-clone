@@ -52,7 +52,7 @@ const submissionSchema = new Schema({
 });
 
 // indexing for the submission
-submissionSchema.index({userid:1, problemId:1});  // means iserId and problemId in ascending order and -1 is in descending order
+submissionSchema.index({userId:1, problemId:1});  // means userId and problemId in ascending order and -1 is in descending order
 
 
 const Submission = mongoose.model('submission', submissionSchema);

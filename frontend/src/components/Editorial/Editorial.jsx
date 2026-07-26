@@ -1,6 +1,7 @@
 import React from 'react';
 import { useVideoPlayer } from './hooks/useVideoPlayer';
 import VideoPlayer from './components/VideoPlayer';
+import './Editorial.scss';
 
 const Editorial = ({ secureUrl, thumbnailUrl, duration }) => {
   const {

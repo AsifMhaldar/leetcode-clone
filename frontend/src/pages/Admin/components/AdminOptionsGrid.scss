@@ -1,0 +1,148 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.admin-options {
+  margin-bottom: 2rem;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  &__card {
+    @include glass-card;
+    padding: 2rem;
+    transition: all 0.5s ease;
+    height: 100%;
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+      transform: scale(1.05);
+      box-shadow: var(--shadow-card);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: $radius-2xl;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    transition: transform 0.3s ease;
+
+    .group:hover & {
+      transform: scale(1.1);
+    }
+  }
+
+  &__card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+
+    .group:hover & {
+      background: $gradient-text;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &__card-desc {
+    color: $slate-400;
+    margin-bottom: 1.5rem;
+    line-height: 1.625;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__link {
+    color: $blue-400;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: transform 0.3s ease;
+
+    .group:hover & {
+      transform: translateX(0.5rem);
+    }
+  }
+
+  &__arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-full;
+    color: $slate-400;
+    transition: all 0.3s ease;
+
+    .group:hover & {
+      background: rgba($blue-500, 0.2);
+      color: $blue-400;
+    }
+  }
+}
+
+.admin-options {
+  &__title {
+    @include sm {
+      font-size: 1.25rem;
+    }
+
+    @include md {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__card {
+    padding: 1.25rem;
+
+    @include sm {
+      padding: 1.5rem;
+    }
+
+    @include md {
+      padding: 2rem;
+    }
+  }
+
+  &__card-title {
+    @include sm {
+      font-size: 1.125rem;
+    }
+
+    @include md {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__icon {
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+
+    @include sm {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    @include md {
+      width: 4rem;
+      height: 4rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+}

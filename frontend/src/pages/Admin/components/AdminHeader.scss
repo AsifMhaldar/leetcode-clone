@@ -1,0 +1,95 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.admin-nav {
+  background: var(--glass-bg);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  border-bottom: 1px solid var(--glass-border);
+
+  &__inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: $gradient-btn;
+    border-radius: $radius-xl;
+    color: var(--text-primary);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $slate-300;
+    text-decoration: none;
+    transition: $transition-base;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  &__brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+
+    @include md {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5rem;
+      line-height: normal;
+    }
+  }
+}
+
+.admin-nav__inner {
+  padding: 0 0.75rem;
+
+  @include sm {
+    padding: 0 1rem;
+  }
+
+  @include md {
+    padding: 0 1.5rem;
+  }
+}
+
+.admin-nav__icon {
+  width: 2rem;
+  height: 2rem;
+
+  @include sm {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  @include md {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}

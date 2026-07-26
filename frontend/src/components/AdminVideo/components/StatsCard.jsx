@@ -1,18 +1,20 @@
 import React from 'react';
+import { STATS_TOTAL_LABEL, STATS_HINT_PRIMARY, STATS_HINT_SECONDARY } from '../constants';
+import './StatsCard.scss';
 
 const StatsCard = ({ totalProblems }) => {
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 shadow-2xl mb-8">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-6">
-          <div className="text-center">
-            <p className="text-3xl font-bold text-white">{totalProblems}</p>
-            <p className="text-gray-400 text-sm">Total Problems</p>
+    <div className="video-stats">
+      <div className="video-stats__inner">
+        <div className="video-stats__left">
+          <div className="video-stats__count">
+            <p className="video-stats__count-value">{totalProblems}</p>
+            <p className="video-stats__count-label">{STATS_TOTAL_LABEL}</p>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-gray-400 text-sm">Manage your video content</p>
-          <p className="text-white font-medium">Upload and delete videos as needed</p>
+        <div className="video-stats__right">
+          <p className="video-stats__hint-primary">{STATS_HINT_PRIMARY}</p>
+          <p className="video-stats__hint-secondary">{STATS_HINT_SECONDARY}</p>
         </div>
       </div>
     </div>

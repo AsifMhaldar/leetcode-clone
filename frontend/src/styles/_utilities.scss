@@ -1,0 +1,175 @@
+// ═══════════════════════════════════════════════════════════════
+// Codify-CODE — Shared Utility Classes
+// Apply via className="page-bg glass-card" etc.
+// Eliminates repeated Tailwind gradient strings across 131 files
+// ═══════════════════════════════════════════════════════════════
+
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// ── Page Backgrounds ──────────────────────────────────────────
+.page-bg {
+  @include page-bg;
+}
+
+// ── Glass Cards ───────────────────────────────────────────────
+.glass-card {
+  @include glass-card;
+}
+
+.glass-card-sm {
+  @include glass-card-sm;
+}
+
+.glass-card-hover {
+  @include glass-card;
+  transition: $transition-base;
+
+  &:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+// ── Gradient Text ─────────────────────────────────────────────
+.gradient-text {
+  @include gradient-text;
+}
+
+// ── Buttons ───────────────────────────────────────────────────
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-primary-sm {
+  @include btn-primary-sm;
+}
+
+.btn-landing {
+  @include btn-landing;
+}
+
+.btn-ghost {
+  @include btn-ghost;
+}
+
+// ── Icon Badges ───────────────────────────────────────────────
+.icon-badge {
+  @include icon-badge;
+}
+
+.icon-badge-lg {
+  @include icon-badge-lg;
+}
+
+// ── Spinners ──────────────────────────────────────────────────
+.page-spinner {
+  @include spinner;
+}
+
+.btn-spinner {
+  @include spinner-sm;
+}
+
+// ── Admin Page Layout ─────────────────────────────────────────
+.admin-page {
+  @include page-bg;
+
+  .admin-page__container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+}
+
+// ── Page Header (centered title + subtitle) ───────────────────
+.page-header-center {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    @include gradient-text;
+  }
+
+  p {
+    font-size: 1.25rem;
+    color: $slate-400;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+}
+
+// ── Tab Bar ───────────────────────────────────────────────────
+.tab-bar {
+  display: flex;
+  background: var(--glass-bg);
+  padding: 0 1.5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.tab-btn {
+  @include tab-item;
+
+  &--active {
+    @include tab-item-active;
+  }
+}
+
+// ── Form Section Card ─────────────────────────────────────────
+.form-section {
+  @include glass-card;
+  padding: 2rem;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+}
+
+// ── Input Field ───────────────────────────────────────────────
+.input-field {
+  @include input-field;
+}
+
+// ── Badge Variants ────────────────────────────────────────────
+.badge-solved {
+  @include badge(rgba($green-500, 0.2), $green-400, rgba($green-500, 0.3));
+}
+
+.badge-warning {
+  @include badge(rgba($yellow-400, 0.1), $yellow-400, rgba($yellow-400, 0.3));
+}
+
+.badge-error {
+  @include badge(rgba($red-500, 0.1), $red-400, rgba($red-500, 0.3));
+}
+
+// ── Line Clamp ────────────────────────────────────────────────
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

@@ -1,0 +1,139 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.filter-bar {
+  @include glass-card;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+
+    @include lg {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    gap: 1rem;
+  }
+
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__stat {
+    text-align: center;
+  }
+
+  &__stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__stat-label {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__divider {
+    height: 2rem;
+    width: 1px;
+    background: var(--glass-border);
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    max-width: 40rem;
+
+    @include sm {
+      flex-direction: row;
+    }
+    gap: 1rem;
+  }
+
+  &__search-wrap {
+    position: relative;
+    flex: 1;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $slate-400;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &__search {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    outline: none;
+    transition: $transition-base;
+
+    &::placeholder {
+      color: $slate-400;
+    }
+
+    &:focus {
+      border-color: $yellow-400;
+      box-shadow: 0 0 0 3px rgba($yellow-400, 0.15);
+    }
+  }
+
+  &__filter-wrap {
+    position: relative;
+  }
+
+  &__filter-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $slate-400;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &__filter {
+    padding: 0.5rem 2rem 0.5rem 2.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    outline: none;
+    appearance: none;
+    transition: $transition-base;
+    cursor: pointer;
+
+    option {
+      background: $slate-800;
+    }
+
+    &:focus {
+      border-color: $yellow-400;
+      box-shadow: 0 0 0 3px rgba($yellow-400, 0.15);
+    }
+  }
+
+  @include sm {
+    padding: 1rem;
+
+    &__inner {
+      gap: 0.75rem;
+    }
+  }
+}

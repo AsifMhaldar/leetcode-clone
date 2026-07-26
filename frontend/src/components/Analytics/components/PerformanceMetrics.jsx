@@ -1,24 +1,39 @@
 import React from 'react';
+import { PERFORMANCE_METRIC_LABELS } from '../constants';
+import './PerformanceMetrics.scss';
 
-const PerformanceMetrics = ({ metrics }) => {
+const PerformanceMetrics = ({ data, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="perf-metrics">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="perf-metrics__card">
+            <div className="perf-metrics__skeleton-value"></div>
+            <div className="perf-metrics__skeleton-label"></div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (!data) return null;
+
+  const { stats } = data;
+  const metrics = [
+    { key: 'dailySubmissions', value: stats.dailySubmissions },
+    { key: 'weeklySubmissions', value: stats.weeklySubmissions?.toLocaleString() },
+    { key: 'monthlySubmissions', value: stats.monthlySubmissions?.toLocaleString() },
+    { key: 'peakHours', value: stats.peakHours || 'N/A' },
+  ];
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <div className="text-2xl font-bold text-white mb-2">{metrics.dailySubmissions}</div>
-        <div className="text-gray-400 text-sm">Daily Submissions</div>
-      </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <div className="text-2xl font-bold text-white mb-2">{metrics.weeklySubmissions.toLocaleString()}</div>
-        <div className="text-gray-400 text-sm">Weekly Submissions</div>
-      </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <div className="text-2xl font-bold text-white mb-2">{metrics.monthlySubmissions.toLocaleString()}</div>
-        <div className="text-gray-400 text-sm">Monthly Submissions</div>
-      </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <div className="text-2xl font-bold text-white mb-2">{metrics.peakHours}</div>
-        <div className="text-gray-400 text-sm">Peak Activity Hours</div>
-      </div>
+    <div className="perf-metrics">
+      {metrics.map((metric) => (
+        <div key={metric.key} className="perf-metrics__card">
+          <div className="perf-metrics__value">{metric.value}</div>
+          <div className="perf-metrics__label">{PERFORMANCE_METRIC_LABELS[metric.key]}</div>
+        </div>
+      ))}
     </div>
   );
 };

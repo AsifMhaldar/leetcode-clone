@@ -1,0 +1,37 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+
+  &__icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: $radius-full;
+    background: linear-gradient(135deg, rgba($purple-500, 0.1), rgba($blue-500, 0.1));
+    color: $purple-400;
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  &__desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    max-width: 14rem;
+    line-height: 1.5;
+  }
+}

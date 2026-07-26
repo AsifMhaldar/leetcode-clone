@@ -1,0 +1,117 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.overview-cards {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include xl {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  &__card {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+
+    &--blue {
+      background: rgba($blue-500, 0.15);
+      color: $blue-400;
+    }
+
+    &--green {
+      background: rgba($green-500, 0.15);
+      color: $green-400;
+    }
+
+    &--purple {
+      background: rgba($purple-500, 0.15);
+      color: $purple-400;
+    }
+
+    &--yellow {
+      background: rgba($yellow-400, 0.15);
+      color: $yellow-400;
+    }
+
+    &--red {
+      background: rgba($red-500, 0.15);
+      color: $red-400;
+    }
+
+    &--orange {
+      background: rgba($orange-400, 0.15);
+      color: $orange-400;
+    }
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  &__label {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  // Skeleton
+  &__skeleton-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-lg;
+    background: $slate-700;
+    margin-bottom: 1rem;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  &__skeleton-value {
+    width: 60%;
+    height: 1.5rem;
+    border-radius: $radius-sm;
+    background: $slate-700;
+    margin-bottom: 0.5rem;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  &__skeleton-label {
+    width: 80%;
+    height: 0.875rem;
+    border-radius: $radius-sm;
+    background: $slate-700;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}

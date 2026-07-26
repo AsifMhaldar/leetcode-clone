@@ -2,6 +2,7 @@ import React from 'react';
 import { useChatAi } from './hooks/useChatAi';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
+import './ChatAi.scss';
 
 function ChatAi({ problem }) {
   const {
@@ -14,7 +15,7 @@ function ChatAi({ problem }) {
   } = useChatAi(problem);
 
   return (
-    <div className="flex flex-col h-screen max-h-[80vh] min-h-[500px]">
+    <div className="chat-ai">
       <MessageList messages={messages} messagesEndRef={messagesEndRef} />
       <ChatInput 
         register={register} 

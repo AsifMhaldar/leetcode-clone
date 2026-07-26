@@ -9,6 +9,8 @@ const problemRouter = require('./Routes/problemCreator');
 const submitRouter = require('./Routes/submit');
 const aiRouter = require('./Routes/aiChatting');
 const videoRouter = require('./Routes/videoCreator');
+const adminDashboardRouter = require('./Routes/adminDashboard');
+const userStatsRouter = require('./Routes/userStats');
 const cors = require('cors');
 
 
@@ -34,6 +36,8 @@ app.use('/problem', problemRouter);
 app.use('/submission', submitRouter);
 app.use('/ai', aiRouter);
 app.use('/video',videoRouter);
+app.use('/admin', adminDashboardRouter);
+app.use('/user/stats', userStatsRouter);
 
 
 const initializedConnection = async(req, res)=>{

@@ -1,0 +1,63 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.admin-page-header {
+  background: var(--glass-bg);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  border-bottom: 1px solid var(--glass-border);
+
+  &__inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #cbd5e1;
+    transition: $transition-base;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      color: var(--text-primary);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  @include sm {
+    &__inner {
+      height: 3.5rem;
+      padding: 0 0.75rem;
+    }
+
+    &__icon {
+      width: 2rem;
+      height: 2rem;
+      font-size: 0.875rem;
+    }
+  }
+}

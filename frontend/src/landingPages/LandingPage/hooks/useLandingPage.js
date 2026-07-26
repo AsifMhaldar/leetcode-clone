@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import navigationSections from '../data/navigationSections';
+import { NAVIGATION_SECTIONS } from '../constants';
 
 const useLandingPage = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,7 +17,7 @@ const useLandingPage = () => {
 
   const getCurrentSectionLabel = () => {
     const currentPath = location.pathname;
-    const section = navigationSections.find(s => s.path === currentPath);
+    const section = NAVIGATION_SECTIONS.find(s => s.path === currentPath);
     return section ? section.label : 'Home';
   };
 

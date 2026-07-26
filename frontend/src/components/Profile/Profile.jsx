@@ -1,51 +1,67 @@
 import React from 'react';
 import { useProfile } from './hooks/useProfile';
 import ProfileNav from './components/ProfileNav';
-import ProfileHeader from './components/ProfileHeader';
-import StatsSidebar from './components/StatsSidebar';
-import ProgressCard from './components/ProgressCard';
-import BadgesCard from './components/BadgesCard';
-import RecentActivity from './components/RecentActivity';
-import StreakCalendar from './components/StreakCalendar';
+import HeroProfile from './components/HeroProfile';
+import StatsOverview from './components/StatsOverview';
+import ActivityCalendar from './components/ActivityCalendar';
+import TimelineActivity from './components/TimelineActivity';
+import StreakGoals from './components/StreakGoals';
+import AnalyticsCharts from './components/AnalyticsCharts';
+import { ERROR_TITLE, RETRY_BUTTON } from './constants';
+import './Profile.scss';
+
+const ProfileSkeleton = () => (
+  <div className="page-bg">
+    <ProfileNav />
+    <div className="profile__shell">
+      <div className="profile__skeleton-hero" />
+      <div className="profile__skeleton-dashboard">
+        <div className="profile__skeleton-col">
+          <div className="profile__skeleton-card" />
+        </div>
+        <div className="profile__skeleton-col">
+          <div className="profile__skeleton-card" />
+        </div>
+        <div className="profile__skeleton-col">
+          <div className="profile__skeleton-card" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const Profile = () => {
   const {
     user,
     userStats,
+    languages,
+    streak,
+    calendar,
+    recentSubmissions,
     isEditing,
     setIsEditing,
-    loading,
+    isLoading,
+    isError,
     error,
     saveLoading,
     saveMessage,
     editForm,
     handleInputChange,
     handleSaveProfile,
-    handleCancelEdit
+    handleCancelEdit,
+    startEditing,
   } = useProfile();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
-          <div className="text-white">Loading your profile...</div>
-        </div>
-      </div>
-    );
-  }
+  if (isLoading) return <ProfileSkeleton />;
 
-  if (error) {
+  if (isError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="page-bg flex items-center justify-center">
         <div className="text-center">
-          <div className="text-red-400 text-lg mb-4">Error</div>
-          <div className="text-white mb-4">{error}</div>
-          <button 
-            onClick={() => window.location.reload()}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg font-medium"
-          >
-            Retry
+          <div className="text-red-400 text-lg mb-4">{ERROR_TITLE}</div>
+          <div className="text-theme-primary mb-4">{error?.message || 'Failed to load profile'}</div>
+          <button onClick={() => window.location.reload()} className="profile__retry-btn">
+            {RETRY_BUTTON}
           </button>
         </div>
       </div>
@@ -53,73 +69,56 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="page-bg">
       <ProfileNav />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Debug Info */}
-        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6">
-          <div className="text-yellow-400 text-sm">
-            <strong>Debug Info:</strong> Problems: {userStats.totalSolved} solved, {userStats.totalProblems} total | 
-            Submissions: {userStats.totalSubmissions} | Acceptance: {userStats.acceptanceRate}% |
-            Streak: {userStats.streak.current} days
-          </div>
-        </div>
-
-        {/* Save Message */}
+      <div className="profile__shell">
         {saveMessage && (
-          <div className={`mb-6 p-4 rounded-lg ${
-            saveMessage.includes('successfully') 
-              ? 'bg-green-500/10 border border-green-500/30 text-green-400' 
-              : 'bg-red-500/10 border border-red-500/30 text-red-400'
-          }`}>
+          <div className={`profile__save-msg ${saveMessage.includes('success') ? 'profile__save-msg--success' : 'profile__save-msg--error'}`}>
             {saveMessage}
           </div>
         )}
 
-        {/* Profile Header */}
-        <ProfileHeader
+        {/* ZONE 1: Hero Profile */}
+        <HeroProfile
           user={user}
           editForm={editForm}
           userStats={userStats}
+          streak={streak}
           isEditing={isEditing}
           saveLoading={saveLoading}
-          onEdit={() => setIsEditing(true)}
+          onEdit={startEditing}
           onSave={handleSaveProfile}
           onCancel={handleCancelEdit}
           onInputChange={handleInputChange}
         />
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Stats */}
-          <StatsSidebar 
-            communityStats={userStats.communityStats} 
-            languages={userStats.languages} 
-          />
-
-          {/* Middle Column - Progress */}
-          <div className="space-y-6">
-            <ProgressCard
-              totalSolved={userStats.totalSolved}
-              totalProblems={userStats.totalProblems}
-              acceptanceRate={userStats.acceptanceRate}
-              easySolved={userStats.easySolved}
-              totalEasy={userStats.totalEasy}
-              mediumSolved={userStats.mediumSolved}
-              totalMedium={userStats.totalMedium}
-              hardSolved={userStats.hardSolved}
-              totalHard={userStats.totalHard}
-            />
-            <BadgesCard totalSolved={userStats.totalSolved} />
+        {/* ZONE 2: 3-Column Dashboard */}
+        <div className="profile__dashboard">
+          {/* Left Sidebar */}
+          <div className="profile__sidebar profile__sidebar--left">
+            <StatsOverview userStats={userStats} languages={languages} />
           </div>
 
-          {/* Right Column - Activity */}
-          <div className="space-y-6">
-            <RecentActivity recentSubmissions={userStats.recentSubmissions} />
-            <StreakCalendar streak={userStats.streak} />
+          {/* Center Column */}
+          <div className="profile__center">
+            <ActivityCalendar
+              streak={streak}
+              calendar={calendar}
+              userStats={userStats}
+              languages={languages}
+            />
+          </div>
+
+          {/* Right Sidebar */}
+          <div className="profile__sidebar profile__sidebar--right">
+            <TimelineActivity recentSubmissions={recentSubmissions} />
+            <StreakGoals streak={streak} calendar={calendar} userStats={userStats} />
           </div>
         </div>
+
+        {/* ZONE 3: Analytics */}
+        <AnalyticsCharts calendar={calendar} userStats={userStats} streak={streak} />
       </div>
     </div>
   );

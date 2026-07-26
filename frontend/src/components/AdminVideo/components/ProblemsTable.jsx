@@ -1,73 +1,69 @@
 import React from 'react';
 import { NavLink } from 'react-router';
 import { Upload, Trash2, Video } from 'lucide-react';
+import { TABLE_TITLE, TABLE_COLUMNS, BTN_UPLOAD, BTN_DELETE, EMPTY_TITLE, EMPTY_DESC } from '../constants';
+import './ProblemsTable.scss';
 
 const ProblemsTable = ({ problems, onDelete }) => {
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-white/10">
-        <h2 className="text-xl font-bold text-white">Problems List</h2>
+    <div className="problems-table">
+      <div className="problems-table__header">
+        <h2 className="problems-table__header-title">{TABLE_TITLE}</h2>
       </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full">
+      <div className="problems-table__scroll">
+        <table className="problems-table__table">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="text-left py-4 px-6 text-gray-400 font-semibold">Sr. No.</th>
-              <th className="text-left py-4 px-6 text-gray-400 font-semibold">Title</th>
-              <th className="text-left py-4 px-6 text-gray-400 font-semibold">Difficulty</th>
-              <th className="text-left py-4 px-6 text-gray-400 font-semibold">Tags</th>
-              <th className="text-left py-4 px-6 text-gray-400 font-semibold">Actions</th>
+            <tr className="problems-table__head-row">
+              <th className="problems-table__th">{TABLE_COLUMNS[0]}</th>
+              <th className="problems-table__th">{TABLE_COLUMNS[1]}</th>
+              <th className="problems-table__th">{TABLE_COLUMNS[2]}</th>
+              <th className="problems-table__th">{TABLE_COLUMNS[3]}</th>
+              <th className="problems-table__th">{TABLE_COLUMNS[4]}</th>
             </tr>
           </thead>
           <tbody>
             {problems.map((problem, index) => (
               <tr 
                 key={problem._id} 
-                className="border-b border-white/5 hover:bg-white/5 transition-colors duration-200"
+                className="problems-table__row"
               >
-                <td className="py-4 px-6 text-white font-medium">
+                <td className="problems-table__td problems-table__td-num">
                   {index + 1}
                 </td>
-                <td className="py-4 px-6">
+                <td className="problems-table__td">
                   <div>
-                    <p className="text-white font-semibold">{problem.title}</p>
-                    <p className="text-gray-400 text-sm mt-1 line-clamp-1">
+                    <p className="problems-table__problem-title">{problem.title}</p>
+                    <p className="problems-table__problem-desc">
                       {problem.description}
                     </p>
                   </div>
                 </td>
-                <td className="py-4 px-6">
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${
-                    problem.difficulty === 'Easy' 
-                      ? 'text-green-400 border-green-400/20 bg-green-400/10' 
-                      : problem.difficulty === 'Medium' 
-                        ? 'text-yellow-400 border-yellow-400/20 bg-yellow-400/10' 
-                        : 'text-red-400 border-red-400/20 bg-red-400/10'
-                  }`}>
+                <td className="problems-table__td">
+                  <span className={`problems-table__difficulty problems-table__difficulty--${problem.difficulty.toLowerCase()}`}>
                     {problem.difficulty}
                   </span>
                 </td>
-                <td className="py-4 px-6">
-                  <span className="inline-flex items-center px-6 py-1 rounded-full text-sm font-medium border border-gray-400/20 bg-gray-400/10 text-gray-300">
+                <td className="problems-table__td">
+                  <span className="problems-table__tag">
                     {problem.tags}
                   </span>
                 </td>
-                <td className="py-4 px-6">
-                  <div className="flex items-center space-x-2">
+                <td className="problems-table__td">
+                  <div className="problems-table__actions">
                     <NavLink 
                       to={`/admin/upload/${problem._id}`}
-                      className="flex items-center space-x-2 bg-blue-500/20 text-blue-400 border border-blue-500/30 px-4 py-2 rounded-lg hover:bg-blue-500/30 hover:scale-105 transition-all duration-200"
+                      className="problems-table__upload-btn"
                     >
                       <Upload size={16} />
-                      <span>Upload</span>
+                      <span>{BTN_UPLOAD}</span>
                     </NavLink>
                     <button 
                       onClick={() => onDelete(problem._id)}
-                      className="flex items-center space-x-2 bg-red-500/20 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg hover:bg-red-500/30 hover:scale-105 transition-all duration-200"
+                      className="problems-table__delete-btn"
                     >
                       <Trash2 size={16} />
-                      <span>Delete</span>
+                      <span>{BTN_DELETE}</span>
                     </button>
                   </div>
                 </td>
@@ -78,10 +74,10 @@ const ProblemsTable = ({ problems, onDelete }) => {
       </div>
 
       {problems.length === 0 && (
-        <div className="text-center py-12">
-          <Video className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">No Problems Found</h3>
-          <p className="text-gray-400">There are no problems available in the system.</p>
+        <div className="problems-table__empty">
+          <Video className="problems-table__empty-icon" />
+          <h3 className="problems-table__empty-title">{EMPTY_TITLE}</h3>
+          <p className="problems-table__empty-desc">{EMPTY_DESC}</p>
         </div>
       )}
     </div>

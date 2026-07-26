@@ -5,6 +5,11 @@ import AdminUpdateHeader from './components/AdminUpdateHeader';
 import AdminUpdateFilters from './components/AdminUpdateFilters';
 import ProblemCard from './components/ProblemCard';
 import GuidelinesBanner from './components/GuidelinesBanner';
+import {
+  PAGE_TITLE, PAGE_SUBTITLE, EMPTY_TITLE, EMPTY_DESC_FILTERED, EMPTY_DESC_DEFAULT,
+  LOADING_TEXT, ERROR_TITLE, BTN_TRY_AGAIN
+} from './constants';
+import './AdminUpdate.scss';
 
 function AdminUpdate() {
   const {
@@ -21,10 +26,10 @@ function AdminUpdate() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="admin-update flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-300 text-lg">Loading problems...</p>
+          <div className="admin-update__spinner"></div>
+          <p className="text-gray-300 text-lg">{LOADING_TEXT}</p>
         </div>
       </div>
     );
@@ -32,16 +37,16 @@ function AdminUpdate() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="bg-red-500/20 border border-red-500/30 rounded-2xl p-8 max-w-md text-center">
-          <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Error</h3>
+      <div className="admin-update flex items-center justify-center">
+        <div className="admin-update__error-card">
+          <AlertCircle className="admin-update__error-icon" />
+          <h3 className="admin-update__error-title">{ERROR_TITLE}</h3>
           <p className="text-gray-300 mb-4">{error}</p>
           <button
             onClick={fetchProblems}
-            className="bg-red-500/20 text-red-400 border border-red-500/30 px-6 py-2 rounded-lg hover:bg-red-500/30 transition-colors duration-200"
+            className="admin-update__retry-btn"
           >
-            Try Again
+            {BTN_TRY_AGAIN}
           </button>
         </div>
       </div>
@@ -49,18 +54,18 @@ function AdminUpdate() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="admin-update">
       {/* Navigation Header */}
       <AdminUpdateHeader fetchProblems={fetchProblems} loading={loading} />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="admin-update__container">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-4">
-            Update Problems
+        <div className="admin-update__header">
+          <h1>
+            {PAGE_TITLE}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Edit and modify existing coding problems, test cases, and solutions
+          <p>
+            {PAGE_SUBTITLE}
           </p>
         </div>
 
@@ -77,13 +82,13 @@ function AdminUpdate() {
         {/* Problems Grid */}
         <div className="grid gap-6">
           {filteredProblems.length === 0 ? (
-            <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-12 border border-white/10 text-center">
-              <AlertCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">No Problems Found</h3>
-              <p className="text-gray-400">
+            <div className="admin-update__empty">
+              <AlertCircle className="admin-update__empty-icon" />
+              <h3 className="admin-update__empty-title">{EMPTY_TITLE}</h3>
+              <p className="admin-update__empty-desc">
                 {searchTerm || difficultyFilter !== 'all' 
-                  ? 'Try adjusting your search or filter criteria'
-                  : 'No problems available in the system'
+                  ? EMPTY_DESC_FILTERED
+                  : EMPTY_DESC_DEFAULT
                 }
               </p>
             </div>
@@ -101,31 +106,6 @@ function AdminUpdate() {
         {/* Information Banner */}
         <GuidelinesBanner />
       </div>
-
-      {/* Custom Animations */}
-      <style jsx>{`
-        @keyframes fade-in-up {
-          0% {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out both;
-        }
-        
-        .line-clamp-2 {
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-      `}</style>
     </div>
   );
 }

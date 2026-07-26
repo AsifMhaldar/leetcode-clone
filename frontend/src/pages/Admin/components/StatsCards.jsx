@@ -1,34 +1,90 @@
 import React from 'react';
-import { BarChart3 } from 'lucide-react';
-import { stats } from '../utils/adminData';
+import { BarChart3, TrendingUp, TrendingDown } from 'lucide-react';
+import { STATS_MONTH_SUFFIX } from '../constants';
+import './StatsCards.scss';
 
-const StatsCards = () => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-      {stats.map((stat) => (
-        <div 
-          key={stat.label}
-          className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm font-medium mb-1">{stat.label}</p>
-              <p className="text-2xl font-bold text-white">{stat.value}</p>
-            </div>
-            <div className={`p-3 rounded-lg ${
-              stat.trend === 'up' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-            } group-hover:scale-110 transition-transform duration-300`}>
-              <BarChart3 size={20} />
-            </div>
-          </div>
-          <div className={`flex items-center space-x-1 mt-2 text-sm ${
-            stat.trend === 'up' ? 'text-green-400' : 'text-red-400'
-          }`}>
-            <span>{stat.change}</span>
-            <span>this month</span>
-          </div>
+const statsConfig = [
+  { key: 'totalProblems', label: 'Total Problems', icon: BarChart3, changeKey: 'problemsChange' },
+  { key: 'totalUsers', label: 'Total Users', icon: BarChart3, changeKey: 'usersChange' },
+  { key: 'totalSubmissions', label: 'Total Submissions', icon: BarChart3, changeKey: 'submissionsChange' },
+  { key: 'successRate', label: 'Success Rate', icon: BarChart3, changeKey: null },
+];
+
+const StatsCardSkeleton = () => (
+  <div className="stats-cards__card stats-cards__card--skeleton">
+    <div className="flex items-center justify-between">
+      <div>
+        <div className="stats-cards__skeleton-line stats-cards__skeleton-line--label" />
+        <div className="stats-cards__skeleton-line stats-cards__skeleton-line--value" />
+      </div>
+      <div className="stats-cards__skeleton-icon" />
+    </div>
+    <div className="stats-cards__skeleton-line stats-cards__skeleton-line--trend" />
+  </div>
+);
+
+const StatsCards = ({ stats, isLoading, isError }) => {
+  if (isLoading) {
+    return (
+      <div className="stats-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <StatsCardSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="stats-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="stats-cards__error">
+          Failed to load stats. Retrying...
         </div>
-      ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="stats-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {statsConfig.map((cfg) => {
+        const value = stats?.[cfg.key] ?? 0;
+        const change = cfg.changeKey ? stats?.[cfg.changeKey] ?? 0 : null;
+        const trend = change !== null ? (change >= 0 ? 'up' : 'down') : 'up';
+        const TrendIcon = trend === 'up' ? TrendingUp : TrendingDown;
+        const IconComponent = cfg.icon;
+
+        let displayValue;
+        if (cfg.key === 'successRate') {
+          displayValue = `${value}%`;
+        } else if (value >= 1000000) {
+          displayValue = `${(value / 1000000).toFixed(1)}M`;
+        } else if (value >= 1000) {
+          displayValue = `${(value / 1000).toFixed(1)}k`;
+        } else {
+          displayValue = String(value);
+        }
+
+        return (
+          <div key={cfg.key} className="stats-cards__card group">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="stats-cards__label">{cfg.label}</p>
+                <p className="stats-cards__value">{displayValue}</p>
+              </div>
+              <div className={`stats-cards__icon stats-cards__icon--${trend}`}>
+                <IconComponent size={20} />
+              </div>
+            </div>
+            {change !== null && (
+              <div className={`stats-cards__trend stats-cards__trend--${trend}`}>
+                <TrendIcon size={14} />
+                <span>{change >= 0 ? '+' : ''}{change}%</span>
+                <span>{STATS_MONTH_SUFFIX}</span>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

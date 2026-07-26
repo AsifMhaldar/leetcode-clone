@@ -1,21 +1,23 @@
 import React from 'react';
 import { Send } from 'lucide-react';
+import { INPUT_PLACEHOLDER } from '../constants';
+import './ChatInput.scss';
 
 const ChatInput = ({ register, handleSubmit, errors, onSubmit }) => {
   return (
     <form 
       onSubmit={handleSubmit(onSubmit)} 
-      className="sticky bottom-0 p-4 bg-base-100 border-t"
+      className="chat-input"
     >
-      <div className="flex items-center">
+      <div className="chat-input__form">
         <input 
-          placeholder="Ask me anything" 
-          className="input input-bordered flex-1" 
+          placeholder={INPUT_PLACEHOLDER} 
+          className="chat-input__field" 
           {...register("message", { required: true, minLength: 2 })}
         />
         <button 
           type="submit" 
-          className="btn btn-ghost ml-2"
+          className="chat-input__send"
           disabled={errors.message}
         >
           <Send size={20} />

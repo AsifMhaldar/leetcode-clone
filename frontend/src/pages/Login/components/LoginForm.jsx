@@ -1,5 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router';
+import { motion } from 'framer-motion';
+import { staggerContainer, staggerItem } from '../../../utils/motion';
+import {
+  LOGIN_FORM_HEADING, LOGIN_FORM_SUBHEADING,
+  EMAIL_LABEL, PASSWORD_LABEL, EMAIL_PLACEHOLDER, PASSWORD_PLACEHOLDER,
+  LOADING_TEXT, SUBMIT_TEXT, REMEMBER_LABEL, FORGOT_LABEL,
+  FOOTER_TEXT, FOOTER_LINK_TEXT
+} from '../constants';
+import './LoginForm.scss';
 
 const LoginForm = ({
   showPassword,
@@ -12,66 +21,81 @@ const LoginForm = ({
   onSubmit
 }) => {
   return (
-    <div className="lg:w-1/2 w-full max-w-md animate-float-in">
-      <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-500">
-        
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-white mb-2">Welcome Back</h3>
-          <p className="text-gray-400">Sign in to your account</p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="lg:w-1/2 w-full max-w-md"
+    >
+      <div className="login-form__card">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="login-form__header"
+        >
+          <h3>{LOGIN_FORM_HEADING}</h3>
+          <p>{LOGIN_FORM_SUBHEADING}</p>
+        </motion.div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-500/20 border border-red-500/30 rounded-lg animate-shake">
-            <div className="flex items-center space-x-2 text-red-400">
+          <motion.div
+            initial={{ opacity: 0, x: 0 }}
+            animate={{ opacity: 1, x: [0, -8, 8, -8, 8, 0] }}
+            transition={{ duration: 0.4 }}
+            className="login-form__error"
+          >
+            <div className="login-form__error-text">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              <span className="text-sm font-medium">{error}</span>
+              <span>{error}</span>
             </div>
-          </div>
+          </motion.div>
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
-          <div className="form-group animate-slide-in-right">
-            <label className="block text-white/80 text-sm font-medium mb-2">
-              Email Address
-            </label>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="login-form__group"
+          >
+            <label>{EMAIL_LABEL}</label>
             <input
               type="email"
-              placeholder="john@example.com"
-              className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
-                errors.emailId 
-                  ? 'border-red-500 focus:ring-red-500 animate-shake' 
-                  : 'border-white/20 focus:ring-purple-500 focus:border-purple-500'
-              }`}
+              placeholder={EMAIL_PLACEHOLDER}
+              className={`login-form__input ${errors.emailId ? 'login-form__input--error' : ''}`}
               {...register('emailId')}
             />
             {errors.emailId && (
-              <span className="text-red-400 text-sm mt-1 animate-fade-in block">
+              <motion.span
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="login-form__error-message"
+              >
                 {errors.emailId.message}
-              </span>
+              </motion.span>
             )}
-          </div>
+          </motion.div>
 
-          <div className="form-group animate-slide-in-left">
-            <label className="block text-white/80 text-sm font-medium mb-2">
-              Password
-            </label>
-            <div className="relative">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="login-form__group"
+          >
+            <label>{PASSWORD_LABEL}</label>
+            <div className="login-form__input-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 pr-12 ${
-                  errors.password 
-                    ? 'border-red-500 focus:ring-red-500 animate-shake' 
-                    : 'border-white/20 focus:ring-purple-500 focus:border-purple-500'
-                }`}
+                placeholder={PASSWORD_PLACEHOLDER}
+                className={`login-form__input login-form__input--password ${errors.password ? 'login-form__input--error' : ''}`}
                 {...register('password')}
               />
               <button
                 type="button"
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 hover:text-white transition-all duration-300 p-1 rounded-lg hover:bg-white/10"
+                className="login-form__toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
@@ -88,55 +112,66 @@ const LoginForm = ({
               </button>
             </div>
             {errors.password && (
-              <span className="text-red-400 text-sm mt-1 animate-fade-in block">
+              <motion.span
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="login-form__error-message"
+              >
                 {errors.password.message}
-              </span>
+              </motion.span>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex items-center justify-between animate-fade-in">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="login-form__remember"
+          >
             <label className="flex items-center space-x-2 cursor-pointer">
-              <input type="checkbox" className="checkbox checkbox-sm bg-white/10 border-white/20" />
-              <span className="text-sm text-gray-400">Remember me</span>
+              <input type="checkbox" className="checkbox checkbox-sm glass-bg border-theme-strong" />
+              <span>{REMEMBER_LABEL}</span>
             </label>
-            <a href="#" className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-300">
-              Forgot password?
-            </a>
-          </div>
-          
-          <div className="animate-slide-in-up">
-            <button
+            <a href="#">{FORGOT_LABEL}</a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
+          >
+            <motion.button
               type="submit"
-              className={`w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg transition-all duration-500 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50 ${
-                loading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              className="login-form__submit"
               disabled={loading}
             >
               {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Signing In...</span>
+                <div className="flex items-center justify-center">
+                  <div className="login-form__spinner" />
+                  <span>{LOADING_TEXT}</span>
                 </div>
               ) : (
-                'Sign In'
+                SUBMIT_TEXT
               )}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </form>
 
-        <div className="text-center mt-6 animate-fade-in-delay">
-          <span className="text-gray-400 text-sm">
-            Don't have an account?{' '}
-            <NavLink 
-              to="/signup" 
-              className="text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 hover:underline"
-            >
-              Create Account
-            </NavLink>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="login-form__footer"
+        >
+          <span>
+            {FOOTER_TEXT}{' '}
+            <NavLink to="/signup">{FOOTER_LINK_TEXT}</NavLink>
           </span>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

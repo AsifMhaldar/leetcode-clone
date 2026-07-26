@@ -1,4 +1,4 @@
-import {Routes, Route ,Navigate} from "react-router";
+import {Routes, Route, Navigate} from "react-router";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import Homepage from "./pages/Homepage/Homepage";
@@ -15,16 +15,17 @@ import AdminUpdate from "./components/AdminUpdate/AdminUpdate";
 import UpdateProblem from "./components/UpdateProblem/UpdateProblem";
 import LandingPage from './landingPages/LandingPage/LandingPage.jsx';
 import Profile from "./components/Profile/Profile";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import UserManagement from "./components/UserManagement/UserManagement";
 import Analytics from "./components/Analytics/Analytics";
-import Execise from "./landingPages/Execise/Execise.jsx";
+import Exercise from "./landingPages/Execise/Execise.jsx";
 import Tutorial from "./landingPages/Tutorial/Tutorial.jsx";
 import Certifications from './landingPages/Certifications/Certifications.jsx';
 import Courses from './landingPages/Courses/Courses.jsx';
-
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App(){
-  
+
   const dispatch = useDispatch();
   const {isAuthenticated,user,loading} = useSelector((state)=>state.auth);
 
@@ -32,7 +33,7 @@ function App(){
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
-  
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
       <span className="loading loading-spinner loading-lg"></span>
@@ -40,11 +41,11 @@ function App(){
   }
 
   return(
-  <>
+  <ThemeProvider>
     <Routes>
       {/* Landing page for all users */}
       <Route path="/" element={<LandingPage />} />
-      <Route path="exercises" element={<Execise/>}/>
+      <Route path="exercises" element={<Exercise/>}/>
       <Route path="tutorials" element={<Tutorial/>}/>
       <Route path="certifications" element={<Certifications/>}/>
       <Route path="courses" element={<Courses/>}/>
@@ -55,6 +56,7 @@ function App(){
       {/* Homepage for authenticated users */}
       <Route path="/home" element={isAuthenticated ? <Homepage /> : <Navigate to="/login" />} />
       <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
+      <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
 
       {/* Admin routes */}
       <Route path="/admin" element={isAuthenticated && user?.role === 'admin' ? <Admin /> : <Navigate to="/" />} />
@@ -70,8 +72,7 @@ function App(){
       {/* Problem pages (public) */}
       <Route path="/problem/:problemId" element={<ProblemPage />} />
     </Routes>
-
-  </>
+  </ThemeProvider>
   )
 }
 

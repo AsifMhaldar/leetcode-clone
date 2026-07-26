@@ -1,0 +1,74 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.problem-card {
+  @include glass-card;
+  padding: 1.5rem;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+
+  &:hover {
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--shadow-card);
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+  }
+
+  &:hover &__title {
+    @include gradient-text;
+  }
+
+  &__solved-badge {
+    @include badge(rgba($green-500, 0.2), $green-400, rgba($green-500, 0.3));
+  }
+
+  &__tag-badge {
+    @include badge(rgba($slate-400, 0.2), $slate-300, rgba($slate-400, 0.3));
+  }
+
+  &__difficulty-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: $radius-full;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  &__solve-btn {
+    @include btn-primary-sm;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  &:hover &__solve-btn {
+    opacity: 1;
+  }
+
+  &__difficulty-bar {
+    width: 0.75rem;
+    height: 3rem;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+  }
+
+  @include md {
+    padding: 1.25rem;
+  }
+
+  @include lg {
+    padding: 1.5rem;
+  }
+}

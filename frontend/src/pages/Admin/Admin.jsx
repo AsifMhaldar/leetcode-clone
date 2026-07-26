@@ -3,47 +3,52 @@ import AdminHeader from './components/AdminHeader';
 import StatsCards from './components/StatsCards';
 import QuickActions from './components/QuickActions';
 import AdminOptionsGrid from './components/AdminOptionsGrid';
-import RecentActivity from './components/RecentActivity';
+import RecentActivityLive from './components/RecentActivityLive';
+import DifficultyChart from './components/DifficultyChart';
+import SubmissionTrendsChart from './components/SubmissionTrendsChart';
+import UserGrowthChart from './components/UserGrowthChart';
+import { useAdminDashboard } from './hooks/useAdminDashboard';
+import { ADMIN_DASHBOARD_TITLE, ADMIN_DASHBOARD_SUBTITLE } from './constants';
+import './Admin.scss';
 
 function Admin() {
+  const {
+    stats,
+    recentActivity,
+    difficultyDistribution,
+    submissionTrends,
+    userGrowth,
+    isLoading,
+    isError,
+  } = useAdminDashboard();
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="admin-page">
       <AdminHeader />
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-            Admin Dashboard
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Manage your coding platform, create challenges, and track performance metrics
+      <div className="admin-page__container">
+        <div className="admin-page__header">
+          <h1>{ADMIN_DASHBOARD_TITLE}</h1>
+          <p>
+            {ADMIN_DASHBOARD_SUBTITLE}
           </p>
         </div>
 
-        <StatsCards />
+        <StatsCards stats={stats} isLoading={isLoading} isError={isError} />
         <QuickActions />
-        <AdminOptionsGrid />
-        <RecentActivity />
-      </div>
 
-      {/* Custom Animations */}
-      <style jsx>{`
-        @keyframes fade-in-up {
-          0% {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out both;
-        }
-      `}</style>
+        <div className="admin-page__charts-single">
+          <DifficultyChart data={difficultyDistribution} isLoading={isLoading} />
+        </div>
+
+        <div className="admin-page__charts-grid">
+          <SubmissionTrendsChart data={submissionTrends} isLoading={isLoading} />
+          <UserGrowthChart data={userGrowth} isLoading={isLoading} />
+        </div>
+
+        <AdminOptionsGrid />
+        <RecentActivityLive activities={recentActivity} isLoading={isLoading} />
+      </div>
     </div>
   );
 }

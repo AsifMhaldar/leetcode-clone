@@ -1,0 +1,111 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.filters-section {
+  @include glass-card;
+  padding: clamp(0.75rem, 1.2vw, 1rem) clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(1rem, 2vw, 2rem);
+
+  // ── Row: mobile first = column ──────────────────────────────
+  &__row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  &__search {
+    position: relative;
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: 0.625rem 1rem 0.625rem 2.5rem;
+    background: var(--input-bg, rgba(white, 0.1));
+    border: 1px solid var(--input-border, rgba(white, 0.2));
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    transition: $transition-base;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $purple-500;
+      box-shadow: 0 0 0 2px rgba($purple-500, 0.2);
+    }
+  }
+
+  &__count {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  // ── Tablet (768–1023px): two balanced rows ──────────────────
+  @include md {
+    &__row {
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: 0.75rem 1rem;
+    }
+
+    // First 3 dropdowns: two on first row, one on second
+    .filter-select {
+      flex: 1 1 clamp(160px, 22vw, 220px);
+      min-width: 160px;
+    }
+
+    &__search {
+      flex: 1 1 100%;
+    }
+
+    &__count {
+      margin-left: auto;
+    }
+  }
+
+  // ── Desktop (≥1024px): single row, no wrap ──────────────────
+  @include lg {
+    padding: 0.75rem 1.25rem;
+
+    &__row {
+      flex-wrap: nowrap;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+
+    // Each dropdown: fixed 200px
+    .filter-select {
+      flex: 0 0 200px;
+      min-width: 0;
+    }
+
+    &__search {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    &__count {
+      margin-left: 0;
+      flex-shrink: 0;
+    }
+  }
+}

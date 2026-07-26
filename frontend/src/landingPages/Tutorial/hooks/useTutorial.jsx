@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Coffee, Zap, Rocket, GraduationCap } from 'lucide-react';
 import React from 'react';
-import { tutorials } from '../data/tutorials';
+import { TUTORIALS } from '../constants';
 
 export default function useTutorial() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -10,7 +10,7 @@ export default function useTutorial() {
   const [viewMode, setViewMode] = useState('grid');
   const [expandedTutorial, setExpandedTutorial] = useState(null);
 
-  const filteredTutorials = useMemo(() => tutorials.filter(tutorial => {
+  const filteredTutorials = useMemo(() => TUTORIALS.filter(tutorial => {
     const matchesCategory = selectedCategory === 'all' || tutorial.category === selectedCategory;
     const matchesLevel = selectedLevel === 'all' || tutorial.level === selectedLevel;
     const matchesSearch = tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -37,8 +37,8 @@ export default function useTutorial() {
     }
   };
 
-  const featuredTutorials = useMemo(() => tutorials.filter(t => t.featured), []);
-  const trendingTutorials = useMemo(() => tutorials.filter(t => t.trending), []);
+  const featuredTutorials = useMemo(() => TUTORIALS.filter(t => t.featured), []);
+  const trendingTutorials = useMemo(() => TUTORIALS.filter(t => t.trending), []);
 
   const clearFilters = () => {
     setSelectedCategory('all');

@@ -149,8 +149,4 @@ export const formatTimeAgo = (dateString) => {
   }
 };
 
-export const difficultyColors = {
-  easy: 'text-green-400',
-  medium: 'text-yellow-400',
-  hard: 'text-red-400'
-};
+

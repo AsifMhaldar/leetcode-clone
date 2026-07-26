@@ -1,0 +1,105 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.auth-page {
+  @include page-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+
+  &__orb {
+    position: absolute;
+    border-radius: $radius-full;
+
+    &--purple {
+      top: -10rem;
+      left: -10rem;
+      width: 20rem;
+      height: 20rem;
+      background: linear-gradient(to right, $purple-500, $pink-500);
+      opacity: 0.1;
+    }
+
+    &--blue {
+      bottom: -10rem;
+      right: -10rem;
+      width: 20rem;
+      height: 20rem;
+      background: linear-gradient(to right, $blue-500, $cyan-500);
+      opacity: 0.1;
+    }
+
+    &--indigo {
+      top: 50%;
+      left: 25%;
+      width: 10rem;
+      height: 10rem;
+      background: linear-gradient(to right, #6366f1, $purple-500);
+      opacity: 0.05;
+    }
+  }
+
+  &__code {
+    position: absolute;
+    font-size: 1.875rem;
+    opacity: 0.2;
+  }
+
+  &__binary {
+    position: absolute;
+    font-size: 1.125rem;
+    opacity: 0.1;
+    color: $green-400;
+  }
+}
+
+.auth-page {
+  @include sm {
+    padding: 1.5rem;
+  }
+
+  @include lg {
+    padding: 2rem;
+  }
+}
+
+.auth-bg__orb {
+  &--purple,
+  &--blue {
+    @include sm {
+      width: 15rem;
+      height: 15rem;
+    }
+
+    @include md {
+      width: 17.5rem;
+      height: 17.5rem;
+    }
+
+    @include lg {
+      width: 20rem;
+      height: 20rem;
+    }
+  }
+
+  &--indigo {
+    @include sm {
+      width: 7.5rem;
+      height: 7.5rem;
+    }
+
+    @include lg {
+      width: 10rem;
+      height: 10rem;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.stat-card {
+  @include glass-card-sm;
+  padding: clamp(1rem, 1.5vw, 1.25rem);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    border-color: var(--glass-border-hover);
+    transform: scale(1.03);
+  }
+
+  &__icon {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    padding: clamp(0.5rem, 0.8vw, 0.75rem);
+    border-radius: $radius-lg;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover &__icon {
+    transform: scale(1.1);
+  }
+
+  &__label {
+    color: var(--text-muted);
+    font-size: clamp(0.6875rem, 0.9vw, 0.875rem);
+    font-weight: 500;
+    margin-bottom: 0.125rem;
+    white-space: nowrap;
+  }
+
+  &__value {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+}

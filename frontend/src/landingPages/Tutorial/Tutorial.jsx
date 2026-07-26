@@ -1,6 +1,9 @@
 import React from 'react';
 import useTutorial from './hooks/useTutorial';
-import { stats, categories, levels } from './data/tutorials';
+import {
+  TUTORIAL_STATS, TUTORIAL_CATEGORIES, TUTORIAL_LEVELS,
+  TUTORIAL_HERO, TUTORIAL_SEARCH_PLACEHOLDER, TUTORIAL_LEVEL_FILTER_LABEL
+} from './constants';
 import HeroSection from '../../shared/components/HeroSection';
 import StatsSection from '../../shared/components/StatsSection';
 import SearchFilters from '../../shared/components/SearchFilters';
@@ -8,6 +11,7 @@ import FeaturedTrending from './components/FeaturedTrending';
 import TutorialGrid from './components/TutorialGrid';
 import Newsletter from './components/Newsletter';
 import { Play, BookOpen, Sparkles } from 'lucide-react';
+import './Tutorial.scss';
 
 function Tutorial() {
   const {
@@ -30,22 +34,22 @@ function Tutorial() {
   } = useTutorial();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="tutorial-page">
       <HeroSection
-        gradient="from-blue-600 via-purple-600 to-pink-600"
+        gradient={TUTORIAL_HERO.gradient}
         badgeIcon={<Sparkles className="w-4 h-4 text-yellow-300" />}
-        badgeText="500+ hours of content"
-        titleLine1="Learn from the best"
-        titleLine2="tutorials & courses"
-        description="Access 150+ expert-led tutorials, hands-on projects, and earn certificates to advance your career."
-        primaryCtaLabel="Start Learning Free"
+        badgeText={TUTORIAL_HERO.badgeText}
+        titleLine1={TUTORIAL_HERO.titleLine1}
+        titleLine2={TUTORIAL_HERO.titleLine2}
+        description={TUTORIAL_HERO.description}
+        primaryCtaLabel={TUTORIAL_HERO.primaryCtaLabel}
         primaryCtaIcon={<Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />}
-        primaryCtaColor="text-blue-600"
-        secondaryCtaLabel="Browse All Tutorials"
+        primaryCtaColor={TUTORIAL_HERO.primaryCtaColor}
+        secondaryCtaLabel={TUTORIAL_HERO.secondaryCtaLabel}
         secondaryCtaIcon={<BookOpen className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform" />}
-        maxWidth="max-w-4xl"
+        maxWidth={TUTORIAL_HERO.maxWidth}
       />
-      <StatsSection stats={stats} />
+      <StatsSection stats={TUTORIAL_STATS} />
       <FeaturedTrending
         featuredTutorials={featuredTutorials}
         trendingTutorials={trendingTutorials}
@@ -53,14 +57,14 @@ function Tutorial() {
       <SearchFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        placeholder="Search tutorials by title, topic, or tags..."
+        placeholder={TUTORIAL_SEARCH_PLACEHOLDER}
         viewMode={viewMode}
         setViewMode={setViewMode}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        categories={categories}
-        secondFilterLabel="Level"
-        secondFilterItems={levels}
+        categories={TUTORIAL_CATEGORIES}
+        secondFilterLabel={TUTORIAL_LEVEL_FILTER_LABEL}
+        secondFilterItems={TUTORIAL_LEVELS}
         selectedSecondFilter={selectedLevel}
         setSelectedSecondFilter={setSelectedLevel}
       />

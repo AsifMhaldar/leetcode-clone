@@ -1,0 +1,8 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.editorial {
+  @include sm {
+    padding: 0 1rem;
+  }
+}

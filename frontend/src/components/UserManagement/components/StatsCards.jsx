@@ -1,56 +1,70 @@
 import React from 'react';
 import { User, Shield, Star, Crown } from 'lucide-react';
+import { STAT_LABELS } from '../constants';
+import './StatsCards.scss';
 
-const StatsCards = ({ users, getUserStatus }) => {
+const StatsCards = ({ stats, isLoading }) => {
+  if (isLoading || !stats) {
+    return (
+      <div className="stats-cards">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="stats-cards__card stats-cards__card--skeleton">
+            <div className="stats-cards__card-inner">
+              <div>
+                <div className="stats-cards__skeleton-value" />
+                <div className="stats-cards__skeleton-label" />
+              </div>
+              <div className="stats-cards__skeleton-icon" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
-        <div className="flex items-center justify-between">
+    <div className="stats-cards">
+      <div className="stats-cards__card">
+        <div className="stats-cards__card-inner">
           <div>
-            <div className="text-2xl font-bold text-white mb-2">{users.length}</div>
-            <div className="text-gray-400">Total Users</div>
+            <div className="stats-cards__value">{stats.totalUsers.toLocaleString()}</div>
+            <div className="stats-cards__label">{STAT_LABELS.totalUsers}</div>
           </div>
-          <div className="p-3 bg-blue-500/20 rounded-lg">
-            <User className="w-6 h-6 text-blue-400" />
+          <div className="stats-cards__icon stats-cards__icon--blue">
+            <User size={22} />
           </div>
         </div>
       </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
-        <div className="flex items-center justify-between">
+      <div className="stats-cards__card">
+        <div className="stats-cards__card-inner">
           <div>
-            <div className="text-2xl font-bold text-white mb-2">
-              {users.filter(u => u.role === 'admin').length}
-            </div>
-            <div className="text-gray-400">Administrators</div>
+            <div className="stats-cards__value">{stats.administrators.toLocaleString()}</div>
+            <div className="stats-cards__label">{STAT_LABELS.administrators}</div>
           </div>
-          <div className="p-3 bg-red-500/20 rounded-lg">
-            <Shield className="w-6 h-6 text-red-400" />
+          <div className="stats-cards__icon stats-cards__icon--red">
+            <Shield size={22} />
           </div>
         </div>
       </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
-        <div className="flex items-center justify-between">
+      <div className="stats-cards__card">
+        <div className="stats-cards__card-inner">
           <div>
-            <div className="text-2xl font-bold text-white mb-2">
-              {users.filter(u => getUserStatus(u) === 'active').length}
-            </div>
-            <div className="text-gray-400">Active Users</div>
+            <div className="stats-cards__value">{stats.activeUsers.toLocaleString()}</div>
+            <div className="stats-cards__label">{STAT_LABELS.activeUsers}</div>
           </div>
-          <div className="p-3 bg-green-500/20 rounded-lg">
-            <Star className="w-6 h-6 text-green-400" />
+          <div className="stats-cards__icon stats-cards__icon--green">
+            <Star size={22} />
           </div>
         </div>
       </div>
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300">
-        <div className="flex items-center justify-between">
+      <div className="stats-cards__card">
+        <div className="stats-cards__card-inner">
           <div>
-            <div className="text-2xl font-bold text-white mb-2">
-              {users.reduce((total, user) => total + (user.problemsSolvedCount || 0), 0)}
-            </div>
-            <div className="text-gray-400">Total Solutions</div>
+            <div className="stats-cards__value">{stats.totalSolutions.toLocaleString()}</div>
+            <div className="stats-cards__label">{STAT_LABELS.totalSolutions}</div>
           </div>
-          <div className="p-3 bg-purple-500/20 rounded-lg">
-            <Crown className="w-6 h-6 text-purple-400" />
+          <div className="stats-cards__icon stats-cards__icon--purple">
+            <Crown size={22} />
           </div>
         </div>
       </div>

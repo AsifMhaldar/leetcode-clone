@@ -1,0 +1,109 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.file-upload {
+  &__label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  &__dropzone {
+    border: 2px dashed var(--glass-border);
+    border-radius: $radius-2xl;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba($blue-400, 0.5);
+      background: var(--glass-bg);
+    }
+
+    &--error {
+      border-color: rgba($red-500, 0.5);
+      background: rgba($red-500, 0.05);
+    }
+  }
+
+  &__dropzone-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__upload-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    background: $gradient-btn;
+    border-radius: $radius-2xl;
+    color: var(--text-primary);
+  }
+
+  &__dropzone-text {
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  &__dropzone-hint {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $red-400;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+  &__file-info {
+    background: rgba($blue-500, 0.1);
+    border: 1px solid rgba($blue-500, 0.2);
+    border-radius: $radius-xl;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  &__file-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__file-icon {
+    width: 2rem;
+    height: 2rem;
+    color: $blue-400;
+  }
+
+  &__file-name {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  &__file-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: $slate-400;
+    margin-top: 0.25rem;
+  }
+
+  @include sm {
+    &__dropzone {
+      padding: 1.5rem;
+    }
+  }
+}

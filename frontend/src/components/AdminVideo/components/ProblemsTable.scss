@@ -1,0 +1,189 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.problems-table {
+  @include glass-card;
+  overflow: hidden;
+
+  &__header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  &__header-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__scroll {
+    overflow-x: auto;
+  }
+
+  &__table {
+    width: 100%;
+  }
+
+  &__head-row {
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  &__th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    color: $slate-400;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  &__row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: var(--glass-bg);
+    }
+  }
+
+  &__td {
+    padding: 1rem 1.5rem;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+  }
+
+  &__td-num {
+    font-weight: 500;
+  }
+
+  &__problem-title {
+    font-weight: 600;
+  }
+
+  &__problem-desc {
+    color: $slate-400;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__difficulty {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: $radius-full;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid;
+
+    &--easy {
+      color: $green-400;
+      border-color: rgba($green-400, 0.2);
+      background: rgba($green-400, 0.1);
+    }
+
+    &--medium {
+      color: $yellow-400;
+      border-color: rgba($yellow-400, 0.2);
+      background: rgba($yellow-400, 0.1);
+    }
+
+    &--hard {
+      color: $red-400;
+      border-color: rgba($red-400, 0.2);
+      background: rgba($red-400, 0.1);
+    }
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 1.5rem;
+    border-radius: $radius-full;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid rgba($slate-400, 0.2);
+    background: rgba($slate-400, 0.1);
+    color: $slate-300;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba($blue-500, 0.2);
+    color: $blue-400;
+    border: 1px solid rgba($blue-500, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: $radius-lg;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+
+    &:hover {
+      background: rgba($blue-500, 0.3);
+      transform: scale(1.05);
+    }
+  }
+
+  &__delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba($red-500, 0.2);
+    color: $red-400;
+    border: 1px solid rgba($red-500, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: $radius-lg;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba($red-500, 0.3);
+      transform: scale(1.05);
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  &__empty-icon {
+    width: 4rem;
+    height: 4rem;
+    color: $slate-400;
+    margin: 0 auto 1rem;
+  }
+
+  &__empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  &__empty-desc {
+    color: $slate-400;
+  }
+
+  @include sm {
+    &__scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    &__th,
+    &__td {
+      padding: 0.75rem 1rem;
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.cert-cta {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.cert-cta__title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: $slate-900;
+  margin-bottom: 1rem;
+}
+
+.cert-cta__desc {
+  color: $slate-600;
+  margin-bottom: 2rem;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cert-cta__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: $gradient-landing;
+  color: var(--text-primary);
+  border-radius: $radius-xl;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, $blue-400, $purple-400);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::after {
+    opacity: 0.2;
+  }
+}
+
+.cert-cta__btn-label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cert-cta__note {
+  color: $slate-500;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+@include md {
+  .cert-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0;
+  }
+}

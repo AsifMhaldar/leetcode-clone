@@ -1,60 +1,47 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight, Sparkles, Trophy } from 'lucide-react';
-import navigationSections from '../data/navigationSections';
+import { NAVIGATION_SECTIONS, SIDEBAR_TITLE, SIDEBAR_PROMO } from '../constants';
+import './Sidebar.scss';
 
 const Sidebar = ({ location }) => {
   return (
-    <div className="hidden lg:block w-72 flex-shrink-0">
-      <div className="sticky top-28 bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-        <div className="mb-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Learning Paths
-            </span>
+    <div className="sidebar">
+      <div className="sidebar__inner">
+        <div>
+          <h2 className="sidebar__title">
+            <span className="sidebar__title-gradient">{SIDEBAR_TITLE}</span>
             <Sparkles className="w-5 h-5 ml-2 text-yellow-500" />
           </h2>
-          <div className="space-y-2">
-            {navigationSections.map((section) => (
+          <div className="sidebar__nav">
+            {NAVIGATION_SECTIONS.map((section) => (
               <Link
                 key={section.id}
                 to={section.path}
-                className={`w-full flex items-center space-x-4 px-5 py-4 rounded-xl transition-all duration-300 group ${
-                  location.pathname === section.path 
-                    ? 'bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-blue-500 shadow-md' 
-                    : 'hover:bg-gray-50 hover:shadow-sm'
-                }`}
+                className={`sidebar__link ${location.pathname === section.path ? 'sidebar__link--active' : ''}`}
               >
-                <div className={`w-10 h-10 rounded-lg bg-gradient-to-r ${section.color} flex items-center justify-center`}>
+                <div className={`sidebar__link-icon bg-gradient-to-r ${section.color}`}>
                   {section.icon}
                 </div>
-                <span className={`font-semibold ${location.pathname === section.path ? 'text-blue-600' : 'text-gray-700'}`}>
+                <span className={`sidebar__link-label ${location.pathname === section.path ? 'sidebar__link-label--active' : 'sidebar__link-label--inactive'}`}>
                   {section.label}
                 </span>
-                <ChevronRight className={`w-4 h-4 ml-auto transition-transform ${
-                  location.pathname === section.path ? 'text-blue-500' : 'text-gray-400 group-hover:translate-x-1'
-                }`} />
+                <ChevronRight className={`sidebar__link-chevron ${location.pathname === section.path ? 'sidebar__link-chevron--active' : ''}`} />
               </Link>
             ))}
           </div>
         </div>
 
-        {/* Promo Card */}
-        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-6">
-          <div className="flex items-center mb-4">
-            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mr-3">
+        <div className="sidebar__promo">
+          <div className="sidebar__promo-header">
+            <div className="sidebar__promo-icon">
               <Trophy className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-gray-900">Pro Member</h3>
-              <p className="text-sm text-gray-600">Unlock all features</p>
+              <h3 className="sidebar__promo-title">{SIDEBAR_PROMO.title}</h3>
+              <p className="sidebar__promo-desc">{SIDEBAR_PROMO.description}</p>
             </div>
           </div>
-          <Link
-            to="/signup"
-            className="block w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-center py-3 rounded-xl font-bold hover:shadow-lg hover:scale-105 transition-all"
-          >
-            Upgrade Now
-          </Link>
+          <Link to={SIDEBAR_PROMO.buttonPath} className="sidebar__promo-btn">{SIDEBAR_PROMO.buttonLabel}</Link>
         </div>
       </div>
     </div>

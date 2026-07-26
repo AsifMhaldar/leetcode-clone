@@ -1,0 +1,49 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.update-problem {
+  @include page-bg;
+
+  &__container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, $yellow-400, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 1.25rem;
+      color: $slate-400;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+  }
+
+  &__spinner {
+    @include spinner;
+    margin: 0 auto 1rem;
+  }
+
+  @include sm {
+    &__container {
+      padding: 1.5rem 1.5rem;
+    }
+
+    &__header h1 {
+      font-size: 2rem;
+    }
+  }
+}

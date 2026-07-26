@@ -1,0 +1,114 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  @include sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  &__card {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.25rem;
+    transition: all 0.25s ease;
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-1px);
+    }
+
+    &--skeleton {
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+
+  &__card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  &__label {
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+  }
+
+  &__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-lg;
+    flex-shrink: 0;
+
+    &--blue {
+      background: rgba($blue-400, 0.12);
+      color: $blue-400;
+    }
+
+    &--red {
+      background: rgba($red-400, 0.12);
+      color: $red-400;
+    }
+
+    &--green {
+      background: rgba($green-400, 0.12);
+      color: $green-400;
+    }
+
+    &--purple {
+      background: rgba($purple-400, 0.12);
+      color: $purple-400;
+    }
+  }
+
+  &__skeleton-value {
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: $radius-sm;
+    background: var(--glass-border);
+    margin-bottom: 0.5rem;
+    animation: stats-skeleton 1.5s ease-in-out infinite;
+  }
+
+  &__skeleton-label {
+    width: 5rem;
+    height: 0.75rem;
+    border-radius: $radius-sm;
+    background: var(--glass-border);
+    animation: stats-skeleton 1.5s ease-in-out infinite;
+  }
+
+  &__skeleton-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: $radius-lg;
+    background: var(--glass-border);
+    animation: stats-skeleton 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes stats-skeleton {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}

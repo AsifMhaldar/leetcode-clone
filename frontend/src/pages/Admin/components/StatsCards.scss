@@ -1,0 +1,150 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.stats-cards {
+  margin-bottom: 3rem;
+
+  &__card {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+    }
+  }
+
+  &__label {
+    color: $slate-400;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  &__value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__trend {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+
+    &--up {
+      color: $green-400;
+    }
+
+    &--down {
+      color: $red-400;
+    }
+  }
+
+  &__icon {
+    padding: 0.75rem;
+    border-radius: $radius-lg;
+    transition: transform 0.3s ease;
+
+    .group:hover & {
+      transform: scale(1.1);
+    }
+
+    &--up {
+      background: rgba($green-500, 0.2);
+      color: $green-400;
+    }
+
+    &--down {
+      background: rgba($red-500, 0.2);
+      color: $red-400;
+    }
+  }
+
+  &__card {
+    padding: 1rem;
+
+    @include sm {
+      padding: 1.25rem;
+    }
+
+    @include md {
+      padding: 1.5rem;
+    }
+  }
+
+  &__value {
+    font-size: 1.25rem;
+
+    @include sm {
+      font-size: 1.375rem;
+    }
+
+    @include md {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__label {
+    @include sm {
+      font-size: 0.875rem;
+    }
+  }
+
+  &__card--skeleton {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+  }
+
+  &__skeleton-line {
+    border-radius: $radius-md;
+    background: linear-gradient(90deg, var(--glass-bg) 25%, rgba(255, 255, 255, 0.08) 50%, var(--glass-bg) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+
+    &--label {
+      width: 60%;
+      height: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    &--value {
+      width: 40%;
+      height: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    &--trend {
+      width: 50%;
+      height: 0.875rem;
+    }
+  }
+
+  &__skeleton-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-lg;
+    background: linear-gradient(90deg, var(--glass-bg) 25%, rgba(255, 255, 255, 0.08) 50%, var(--glass-bg) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+  }
+
+  &__error {
+    @include glass-card;
+    grid-column: 1 / -1;
+    padding: 2rem;
+    text-align: center;
+    color: $red-400;
+    border: 1px solid rgba($red-500, 0.3);
+    border-radius: $radius-xl;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}

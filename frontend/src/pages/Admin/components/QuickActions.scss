@@ -1,0 +1,71 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.quick-actions {
+  margin-bottom: 2rem;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  &__card {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    height: 100%;
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+      transform: scale(1.05);
+    }
+  }
+
+  &__icon-wrap {
+    padding: 0.75rem;
+    border-radius: $radius-lg;
+    transition: transform 0.3s ease;
+
+    .group:hover & {
+      transform: scale(1.1);
+    }
+  }
+
+  &__card-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  &__card-desc {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+}
+
+.quick-actions {
+  &__title {
+    @include sm {
+      font-size: 1.25rem;
+    }
+
+    @include md {
+      font-size: 1.5rem;
+    }
+  }
+
+  &__card {
+    padding: 1rem;
+
+    @include sm {
+      padding: 1.25rem;
+    }
+
+    @include md {
+      padding: 1.5rem;
+    }
+  }
+}

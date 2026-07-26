@@ -1,0 +1,29 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.auth-branding {
+  &__logo {
+    width: 3rem;
+    height: 3rem;
+    background: $gradient-btn;
+    border-radius: $radius-xl;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__check {
+    width: 1.5rem;
+    height: 1.5rem;
+    background: rgba($green-500, 0.2);
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  @include lg {
+    text-align: left;
+  }
+}

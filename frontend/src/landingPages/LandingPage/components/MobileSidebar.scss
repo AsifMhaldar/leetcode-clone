@@ -1,0 +1,100 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.mobile-sidebar {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+
+  @include lg {
+    display: none;
+  }
+}
+
+.mobile-sidebar__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.mobile-sidebar__panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20rem;
+  background: white;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease;
+}
+
+.mobile-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.mobile-sidebar__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $slate-900;
+}
+
+.mobile-sidebar__close {
+  padding: 0.5rem;
+  border-radius: $radius-lg;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $slate-100;
+  }
+}
+
+.mobile-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: $radius-xl;
+  text-decoration: none;
+  transition: $transition-base;
+  border-left: 4px solid transparent;
+
+  &:hover {
+    background: $slate-50;
+  }
+
+  &--active {
+    background: linear-gradient(to right, #eff6ff, #fdf2f8);
+    border-left-color: $blue-500;
+  }
+}
+
+.mobile-sidebar__link-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: $radius-lg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.mobile-sidebar__link-label {
+  font-weight: 600;
+  color: $slate-700;
+}

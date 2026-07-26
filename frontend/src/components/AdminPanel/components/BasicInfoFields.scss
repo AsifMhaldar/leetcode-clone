@@ -1,0 +1,107 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.basic-info {
+  @include glass-card;
+  padding: 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: $gradient-btn;
+    border-radius: $radius-lg;
+    color: var(--text-primary);
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__field {
+    margin-bottom: 1.5rem;
+  }
+
+  &__label {
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  &__input {
+    @include input-field;
+    padding: 0.75rem 1rem;
+
+    &--error {
+      border-color: $red-500;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($red-500, 0.15);
+      }
+    }
+  }
+
+  &__textarea {
+    @include input-field;
+    padding: 0.75rem 1rem;
+    resize: none;
+
+    &--error {
+      border-color: $red-500;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($red-500, 0.15);
+      }
+    }
+  }
+
+  &__select {
+    @include input-field;
+    padding: 0.75rem 1rem;
+    appearance: none;
+
+    option {
+      background: $slate-800;
+    }
+
+    &--error {
+      border-color: $red-500;
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($red-500, 0.15);
+      }
+    }
+  }
+
+  &__error {
+    color: $red-400;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+  }
+
+  @include sm {
+    padding: 1.5rem;
+  }
+
+  @include md {
+    &__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+  }
+}

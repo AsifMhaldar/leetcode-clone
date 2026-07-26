@@ -3,13 +3,17 @@ import { useUserManagement } from './hooks/useUserManagement';
 import StatsCards from './components/StatsCards';
 import SearchControls from './components/SearchControls';
 import UsersTable from './components/UsersTable';
-import { RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { PAGE_TITLE, PAGE_SUBTITLE } from './constants';
+import './UserManagement.scss';
 
 function UserManagement() {
   const {
     users,
-    loading,
+    isLoading,
+    isError,
     error,
+    isFetching,
     searchTerm,
     setSearchTerm,
     selectedUsers,
@@ -18,71 +22,77 @@ function UserManagement() {
     setCurrentPage,
     roleFilter,
     setRoleFilter,
-    usersPerPage,
-    filteredUsers,
-    totalPages,
-    startIndex,
-    currentUsers,
+    sortField,
+    sortOrder,
+    toggleSort,
+    pagination,
+    limit,
+    stats,
     selectAllOnPage,
-    fetchUsers,
-    updateUserRole,
-    deleteUser,
-    getUserStatus,
-    getUserName,
-    getUserEmail
+    handleUpdateRole,
+    handleDeleteUser,
+    handleRefresh,
   } = useUserManagement();
 
-  if (loading) {
+  if (isError && !users.length) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="w-12 h-12 text-blue-400 animate-spin mx-auto mb-4" />
-          <p className="text-white text-lg">Loading users...</p>
+      <div className="page-bg flex items-center justify-center">
+        <div className="user-mgmt__error-block">
+          <AlertTriangle size={40} className="user-mgmt__error-icon" />
+          <h2 className="user-mgmt__error-title">Failed to load users</h2>
+          <p className="user-mgmt__error-msg">{error || 'An unexpected error occurred'}</p>
+          <button onClick={handleRefresh} className="user-mgmt__retry-btn">
+            <RefreshCw size={16} />Try Again
+          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
+    <div className="page-bg p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
-          <p className="text-gray-400">Manage user accounts, roles, and permissions</p>
+        <div className="user-mgmt__header">
+          <h1 className="user-mgmt__title">{PAGE_TITLE}</h1>
+          <p className="user-mgmt__subtitle">{PAGE_SUBTITLE}</p>
         </div>
 
-        <StatsCards users={users} getUserStatus={getUserStatus} />
-        
+        <StatsCards stats={stats} isLoading={isLoading} />
+
         <SearchControls
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
           roleFilter={roleFilter}
           setRoleFilter={setRoleFilter}
-          onRefresh={fetchUsers}
+          sortField={sortField}
+          sortOrder={sortOrder}
+          toggleSort={toggleSort}
+          onRefresh={handleRefresh}
+          isRefreshing={isFetching}
         />
 
-        {error && (
-          <div className="bg-red-500/20 border border-red-500/30 text-red-400 p-4 rounded-lg mb-6">
+        {isError && (
+          <div className="user-mgmt__error">
+            <AlertTriangle size={14} />
             {error}
           </div>
         )}
 
         <UsersTable
-          currentUsers={currentUsers}
+          users={users}
           selectedUsers={selectedUsers}
           setSelectedUsers={setSelectedUsers}
           selectAllOnPage={selectAllOnPage}
-          startIndex={startIndex}
-          usersPerPage={usersPerPage}
-          filteredUsers={filteredUsers}
           currentPage={currentPage}
-          totalPages={totalPages}
+          pagination={pagination}
           setCurrentPage={setCurrentPage}
-          getUserName={getUserName}
-          getUserEmail={getUserEmail}
-          getUserStatus={getUserStatus}
-          updateUserRole={updateUserRole}
-          deleteUser={deleteUser}
+          handleUpdateRole={handleUpdateRole}
+          handleDeleteUser={handleDeleteUser}
+          sortField={sortField}
+          sortOrder={sortOrder}
+          toggleSort={toggleSort}
+          isFetching={isFetching}
+          limit={limit}
         />
       </div>
     </div>

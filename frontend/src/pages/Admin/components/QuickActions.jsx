@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-import { adminOptions } from '../utils/adminData';
+import { adminOptions, QUICK_ACTIONS_TITLE } from '../constants';
+import './QuickActions.scss';
 
 const QuickActions = () => {
   return (
-    <div className="mb-8">
-      <h2 className="text-2xl font-bold text-white mb-6">Quick Actions</h2>
+    <div className="quick-actions">
+      <h2 className="quick-actions__title">{QUICK_ACTIONS_TITLE}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {adminOptions.slice(0, 4).map((option) => {
           const IconComponent = option.icon;
@@ -15,14 +16,14 @@ const QuickActions = () => {
               to={option.route}
               className="block group"
             >
-              <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 hover:scale-105 h-full">
+              <div className="quick-actions__card">
                 <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-lg ${option.bgColor} group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`quick-actions__icon-wrap ${option.bgColor}`}>
                     <IconComponent size={24} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white mb-1">{option.title}</h3>
-                    <p className="text-gray-400 text-sm">{option.description}</p>
+                    <h3 className="quick-actions__card-title">{option.title}</h3>
+                    <p className="quick-actions__card-desc">{option.description}</p>
                   </div>
                 </div>
               </div>

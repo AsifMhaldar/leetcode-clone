@@ -1,29 +1,45 @@
 import React from 'react';
-import { Download } from 'lucide-react';
+import { Download, RefreshCw } from 'lucide-react';
+import { PAGE_TITLE, PAGE_SUBTITLE, TIME_RANGE_OPTIONS, EXPORT_BUTTON } from '../constants';
+import './AnalyticsHeader.scss';
 
-const AnalyticsHeader = ({ timeRange, onTimeRangeChange }) => {
+const AnalyticsHeader = ({ timeRange, onTimeRangeChange, isLoading }) => {
+  const handleExport = () => {
+    const timestamp = new Date().toISOString().split('T')[0];
+    const link = document.createElement('a');
+    link.href = `data:text/csv;charset=utf-8,Platform Analytics Export\nGenerated: ${new Date().toLocaleString()}\nTime Range: ${TIME_RANGE_OPTIONS.find(o => o.value === timeRange)?.label || timeRange}`;
+    link.download = `analytics-export-${timestamp}.csv`;
+    link.click();
+  };
+
   return (
-    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8">
+    <div className="analytics-header">
       <div>
-        <h1 className="text-3xl font-bold text-white mb-2">Platform Analytics</h1>
-        <p className="text-gray-400">Demo analytics dashboard with sample data</p>
+        <h1 className="analytics-header__title">{PAGE_TITLE}</h1>
+        <p className="analytics-header__subtitle">{PAGE_SUBTITLE}</p>
       </div>
       
-      <div className="flex gap-4 mt-4 lg:mt-0">
+      <div className="analytics-header__actions">
+        {isLoading && (
+          <div className="analytics-header__live-indicator">
+            <span className="analytics-header__live-dot"></span>
+            <span className="analytics-header__live-text">Updating...</span>
+          </div>
+        )}
+
         <select
           value={timeRange}
           onChange={(e) => onTimeRangeChange(e.target.value)}
-          className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-black focus:outline-none focus:border-blue-500"
+          className="analytics-header__select"
         >
-          <option value="24h">Last 24 Hours</option>
-          <option value="7d">Last 7 Days</option>
-          <option value="30d">Last 30 Days</option>
-          <option value="90d">Last 90 Days</option>
+          {TIME_RANGE_OPTIONS.map(opt => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
         </select>
         
-        <button className="flex items-center gap-2 px-4 py-2 bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-colors">
+        <button className="analytics-header__export-btn" onClick={handleExport}>
           <Download size={18} />
-          Export
+          {EXPORT_BUTTON}
         </button>
       </div>
     </div>

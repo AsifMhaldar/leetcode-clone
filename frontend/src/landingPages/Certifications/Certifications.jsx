@@ -1,6 +1,9 @@
 import React from 'react';
 import useCertifications from './hooks/useCertifications';
-import { stats, categories, levels } from './data/certifications';
+import {
+  CERT_STATS, CERT_CATEGORIES, CERT_LEVELS,
+  CERT_HERO, CERT_SEARCH_PLACEHOLDER, CERT_LEVEL_FILTER_LABEL
+} from './constants';
 import HeroSection from '../../shared/components/HeroSection';
 import StatsSection from '../../shared/components/StatsSection';
 import SearchFilters from '../../shared/components/SearchFilters';
@@ -11,6 +14,7 @@ import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import CertCTA from './components/CertCTA';
 import { Award, Trophy, Shield, Users, Briefcase, Play } from 'lucide-react';
+import './Certifications.scss';
 
 function Certifications() {
   const {
@@ -28,36 +32,37 @@ function Certifications() {
   } = useCertifications();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="certifications-page">
       <HeroSection
-        gradient="from-indigo-600 via-purple-600 to-pink-600"
+        gradient={CERT_HERO.gradient}
         badgeIcon={<Trophy className="w-4 h-4 text-yellow-300" />}
-        badgeText="Industry-recognized certifications"
-        titleLine1="Get Certified,"
-        titleLine2="Advance Your Career"
-        description="Earn professional certifications that matter. Trusted by 500+ companies worldwide."
-        primaryCtaLabel="Explore Certifications"
+        badgeText={CERT_HERO.badgeText}
+        titleLine1={CERT_HERO.titleLine1}
+        titleLine2={CERT_HERO.titleLine2}
+        description={CERT_HERO.description}
+        primaryCtaLabel={CERT_HERO.primaryCtaLabel}
         primaryCtaIcon={<Award className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />}
-        primaryCtaColor="text-purple-600"
-        secondaryCtaLabel="Watch Demo"
+        primaryCtaColor={CERT_HERO.primaryCtaColor}
+        secondaryCtaLabel={CERT_HERO.secondaryCtaLabel}
         secondaryCtaIcon={<Play className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />}
-        stats={[
-          { icon: <Shield className="w-5 h-5 text-yellow-300" />, label: 'Accredited' },
-          { icon: <Users className="w-5 h-5 text-yellow-300" />, label: '100K+ certified' },
-          { icon: <Briefcase className="w-5 h-5 text-yellow-300" />, label: 'Job guarantee' }
-        ]}
+        stats={CERT_HERO.heroStats.map(stat => ({
+          ...stat,
+          icon: stat.label === 'Accredited' ? <Shield className="w-5 h-5 text-yellow-300" /> :
+                stat.label === '100K+ certified' ? <Users className="w-5 h-5 text-yellow-300" /> :
+                <Briefcase className="w-5 h-5 text-yellow-300" />
+        }))}
       />
-      <StatsSection stats={stats} />
+      <StatsSection stats={CERT_STATS} />
       <FeaturedCert />
       <SearchFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        placeholder="Search certifications by name, skill, or career path..."
+        placeholder={CERT_SEARCH_PLACEHOLDER}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-        categories={categories}
-        secondFilterLabel="Level"
-        secondFilterItems={levels}
+        categories={CERT_CATEGORIES}
+        secondFilterLabel={CERT_LEVEL_FILTER_LABEL}
+        secondFilterItems={CERT_LEVELS}
         selectedSecondFilter={selectedLevel}
         setSelectedSecondFilter={setSelectedLevel}
         rightControls={

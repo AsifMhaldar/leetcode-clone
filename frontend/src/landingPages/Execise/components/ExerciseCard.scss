@@ -1,0 +1,213 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+@use 'sass:color';
+
+.exercise-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid $slate-100;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02);
+  }
+
+  &--list {
+    display: flex;
+    align-items: flex-start;
+  }
+}
+
+.exercise-card__body {
+  padding: 1.5rem;
+
+  &--list {
+    flex: 1;
+  }
+}
+
+.exercise-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.exercise-card__info {
+  display: flex;
+  align-items: center;
+}
+
+.exercise-card__icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+
+  &--easy {
+    background: rgba($green-500, 0.05);
+  }
+
+  &--medium {
+    background: rgba($yellow-400, 0.05);
+  }
+
+  &--hard {
+    background: rgba($red-500, 0.05);
+  }
+}
+
+.exercise-card__title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.exercise-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $slate-900;
+}
+
+.exercise-card__solved-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: $radius-full;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba($green-500, 0.1);
+  color: color.adjust($green-500, $lightness: -15%);
+}
+
+.exercise-card__premium-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: $radius-full;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: linear-gradient(to right, rgba($yellow-400, 0.1), rgba($yellow-400, 0.05));
+  color: color.adjust($yellow-400, $lightness: -30%);
+  border: 1px solid rgba($yellow-400, 0.2);
+}
+
+.exercise-card__difficulty-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.exercise-card__time {
+  font-size: 0.875rem;
+  color: $slate-500;
+  display: flex;
+  align-items: center;
+}
+
+.exercise-card__rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: $yellow-400;
+  background: rgba($yellow-400, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: $radius-lg;
+}
+
+.exercise-card__rating-value {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $slate-700;
+}
+
+.exercise-card__description {
+  color: $slate-600;
+  margin-bottom: 1rem;
+}
+
+.exercise-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.exercise-card__tag {
+  padding: 0.25rem 0.75rem;
+  background: $slate-100;
+  color: $slate-600;
+  border-radius: $radius-lg;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $slate-200;
+  }
+}
+
+.exercise-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exercise-card__stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.exercise-card__stat {
+  font-size: 0.875rem;
+  color: $slate-500;
+  display: flex;
+  align-items: center;
+}
+
+.exercise-card__category {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $blue-600;
+  background: #dbeafe;
+  padding: 0.25rem 0.75rem;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+}
+
+.exercise-card__solve-link {
+  color: $blue-600;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $blue-800;
+  }
+}
+
+@include md {
+  .exercise-card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include lg {
+  .exercise-card {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

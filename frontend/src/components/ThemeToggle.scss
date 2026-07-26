@@ -1,0 +1,33 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.theme-toggle {
+  position: relative;
+  padding: 0.5rem;
+  border-radius: $radius-xl;
+  transition: $transition-base;
+  border: none;
+  cursor: pointer;
+
+  &--dark {
+    background: rgba(255, 255, 255, 0.1);
+    color: $yellow-400;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+
+  &--light {
+    background: $slate-200;
+    color: #6366f1;
+
+    &:hover {
+      background: $slate-300;
+    }
+  }
+
+  @include sm {
+    padding: 0.375rem;
+  }
+}

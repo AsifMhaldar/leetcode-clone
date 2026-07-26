@@ -1,0 +1,20 @@
+// PageLoader styles
+// (Spinner is defined in styles/_utilities.scss as .page-spinner)
+.page-loader {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #0f172a, #581c87, #0f172a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__text {
+    color: #cbd5e1;
+    font-size: 1rem;
+  }
+
+  @include md {
+    &__text {
+      font-size: 1.125rem;
+    }
+  }
+}

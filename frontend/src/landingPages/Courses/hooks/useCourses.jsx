@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Coffee, Zap, Rocket } from 'lucide-react';
-import { courses } from '../data/courses';
+import { COURSES } from '../constants';
 
 export default function useCourses() {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -10,7 +10,7 @@ export default function useCourses() {
   const [viewMode, setViewMode] = useState('grid');
   const [expandedCourse, setExpandedCourse] = useState(null);
 
-  const filteredCourses = courses.filter(course => {
+  const filteredCourses = COURSES.filter(course => {
     const matchesCategory = selectedCategory === 'all' || course.category === selectedCategory;
     const matchesLevel = selectedLevel === 'all' || course.level === selectedLevel;
     const matchesPrice = selectedPrice === 'all' ||

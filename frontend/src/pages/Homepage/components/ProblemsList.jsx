@@ -1,11 +1,13 @@
 import React from 'react';
 import ProblemCard from './ProblemCard';
+import { EMPTY_STATE_FILTERED, EMPTY_STATE_DEFAULT } from '../constants';
+import './ProblemsList.scss';
 
 const ProblemsList = ({ loading, filteredProblems, solvedProblems, searchTerm, filters }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
+        <div className="problems-list__spinner"></div>
       </div>
     );
   }
@@ -22,10 +24,10 @@ const ProblemsList = ({ loading, filteredProblems, solvedProblems, searchTerm, f
       ))}
       
       {filteredProblems.length === 0 && (
-        <div className="text-center py-20 text-white/60 text-xl">
+        <div className="problems-list__empty">
           {searchTerm || filters.difficulty !== 'all' || filters.tag !== 'all' || filters.status !== 'all'
-            ? 'No problems found matching your search and filters'
-            : 'No problems available'
+            ? EMPTY_STATE_FILTERED
+            : EMPTY_STATE_DEFAULT
           }
         </div>
       )}

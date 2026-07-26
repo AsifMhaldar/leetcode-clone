@@ -3,6 +3,13 @@ import {
   Star, Clock, Users, BookOpen, Heart, Bookmark,
   CheckCircle, ChevronDown, Briefcase
 } from 'lucide-react';
+import {
+  CERT_CARD_POPULAR_LABEL, CERT_CARD_JOB_GUARANTEE_LABEL,
+  CERT_CARD_SALARY_LABEL, CERT_CARD_PROJECTS_LABEL, CERT_CARD_DETAILS_BTN,
+  CERT_CARD_LEARN_TITLE, CAREER_PATHS_TITLE, HIRED_BY_TITLE,
+  CERT_CARD_SHOW_MORE, CERT_CARD_SHOW_LESS
+} from '../constants';
+import './CertCard.scss';
 
 export default function CertCard({
   cert,
@@ -11,151 +18,133 @@ export default function CertCard({
   onToggleExpand
 }) {
   return (
-    <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] border border-gray-100 overflow-hidden">
-      <div className={`relative h-24 bg-gradient-to-r ${cert.color} p-6`}>
-        <div className="absolute top-4 right-4 flex space-x-2">
+    <div className="cert-card">
+      <div className={`cert-card__header bg-gradient-to-r ${cert.color}`}>
+        <div className="cert-card__badge-popular">
           {cert.popular && (
-            <span className="bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full flex items-center">
+            <span className="cert-card__popular">
               <Star className="w-3 h-3 mr-1 fill-current" />
-              Popular
+              {CERT_CARD_POPULAR_LABEL}
             </span>
           )}
           {cert.jobGuarantee && (
-            <span className="bg-green-400 text-green-900 text-xs px-2 py-1 rounded-full flex items-center">
+            <span className="cert-card__job-guarantee">
               <Briefcase className="w-3 h-3 mr-1" />
-              Job Guarantee
+              {CERT_CARD_JOB_GUARANTEE_LABEL}
             </span>
           )}
         </div>
-        <div className="absolute -bottom-8 left-6">
-          <div className="w-16 h-16 bg-white rounded-2xl shadow-lg flex items-center justify-center text-3xl">
-            {cert.image}
-          </div>
+        <div className="cert-card__icon">
+          {cert.image}
         </div>
       </div>
 
-      <div className="pt-10 p-6">
-        <div className="flex items-start justify-between mb-3">
+      <div className="cert-card__body">
+        <div className="cert-card__header-row">
           <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+            <h3 className="cert-card__title">
               {cert.title}
             </h3>
-            <p className="text-sm text-gray-500">by {cert.provider}</p>
+            <p className="cert-card__provider">by {cert.provider}</p>
           </div>
           {getLevelBadge(cert.level)}
         </div>
 
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="cert-card__description line-clamp-2">
           {cert.description}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="cert-card__skills">
           {cert.skills.slice(0, 3).map((skill, idx) => (
-            <span
-              key={idx}
-              className="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-            >
+            <span key={idx} className="cert-card__skill">
               {skill}
             </span>
           ))}
           {cert.skills.length > 3 && (
-            <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium">
-              +{cert.skills.length - 3}
-            </span>
+            <span className="cert-card__skill">+{cert.skills.length - 3}</span>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="flex items-center text-sm text-gray-500">
+        <div className="cert-card__meta">
+          <div className="cert-card__meta-item">
             <Clock className="w-4 h-4 mr-2" />
             {cert.duration}
           </div>
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="cert-card__meta-item">
             <BookOpen className="w-4 h-4 mr-2" />
             {cert.hours} hours
           </div>
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="cert-card__meta-item">
             <Users className="w-4 h-4 mr-2" />
             {cert.students}
           </div>
-          <div className="flex items-center text-sm text-gray-500">
+          <div className="cert-card__meta-item">
             <Star className="w-4 h-4 mr-2 text-yellow-400 fill-current" />
             {cert.rating} ({cert.reviews})
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-3 mb-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Average Salary</span>
+        <div className="cert-card__salary-info">
+          <div className="cert-card__salary-row">
+            <span className="text-gray-600">{CERT_CARD_SALARY_LABEL}</span>
             <span className="font-bold text-green-600">{cert.averageSalary}</span>
           </div>
-          <div className="flex items-center justify-between text-sm mt-1">
-            <span className="text-gray-600">Projects</span>
+          <div className="cert-card__salary-row">
+            <span className="text-gray-600">{CERT_CARD_PROJECTS_LABEL}</span>
             <span className="font-medium">{cert.projects} hands-on</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-          <div>
-            <span className="text-2xl font-bold text-gray-900">${cert.price}</span>
-            <span className="text-sm text-gray-500 line-through ml-2">${cert.originalPrice}</span>
-            <span className="ml-2 text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full">
-              {cert.discount}% off
-            </span>
+        <div className="cert-card__footer">
+          <div className="cert-card__pricing">
+            <span className="cert-card__price">${cert.price}</span>
+            <span className="cert-card__original-price">${cert.originalPrice}</span>
+            <span className="cert-card__discount-badge">{cert.discount}% off</span>
           </div>
-          <div className="flex items-center space-x-2">
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors group">
-              <Heart className="w-4 h-4 text-gray-400 group-hover:text-red-500 transition-colors" />
+          <div className="cert-card__actions">
+            <button className="cert-card__action-btn">
+              <Heart className="w-4 h-4 text-theme-muted group-hover:text-red-500 transition-colors" />
             </button>
-            <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors group">
-              <Bookmark className="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" />
+            <button className="cert-card__action-btn">
+              <Bookmark className="w-4 h-4 text-theme-muted group-hover:text-blue-500 transition-colors" />
             </button>
-            <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium text-sm hover:shadow-lg transition-all">
-              View Details
-            </button>
+            <button className="cert-card__details-btn">{CERT_CARD_DETAILS_BTN}</button>
           </div>
         </div>
 
         {expanded && (
-          <div className="mt-4 pt-4 border-t border-gray-100 animate-fadeIn">
-            <h4 className="font-semibold text-sm text-gray-900 mb-2">What you'll learn:</h4>
-            <ul className="space-y-2 mb-3">
+          <div className="cert-card__expanded animate-fadeIn">
+            <h4 className="cert-card__expanded-title">{CERT_CARD_LEARN_TITLE}</h4>
+            <ul className="cert-card__expanded-list">
               {cert.modules.map((module, idx) => (
-                <li key={idx} className="flex items-center text-sm text-gray-600">
+                <li key={idx} className="cert-card__expanded-item">
                   <CheckCircle className="w-4 h-4 mr-2 text-green-500" />
                   {module}
                 </li>
               ))}
             </ul>
             
-            <h4 className="font-semibold text-sm text-gray-900 mb-2">Career paths:</h4>
-            <div className="flex flex-wrap gap-2 mb-3">
+            <h4 className="cert-card__expanded-title">{CAREER_PATHS_TITLE}</h4>
+            <div className="cert-card__career-paths">
               {cert.careerPaths.map((path, idx) => (
-                <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-medium">
-                  {path}
-                </span>
+                <span key={idx} className="cert-card__career-tag">{path}</span>
               ))}
             </div>
 
-            <h4 className="font-semibold text-sm text-gray-900 mb-2">Hired by:</h4>
-            <div className="flex flex-wrap gap-2">
+            <h4 className="cert-card__expanded-title">{HIRED_BY_TITLE}</h4>
+            <div className="cert-card__companies">
               {cert.companies.map((company, idx) => (
-                <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs font-medium">
-                  {company}
-                </span>
+                <span key={idx} className="cert-card__company-tag">{company}</span>
               ))}
             </div>
           </div>
         )}
 
-        <button
-          onClick={onToggleExpand}
-          className="mt-3 text-xs text-blue-600 hover:text-blue-800 flex items-center mx-auto"
-        >
+        <button onClick={onToggleExpand} className="cert-card__toggle">
           {expanded ? (
-            <>Show less <ChevronDown className="w-3 h-3 ml-1 rotate-180" /></>
+            <>{CERT_CARD_SHOW_LESS} <ChevronDown className="w-3 h-3 ml-1 rotate-180" /></>
           ) : (
-            <>Show more details <ChevronDown className="w-3 h-3 ml-1" /></>
+            <>{CERT_CARD_SHOW_MORE} <ChevronDown className="w-3 h-3 ml-1" /></>
           )}
         </button>
       </div>

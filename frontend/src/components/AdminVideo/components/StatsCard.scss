@@ -1,0 +1,62 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.video-stats {
+  @include glass-card;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  &__count {
+    text-align: center;
+  }
+
+  &__count-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  &__count-label {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__right {
+    text-align: right;
+  }
+
+  &__hint-primary {
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  &__hint-secondary {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  @include sm {
+    padding: 1rem;
+
+    &__inner {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &__right {
+      text-align: center;
+    }
+  }
+}

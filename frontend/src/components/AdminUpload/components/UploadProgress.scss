@@ -1,0 +1,49 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.upload-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+
+  &__label {
+    color: var(--text-primary);
+  }
+
+  &__value {
+    color: $blue-400;
+    font-weight: 600;
+  }
+
+  &__bar {
+    width: 100%;
+    background: var(--glass-bg);
+    border-radius: $radius-full;
+    height: 0.75rem;
+    overflow: hidden;
+  }
+
+  &__fill {
+    background: $gradient-btn;
+    height: 0.75rem;
+    border-radius: $radius-full;
+    transition: width 0.3s ease-out;
+  }
+
+  &__hint {
+    text-align: center;
+    color: $slate-400;
+    font-size: 0.875rem;
+  }
+
+  @include sm {
+    padding: 0 0.5rem;
+  }
+}

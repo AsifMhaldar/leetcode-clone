@@ -1,18 +1,16 @@
 import React from 'react';
 import { Upload, FileVideo, AlertCircle } from 'lucide-react';
+import { LABEL_FILE_SELECT, DROPZONE_TEXT, DROPZONE_HINT, MAX_FILE_SIZE } from '../constants';
+import './FileUploadArea.scss';
 
 const FileUploadArea = ({ register, errors, selectedFile, formatFileSize, uploading }) => {
   return (
     <div className="form-group">
-      <label className="block text-white/80 text-sm font-medium mb-3">
-        Select Video File
+      <label className="file-upload__label">
+        {LABEL_FILE_SELECT}
       </label>
 
-      <div className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 hover:border-blue-400/50 hover:bg-white/5 ${
-        errors.videoFile
-          ? 'border-red-500/50 bg-red-500/5 animate-shake'
-          : 'border-white/20'
-      }`}>
+      <div className={`file-upload__dropzone ${errors.videoFile ? 'file-upload__dropzone--error animate-shake' : ''}`}>
         <input
           type="file"
           accept="video/*"
@@ -27,7 +25,7 @@ const FileUploadArea = ({ register, errors, selectedFile, formatFileSize, upload
               fileSize: (files) => {
                 if (!files || !files[0]) return true;
                 const file = files[0];
-                const maxSize = 100 * 1024 * 1024;
+                const maxSize = MAX_FILE_SIZE;
                 return file.size <= maxSize || 'File size must be less than 100MB';
               }
             }
@@ -38,15 +36,15 @@ const FileUploadArea = ({ register, errors, selectedFile, formatFileSize, upload
         />
 
         <label htmlFor="video-upload" className="cursor-pointer">
-          <div className="flex flex-col items-center space-y-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+          <div className="file-upload__dropzone-inner">
+            <div className="file-upload__upload-icon">
               <Upload className="w-8 h-8 text-white" />
             </div>
 
             <div>
-              <p className="text-white font-medium mb-1">Choose video file</p>
-              <p className="text-gray-400 text-sm">
-                MP4, MOV, AVI up to 100MB
+              <p className="file-upload__dropzone-text">{DROPZONE_TEXT}</p>
+              <p className="file-upload__dropzone-hint">
+                {DROPZONE_HINT}
               </p>
             </div>
           </div>
@@ -54,19 +52,19 @@ const FileUploadArea = ({ register, errors, selectedFile, formatFileSize, upload
       </div>
 
       {errors.videoFile && (
-        <div className="flex items-center space-x-2 text-red-400 text-sm mt-2 animate-fade-in">
+        <div className="file-upload__error animate-fade-in">
           <AlertCircle size={16} />
           <span>{errors.videoFile.message}</span>
         </div>
       )}
 
       {selectedFile && (
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mt-4">
-          <div className="flex items-center space-x-3">
-            <FileVideo className="w-8 h-8 text-blue-400" />
+        <div className="file-upload__file-info">
+          <div className="file-upload__file-inner">
+            <FileVideo className="file-upload__file-icon" />
             <div className="flex-1">
-              <h4 className="text-white font-medium">{selectedFile.name}</h4>
-              <div className="flex items-center space-x-4 text-sm text-gray-400 mt-1">
+              <h4 className="file-upload__file-name">{selectedFile.name}</h4>
+              <div className="file-upload__file-meta">
                 <span>Size: {formatFileSize(selectedFile.size)}</span>
                 <span>Type: {selectedFile.type}</span>
               </div>

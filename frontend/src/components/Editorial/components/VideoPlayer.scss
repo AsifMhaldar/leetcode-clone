@@ -1,0 +1,108 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.video-player {
+  position: relative;
+  width: 100%;
+  max-width: 42rem;
+  margin: 0 auto;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+  &__video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: black;
+    cursor: pointer;
+  }
+
+  &__controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    padding: 1rem;
+    transition: opacity 0.3s ease;
+
+    &--hidden {
+      opacity: 0;
+    }
+
+    &--visible {
+      opacity: 1;
+    }
+  }
+
+  &__play-btn {
+    @include btn-primary;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: $radius-full;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+  }
+
+  &__timeline {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  &__time {
+    color: var(--text-primary);
+    font-size: 0.875rem;
+
+    &--current {
+      margin-right: 0.5rem;
+    }
+
+    &--duration {
+      margin-left: 0.5rem;
+    }
+  }
+
+  &__progress {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 0.25rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: $radius-full;
+    outline: none;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 0.75rem;
+      height: 0.75rem;
+      background: $purple-500;
+      border-radius: $radius-full;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 0.75rem;
+      height: 0.75rem;
+      background: $purple-500;
+      border-radius: $radius-full;
+      cursor: pointer;
+      border: none;
+    }
+  }
+
+  @include sm {
+    max-width: 100%;
+    border-radius: $radius-lg;
+  }
+
+  @include lg {
+    max-width: 48rem;
+  }
+}

@@ -1,0 +1,55 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.profile-nav {
+  background: var(--glass-bg);
+  backdrop-filter: blur(1rem);
+  -webkit-backdrop-filter: blur(1rem);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-card);
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__logo {
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-lg;
+
+    @include lg {
+      width: 5rem;
+      height: 5rem;
+    }
+  }
+
+  &__text {
+    font-size: 1.125rem;
+    font-weight: 700;
+    @include gradient-text;
+
+    @include lg {
+      font-size: 1.25rem;
+    }
+  }
+
+  &__home-btn {
+    @include btn-primary;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+
+    @include lg {
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+}

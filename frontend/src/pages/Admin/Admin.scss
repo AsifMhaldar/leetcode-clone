@@ -1,0 +1,97 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.admin-page {
+  @include page-bg;
+
+  &__container {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    @include md {
+      margin-bottom: 2.5rem;
+    }
+
+    @include lg {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      @include gradient-text;
+
+      @include sm {
+        font-size: 2.25rem;
+      }
+
+      @include md {
+        font-size: 2.5rem;
+      }
+
+      @include lg {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      color: $slate-400;
+      max-width: 40rem;
+      margin: 0 auto;
+
+      @include sm {
+        font-size: 1.125rem;
+      }
+
+      @include lg {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  &__charts-single {
+    margin-bottom: 1.5rem;
+
+    @include md {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    @include md {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.admin-page__container {
+  padding: 1.25rem 0.75rem;
+
+  @include sm {
+    padding: 1.5rem 1rem;
+  }
+
+  @include md {
+    padding: 2rem 1.5rem;
+  }
+
+  @include lg {
+    padding: 2rem 1rem;
+  }
+}

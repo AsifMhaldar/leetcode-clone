@@ -1,5 +1,7 @@
 import React from 'react';
 import { Pause, Play } from 'lucide-react';
+import { PLAY_ARIA_LABEL, PAUSE_ARIA_LABEL } from '../constants';
+import './VideoPlayer.scss';
 
 const VideoPlayer = ({ 
   videoRef, secureUrl, thumbnailUrl, duration, 
@@ -8,7 +10,7 @@ const VideoPlayer = ({
 }) => {
   return (
     <div 
-      className="relative w-full max-w-2xl mx-auto rounded-xl overflow-hidden shadow-lg"
+      className="video-player"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -17,24 +19,22 @@ const VideoPlayer = ({
         src={secureUrl}
         poster={thumbnailUrl}
         onClick={togglePlayPause}
-        className="w-full aspect-video bg-black cursor-pointer"
+        className="video-player__video"
       />
       
       <div 
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transition-opacity ${
-          isHovering || !isPlaying ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`video-player__controls ${isHovering || !isPlaying ? 'video-player__controls--visible' : 'video-player__controls--hidden'}`}
       >
         <button
           onClick={togglePlayPause}
-          className="btn btn-circle btn-primary mr-3"
-          aria-label={isPlaying ? "Pause" : "Play"}
+          className="video-player__play-btn"
+          aria-label={isPlaying ? PAUSE_ARIA_LABEL : PLAY_ARIA_LABEL}
         >
           {isPlaying ? <Pause /> : <Play />}
         </button>
         
-        <div className="flex items-center w-full mt-2">
-          <span className="text-white text-sm mr-2">
+        <div className="video-player__timeline">
+          <span className="video-player__time video-player__time--current">
             {formatTime(currentTime)}
           </span>
           <input
@@ -43,9 +43,9 @@ const VideoPlayer = ({
             max={duration}
             value={currentTime}
             onChange={handleSeek}
-            className="range range-primary range-xs flex-1"
+            className="video-player__progress"
           />
-          <span className="text-white text-sm ml-2">
+          <span className="video-player__time video-player__time--duration">
             {formatTime(duration)}
           </span>
         </div>

@@ -1,5 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router';
+import { motion } from 'framer-motion';
+import {
+  SIGNUP_FORM_HEADING, SIGNUP_FORM_SUBHEADING,
+  FIRST_NAME_LABEL, EMAIL_LABEL, PASSWORD_LABEL,
+  FIRST_NAME_PLACEHOLDER, EMAIL_PLACEHOLDER, PASSWORD_PLACEHOLDER,
+  LOADING_TEXT, SUBMIT_TEXT, FOOTER_TEXT, FOOTER_LINK_TEXT
+} from '../constants';
+import './SignupForm.scss';
 
 const SignupForm = ({
   showPassword,
@@ -11,76 +19,89 @@ const SignupForm = ({
   onSubmit
 }) => {
   return (
-    <div className="lg:w-1/2 w-full max-w-md animate-float-in">
-      <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-500">
-        
-        <div className="text-center mb-8">
-          <h3 className="text-2xl font-bold text-white mb-2">Create Account</h3>
-          <p className="text-gray-400">Join the Codify-CODE community</p>
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="lg:w-1/2 w-full max-w-md"
+    >
+      <div className="signup-form__card">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="signup-form__header"
+        >
+          <h3>{SIGNUP_FORM_HEADING}</h3>
+          <p>{SIGNUP_FORM_SUBHEADING}</p>
+        </motion.div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          
-          <div className="form-group animate-slide-in-right">
-            <label className="block text-white/80 text-sm font-medium mb-2">
-              First Name
-            </label>
-            <input 
-              {...register('firstName')} 
-              placeholder='Enter your name...' 
-              type='text' 
-              className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
-                errors.firstName 
-                  ? 'border-red-500 focus:ring-red-500 animate-shake' 
-                  : 'border-white/20 focus:ring-purple-500 focus:border-purple-500'
-              }`}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="signup-form__group"
+          >
+            <label>{FIRST_NAME_LABEL}</label>
+            <input
+              {...register('firstName')}
+              placeholder={FIRST_NAME_PLACEHOLDER}
+              type='text'
+              className={`signup-form__input ${errors.firstName ? 'signup-form__input--error' : ''}`}
             />
             {errors.firstName && (
-              <span className="text-red-400 text-sm mt-1 animate-fade-in block">
+              <motion.span
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="signup-form__error-message"
+              >
                 {errors.firstName.message}
-              </span>
+              </motion.span>
             )}
-          </div>
+          </motion.div>
 
-          <div className="form-group animate-slide-in-left">
-            <label className="block text-white/80 text-sm font-medium mb-2">
-              Email Address
-            </label>
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="signup-form__group"
+          >
+            <label>{EMAIL_LABEL}</label>
             <input
               type="email"
-              placeholder="john@example.com"
-              className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 ${
-                errors.emailId 
-                  ? 'border-red-500 focus:ring-red-500 animate-shake' 
-                  : 'border-white/20 focus:ring-purple-500 focus:border-purple-500'
-              }`}
+              placeholder={EMAIL_PLACEHOLDER}
+              className={`signup-form__input ${errors.emailId ? 'signup-form__input--error' : ''}`}
               {...register('emailId')}
             />
             {errors.emailId && (
-              <span className="text-red-400 text-sm mt-1 animate-fade-in block">
+              <motion.span
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="signup-form__error-message"
+              >
                 {errors.emailId.message}
-              </span>
+              </motion.span>
             )}
-          </div>
-          
-          <div className="form-group animate-slide-in-right">
-            <label className="block text-white/80 text-sm font-medium mb-2">
-              Password
-            </label>
-            <div className="relative">
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+            className="signup-form__group"
+          >
+            <label>{PASSWORD_LABEL}</label>
+            <div className="signup-form__input-wrapper">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                className={`w-full px-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 transition-all duration-300 pr-12 ${
-                  errors.password 
-                    ? 'border-red-500 focus:ring-red-500 animate-shake' 
-                    : 'border-white/20 focus:ring-purple-500 focus:border-purple-500'
-                }`}
+                placeholder={PASSWORD_PLACEHOLDER}
+                className={`signup-form__input signup-form__input--password ${errors.password ? 'signup-form__input--error' : ''}`}
                 {...register('password')}
               />
               <button
                 type="button"
-                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 hover:text-white transition-all duration-300 p-1 rounded-lg hover:bg-white/10"
+                className="signup-form__toggle-password"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
@@ -97,45 +118,53 @@ const SignupForm = ({
               </button>
             </div>
             {errors.password && (
-              <span className="text-red-400 text-sm mt-1 animate-fade-in block">
+              <motion.span
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="signup-form__error-message"
+              >
                 {errors.password.message}
-              </span>
+              </motion.span>
             )}
-          </div>
-          
-          <div className="animate-slide-in-up">
-            <button
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.5 }}
+          >
+            <motion.button
               type="submit"
-              className={`w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg transition-all duration-500 hover:shadow-2xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500/50 ${
-                loading ? 'opacity-70 cursor-not-allowed' : ''
-              }`}
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              className="signup-form__submit"
               disabled={loading}
             >
               {loading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Creating Account...</span>
+                <div className="flex items-center justify-center">
+                  <div className="signup-form__spinner" />
+                  <span>{LOADING_TEXT}</span>
                 </div>
               ) : (
-                'Create Account'
+                SUBMIT_TEXT
               )}
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </form>
 
-        <div className="text-center mt-6 animate-fade-in-delay">
-          <span className="text-gray-400 text-sm">
-            Already have an account?{' '}
-            <NavLink 
-              to="/login" 
-              className="text-blue-400 hover:text-blue-300 font-medium transition-all duration-300 hover:underline"
-            >
-              Sign In
-            </NavLink>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="signup-form__footer"
+        >
+          <span>
+            {FOOTER_TEXT}{' '}
+            <NavLink to="/login">{FOOTER_LINK_TEXT}</NavLink>
           </span>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

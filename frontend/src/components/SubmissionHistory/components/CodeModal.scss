@@ -1,0 +1,84 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.code-modal {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(0.25rem);
+
+  &__box {
+    width: 91.666%;
+    max-width: 64rem;
+    @include glass-card;
+    padding: 2rem;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  &__title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  &__badge {
+    @include badge;
+    padding: 0.25rem 0.75rem;
+
+    &--outline {
+      @include badge(transparent, $slate-400, var(--glass-border));
+    }
+  }
+
+  &__error {
+    background: rgba($red-500, 0.2);
+    border: 1px solid rgba($red-500, 0.3);
+    border-radius: $radius-lg;
+    padding: 0.75rem 1rem;
+    color: $red-400;
+    margin-top: 0.5rem;
+  }
+
+  &__code {
+    padding: 1rem;
+    background: $slate-900;
+    color: #e2e8f0;
+    border-radius: $radius-lg;
+    overflow-x: auto;
+    max-height: 24rem;
+    font-family: $font-mono;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+  }
+
+  &__close-btn {
+    @include btn-primary;
+  }
+
+  @include sm {
+    &__box {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 0;
+      max-height: 100vh;
+    }
+  }
+}

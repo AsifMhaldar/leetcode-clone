@@ -7,6 +7,8 @@ import BasicInfoFields from './components/BasicInfoFields';
 import TestCasesSection from './components/TestCasesSection';
 import CodeTemplatesSection from './components/CodeTemplatesSection';
 import UpdateSubmitButton from './components/UpdateSubmitButton';
+import { PAGE_TITLE, PAGE_SUBTITLE, LOADING_TEXT } from './constants';
+import './UpdateProblem.scss';
 
 function UpdateProblem() {
   const {
@@ -32,17 +34,17 @@ function UpdateProblem() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="update-problem flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-300 text-lg">Loading problem details...</p>
+          <div className="update-problem__spinner"></div>
+          <p className="text-gray-300 text-lg">{LOADING_TEXT}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="update-problem">
       <UpdateProblemHeader
         problem={problem}
         problemId={problemId}
@@ -51,13 +53,13 @@ function UpdateProblem() {
         onBack={() => navigate('/admin/update')}
       />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent mb-4">
-            Update Problem
+      <div className="update-problem__container">
+        <div className="update-problem__header">
+          <h1>
+            {PAGE_TITLE}
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Modify the problem details, test cases, and code templates
+          <p>
+            {PAGE_SUBTITLE}
           </p>
         </div>
 
@@ -80,33 +82,6 @@ function UpdateProblem() {
           <UpdateSubmitButton updating={updating} loading={loading} />
         </form>
       </div>
-
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-8px); }
-          75% { transform: translateX(8px); }
-        }
-        
-        @keyframes fade-in {
-          from { 
-            opacity: 0; 
-            transform: translateY(-10px); 
-          }
-          to { 
-            opacity: 1; 
-            transform: translateY(0); 
-          }
-        }
-        
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-        
-        .animate-fade-in {
-          animation: fade-in 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }

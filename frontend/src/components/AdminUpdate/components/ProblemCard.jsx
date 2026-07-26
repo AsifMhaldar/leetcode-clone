@@ -1,37 +1,41 @@
 import React from 'react';
 import { Edit, Code } from 'lucide-react';
 import { NavLink } from 'react-router';
+import { motion } from 'framer-motion';
 import { getDifficultyColor, getTagColor } from '../utils/colors';
+import { BTN_EDIT } from '../constants';
+import './ProblemCard.scss';
 
 const ProblemCard = ({ problem, index }) => {
   return (
-    <div
-      className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300 group animate-fade-in-up"
-      style={{ animationDelay: `${index * 0.1}s` }}
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.08, ease: "easeOut" }}
+      className="problem-card group"
     >
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-start justify-between mb-3">
+      <div className="problem-card__inner">
+        <div className="problem-card__content">
+          <div className="problem-card__header">
             <div className="flex-1">
-              <h3 className="text-xl font-semibold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-yellow-400 group-hover:to-orange-400 group-hover:bg-clip-text transition-all duration-300">
+              <h3 className="problem-card__title">
                 {problem.title}
               </h3>
-              <p className="text-gray-400 text-sm mt-1 line-clamp-2">
+              <p className="problem-card__desc">
                 {problem.description}
               </p>
             </div>
-            <div className="flex items-center space-x-2 ml-4">
-              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getDifficultyColor(problem.difficulty)}`}>
+            <div className="problem-card__badges">
+              <span className={`problem-card__badge ${getDifficultyColor(problem.difficulty)}`}>
                 {problem.difficulty}
               </span>
-              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getTagColor(problem.tags)}`}>
+              <span className={`problem-card__badge ${getTagColor(problem.tags)}`}>
                 {problem.tags}
               </span>
             </div>
           </div>
 
-          {/* Problem Metadata */}
-          <div className="flex items-center space-x-4 text-sm text-gray-400">
+          <div className="problem-card__meta">
             <div className="flex items-center space-x-1">
               <Code size={24} />
               <span>{problem.title}</span>
@@ -49,18 +53,17 @@ const ProblemCard = ({ problem, index }) => {
           </div>
         </div>
 
-        {/* Edit Button */}
         <div className="flex-shrink-0">
           <NavLink
             to={`/admin/update/${problem._id}`}
-            className="flex items-center mb-15 h-5 space-x-2 bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 px-6 py-3 rounded-xl hover:bg-yellow-500/30 hover:scale-105 transition-all duration-300"
+            className="problem-card__edit-btn"
           >
             <Edit size={18} />
-            <span>Edit Problem</span>
+            <span>{BTN_EDIT}</span>
           </NavLink>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

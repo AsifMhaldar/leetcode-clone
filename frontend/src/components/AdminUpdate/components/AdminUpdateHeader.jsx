@@ -1,39 +1,39 @@
 import React from 'react';
 import { Edit, RefreshCw, Home } from 'lucide-react';
 import { NavLink } from 'react-router';
+import { HEADER_BRAND_TITLE, HEADER_BRAND_SUBTITLE, HEADER_REFRESH_TEXT, HEADER_BACK_TEXT } from '../constants';
+import './AdminUpdateHeader.scss';
 
 const AdminUpdateHeader = ({ fetchProblems, loading }) => {
   return (
-    <nav className="bg-white/5 backdrop-blur-lg border-b border-white/10">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center">
-              <Edit className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Update Problems</h1>
-              <p className="text-sm text-gray-400">Edit and modify existing problems</p>
-            </div>
+    <nav className="admin-nav">
+      <div className="admin-nav__inner">
+        <div className="admin-nav__brand">
+          <div className="admin-nav__icon">
+            <Edit className="w-6 h-6 text-white" />
           </div>
-          
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={fetchProblems}
-              disabled={loading}
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200 disabled:opacity-50 cursor-pointer"
-            >
-              <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
-              <span>Refresh</span>
-            </button>
-            <NavLink 
-              to="/admin" 
-              className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-200"
-            >
-              <Home size={20} />
-              <span>Back to Admin</span>
-            </NavLink>
+          <div>
+            <h1 className="text-xl font-bold text-theme-primary">{HEADER_BRAND_TITLE}</h1>
+            <p className="text-sm text-theme-muted">{HEADER_BRAND_SUBTITLE}</p>
           </div>
+        </div>
+        
+        <div className="admin-nav__actions">
+          <button
+            onClick={fetchProblems}
+            disabled={loading}
+            className="admin-nav__btn"
+          >
+            <RefreshCw size={20} className={loading ? 'animate-spin' : ''} />
+            <span>{HEADER_REFRESH_TEXT}</span>
+          </button>
+          <NavLink 
+            to="/admin" 
+            className="admin-nav__link"
+          >
+            <Home size={20} />
+            <span>{HEADER_BACK_TEXT}</span>
+          </NavLink>
         </div>
       </div>
     </nav>

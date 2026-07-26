@@ -1,61 +1,111 @@
 import React from 'react';
 import { Eye } from 'lucide-react';
+import { DIFFICULTY_DISTRIBUTION_TITLE, RECENT_ACTIVITY_TITLE } from '../constants';
+import './ActivitySection.scss';
 
-const ActivitySection = ({ difficultyDistribution, recentActivity }) => {
+const timeAgo = (dateString) => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const seconds = Math.floor((now - date) / 1000);
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+};
+
+const ActivitySection = ({ data, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className="activity-section">
+        <div className="activity-section__card">
+          <div className="activity-section__skeleton-title"></div>
+          <div className="activity-section__skeleton-list">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="activity-section__skeleton-row"></div>
+            ))}
+          </div>
+        </div>
+        <div className="activity-section__card">
+          <div className="activity-section__skeleton-title"></div>
+          <div className="activity-section__skeleton-list">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="activity-section__skeleton-row"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) return null;
+
+  const { difficultyDistribution, recentActivity } = data;
+  const totalProblems = difficultyDistribution.reduce((sum, d) => sum + d.value, 0);
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="activity-section">
       {/* Difficulty Distribution */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <h3 className="text-lg font-semibold text-white mb-6">Difficulty Distribution</h3>
-        <div className="space-y-4">
-          {difficultyDistribution.map((diff, index) => (
-            <div key={index} className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div 
-                  className={`w-3 h-3 rounded-full ${
-                    diff.difficulty === 'Easy' ? 'bg-green-500' :
-                    diff.difficulty === 'Medium' ? 'bg-yellow-500' : 'bg-red-500'
-                  }`}
-                ></div>
-                <span className="text-white text-sm">{diff.difficulty}</span>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-32 bg-gray-700 rounded-full h-2">
-                  <div 
-                    className={`h-2 rounded-full ${
-                      diff.difficulty === 'Easy' ? 'bg-green-500' :
-                      diff.difficulty === 'Medium' ? 'bg-yellow-500' : 'bg-red-500'
+      <div className="activity-section__card">
+        <h3 className="activity-section__card-title">{DIFFICULTY_DISTRIBUTION_TITLE}</h3>
+        <div className="activity-section__diff-list">
+          {difficultyDistribution.map((diff, index) => {
+            const percentage = totalProblems > 0 ? Math.round((diff.value / totalProblems) * 100) : 0;
+            return (
+              <div key={index} className="activity-section__diff-item">
+                <div className="activity-section__diff-left">
+                  <div
+                    className={`activity-section__diff-dot ${
+                      diff.name === 'Easy' ? 'activity-section__diff-dot--easy' :
+                      diff.name === 'Medium' ? 'activity-section__diff-dot--medium' : 'activity-section__diff-dot--hard'
                     }`}
-                    style={{ width: `${diff.percentage}%` }}
                   ></div>
+                  <span className="activity-section__diff-name">{diff.name}</span>
+                  <span className="activity-section__diff-count">{diff.value.toLocaleString()}</span>
                 </div>
-                <span className="text-gray-400 text-sm w-12 text-right">{diff.percentage}%</span>
+                <div className="activity-section__diff-right">
+                  <div className="activity-section__diff-bar-wrap">
+                    <div
+                      className={`activity-section__diff-bar ${
+                        diff.name === 'Easy' ? 'activity-section__diff-bar--easy' :
+                        diff.name === 'Medium' ? 'activity-section__diff-bar--medium' : 'activity-section__diff-bar--hard'
+                      }`}
+                      style={{ width: `${percentage}%` }}
+                    ></div>
+                  </div>
+                  <span className="activity-section__diff-pct">{percentage}%</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10">
-        <h3 className="text-lg font-semibold text-white mb-6">Recent Activity</h3>
-        <div className="space-y-4">
-          {recentActivity.map((activity, index) => (
-            <div key={index} className="flex items-center space-x-4 p-3 bg-white/5 rounded-lg">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                activity.difficulty === 'Easy' ? 'bg-green-500/20 text-green-400' :
-                activity.difficulty === 'Medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                'bg-red-500/20 text-red-400'
+      <div className="activity-section__card">
+        <h3 className="activity-section__card-title">{RECENT_ACTIVITY_TITLE}</h3>
+        <div className="activity-section__activity-list">
+          {recentActivity.length > 0 ? recentActivity.map((activity, index) => (
+            <div key={index} className="activity-section__activity-item">
+              <div className={`activity-section__activity-icon ${
+                activity.status === 'accepted' ? 'activity-section__activity-icon--easy' :
+                'activity-section__activity-icon--hard'
               }`}>
                 <Eye size={16} />
               </div>
-              <div className="flex-1">
-                <p className="text-white text-sm font-medium">{activity.user}</p>
-                <p className="text-gray-400 text-xs">{activity.action}</p>
+              <div className="activity-section__activity-info">
+                <p className="activity-section__activity-user">{activity.userName}</p>
+                <p className="activity-section__activity-action">
+                  {activity.status === 'accepted' ? 'Accepted' : 'Attempted'} &quot;{activity.problemTitle}&quot;
+                </p>
               </div>
-              <div className="text-gray-400 text-xs">{activity.time}</div>
+              <div className="activity-section__activity-time">{timeAgo(activity.createdAt)}</div>
             </div>
-          ))}
+          )) : (
+            <div className="activity-section__empty">No recent activity</div>
+          )}
         </div>
       </div>
     </div>

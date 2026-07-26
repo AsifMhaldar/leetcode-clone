@@ -1,4 +1,5 @@
 import { Search, Layout, Menu, X } from 'lucide-react';
+import './SearchFilters.scss';
 
 const SearchFilters = ({
   searchQuery,
@@ -24,38 +25,30 @@ const SearchFilters = ({
   rightControls
 }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+    <div className="search-filters">
+      <div className="search-filters__top">
+        <div className="search-filters__search">
+          <Search className="search-filters__search-icon" />
           <input
             type="text"
             placeholder={placeholder}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
+            className="search-filters__search-input"
           />
         </div>
 
         {viewMode !== undefined && setViewMode && (
-          <div className="flex items-center space-x-2 p-1 bg-gray-100 rounded-xl">
+          <div className="search-filters__view-toggle">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg transition-all ${
-                viewMode === 'grid'
-                  ? 'bg-white shadow-md text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`search-filters__view-btn ${viewMode === 'grid' ? 'search-filters__view-btn--active' : ''}`}
             >
               <Layout className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg transition-all ${
-                viewMode === 'list'
-                  ? 'bg-white shadow-md text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`search-filters__view-btn ${viewMode === 'list' ? 'search-filters__view-btn--active' : ''}`}
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -66,7 +59,7 @@ const SearchFilters = ({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-3.5 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
+            className="search-filters__sort"
           >
             {sortOptions.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -77,18 +70,21 @@ const SearchFilters = ({
         {rightControls}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between mt-6 pt-6 border-t border-gray-100">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium text-gray-700 mr-2">Categories:</span>
+      <div className="search-filters__divider">
+        <div className="search-filters__categories">
+          <span className="search-filters__category-label">Categories:</span>
           {categories.map(category => (
             <button
               key={category.id}
               onClick={() => setSelectedCategory(category.id)}
-              className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedCategory === category.id
-                  ? `bg-${category.color}-100 text-${category.color}-700 border-2 border-${category.color}-200 shadow-sm`
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'
+              className={`search-filters__category-btn ${
+                selectedCategory === category.id ? 'search-filters__category-btn--active' : ''
               }`}
+              style={selectedCategory === category.id ? {
+                background: `var(--cat-${category.color}-bg, #f1f5f9)`,
+                color: `var(--cat-${category.color}-text, #475569)`,
+                borderColor: `var(--cat-${category.color}-border, transparent)`
+              } : undefined}
             >
               {category.icon}
               <span className="ml-2">{category.name}</span>
@@ -102,16 +98,14 @@ const SearchFilters = ({
         </div>
 
         {secondFilterLabel && secondFilterItems && (
-          <div className="flex flex-wrap items-center gap-2 mt-2 lg:mt-0">
-            <span className="text-sm font-medium text-gray-700 mr-2">{secondFilterLabel}:</span>
+          <div className="search-filters__level">
+            <span className="search-filters__category-label">{secondFilterLabel}:</span>
             {secondFilterItems.map(item => (
               <button
                 key={item.id}
                 onClick={() => setSelectedSecondFilter(item.id)}
-                className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                  selectedSecondFilter === item.id
-                    ? 'bg-blue-100 text-blue-700 border-2 border-blue-200 shadow-sm'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'
+                className={`search-filters__level-btn ${
+                  selectedSecondFilter === item.id ? 'search-filters__level-btn--active' : ''
                 }`}
               >
                 {item.icon}
@@ -123,16 +117,14 @@ const SearchFilters = ({
       </div>
 
       {extraFilterLabel && extraFilterItems && (
-        <div className="flex flex-wrap items-center gap-2 mt-4">
-          <span className="text-sm font-medium text-gray-700 mr-2">{extraFilterLabel}:</span>
+        <div className="search-filters__extra">
+          <span className="search-filters__category-label">{extraFilterLabel}:</span>
           {extraFilterItems.map(filter => (
             <button
               key={filter.id}
               onClick={() => setSelectedExtraFilter(filter.id)}
-              className={`inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedExtraFilter === filter.id
-                  ? 'bg-green-100 text-green-700 border-2 border-green-200 shadow-sm'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'
+              className={`search-filters__extra-btn ${
+                selectedExtraFilter === filter.id ? 'search-filters__extra-btn--active' : ''
               }`}
             >
               {filter.name}

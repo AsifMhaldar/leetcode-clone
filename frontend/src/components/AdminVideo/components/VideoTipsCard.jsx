@@ -1,21 +1,24 @@
 import React from 'react';
 import { Plus } from 'lucide-react';
+import { TIPS_TITLE, TIPS } from '../constants';
+import './VideoTipsCard.scss';
 
 const VideoTipsCard = () => {
   return (
-    <div className="mt-8 bg-blue-500/20 border border-blue-500/30 rounded-2xl p-6">
-      <div className="flex items-center space-x-3">
-        <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-          <Plus className="w-4 h-4 text-blue-400" />
+    <div className="video-tips">
+      <div className="video-tips__inner">
+        <div className="video-tips__icon-wrap">
+          <Plus className="video-tips__icon" />
         </div>
         <div>
-          <h4 className="font-semibold text-blue-400 mb-1">Video Management Tips</h4>
-          <p className="text-blue-300/80 text-sm">
-            • Upload video solutions to help users understand problems better
-            <br />
-            • Delete videos when they are no longer needed
-            <br />
-            • Keep videos focused and concise for better learning experience
+          <h4 className="video-tips__title">{TIPS_TITLE}</h4>
+          <p className="video-tips__text">
+            {TIPS.map((tip, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && <br />}
+                • {tip}
+              </React.Fragment>
+            ))}
           </p>
         </div>
       </div>

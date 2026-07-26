@@ -1,0 +1,45 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.why-choose {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.why-choose__card {
+  text-align: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid $slate-100;
+}
+
+.why-choose__icon {
+  width: 3rem;
+  height: 3rem;
+  background: linear-gradient(to right, $blue-500, $purple-500);
+  border-radius: $radius-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  color: var(--text-primary);
+}
+
+.why-choose__title {
+  font-weight: 600;
+  color: $slate-900;
+  margin-bottom: 0.5rem;
+}
+
+.why-choose__desc {
+  font-size: 0.875rem;
+  color: $slate-600;
+}

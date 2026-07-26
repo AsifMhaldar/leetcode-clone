@@ -1,0 +1,220 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.activity-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include lg {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &__card {
+    @include glass-card;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+  }
+
+  &__card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  // Difficulty distribution
+  &__diff-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__diff-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__diff-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__diff-dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: $radius-full;
+    flex-shrink: 0;
+
+    &--easy {
+      background: $green-500;
+    }
+
+    &--medium {
+      background: $yellow-400;
+    }
+
+    &--hard {
+      background: $red-500;
+    }
+  }
+
+  &__diff-name {
+    color: var(--text-primary);
+    font-size: 0.875rem;
+  }
+
+  &__diff-count {
+    color: $slate-400;
+    font-size: 0.75rem;
+    margin-left: 0.25rem;
+  }
+
+  &__diff-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__diff-bar-wrap {
+    width: 8rem;
+    background: $slate-700;
+    border-radius: $radius-full;
+    height: 0.5rem;
+  }
+
+  &__diff-bar {
+    height: 0.5rem;
+    border-radius: $radius-full;
+    transition: width 0.5s ease;
+
+    &--easy {
+      background: $green-500;
+    }
+
+    &--medium {
+      background: $yellow-400;
+    }
+
+    &--hard {
+      background: $red-500;
+    }
+  }
+
+  &__diff-pct {
+    color: $slate-400;
+    font-size: 0.875rem;
+    width: 3rem;
+    text-align: right;
+  }
+
+  // Recent activity
+  &__activity-list {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: scroll;
+  }
+
+  &__activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: var(--glass-bg);
+    border-radius: $radius-lg;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  &__activity-icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &--easy {
+      background: rgba($green-500, 0.2);
+      color: $green-400;
+    }
+
+    &--medium {
+      background: rgba($yellow-400, 0.2);
+      color: $yellow-400;
+    }
+
+    &--hard {
+      background: rgba($red-500, 0.2);
+      color: $red-400;
+    }
+  }
+
+  &__activity-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__activity-user {
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  &__activity-action {
+    color: $slate-400;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__activity-time {
+    color: $slate-400;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  &__empty {
+    color: $slate-400;
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  // Skeleton
+  &__skeleton-title {
+    width: 50%;
+    height: 1.125rem;
+    border-radius: $radius-sm;
+    background: $slate-700;
+    margin-bottom: 1.5rem;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  &__skeleton-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__skeleton-row {
+    height: 3rem;
+    border-radius: $radius-lg;
+    background: $slate-700;
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
