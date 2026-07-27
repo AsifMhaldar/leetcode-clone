@@ -22,6 +22,10 @@ import Exercise from "./landingPages/Execise/Execise.jsx";
 import Tutorial from "./landingPages/Tutorial/Tutorial.jsx";
 import Certifications from './landingPages/Certifications/Certifications.jsx';
 import Courses from './landingPages/Courses/Courses.jsx';
+import LeaderboardPage from "./pages/Leaderboard/LeaderboardPage";
+import ActivityFeed from "./pages/Feed/ActivityFeed";
+import PublicProfile from "./pages/PublicProfile/PublicProfile";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App(){
@@ -71,6 +75,11 @@ function App(){
 
       {/* Problem pages (public) */}
       <Route path="/problem/:problemId" element={<ProblemPage />} />
+
+      {/* Phase 3 routes */}
+      <Route path="/leaderboard" element={<LeaderboardPage />} />
+      <Route path="/feed" element={isAuthenticated ? <ErrorBoundary><ActivityFeed /></ErrorBoundary> : <Navigate to="/login" />} />
+      <Route path="/user/:userId" element={<PublicProfile />} />
     </Routes>
   </ThemeProvider>
   )

@@ -14,7 +14,7 @@ const ChartTooltip = ({ active, payload, label }) => {
       <div className="analytics-tooltip__label">{label}</div>
       {payload.map((p, i) => (
         <div key={i} className="analytics-tooltip__val" style={{ color: p.color }}>
-          {p.name}: {p.value}
+          {p.name}: {p.value != null ? p.value : '—'}
         </div>
       ))}
     </div>
@@ -39,42 +39,44 @@ const AnalyticsCharts = ({ calendar, userStats, streak }) => {
     return data;
   }, [calendar]);
 
-  // Acceptance trend — simulated from calendar data
+  // Acceptance trend — real data from calendar accepted counts
   const acceptanceData = useMemo(() => {
     const today = new Date();
-    const base = userStats?.acceptanceRate || 50;
     const data = [];
     for (let i = 29; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
       const ds = d.toISOString().split('T')[0];
       const entry = calendar.find(c => c.date === ds);
-      const hasActivity = entry && entry.count > 0;
-      const fluctuation = hasActivity ? (Math.random() * 10 - 3) : (Math.random() * 4 - 2);
+      const total = entry?.count || 0;
+      const accepted = entry?.accepted || 0;
+      const rate = total > 0 ? Math.round((accepted / total) * 100) : null;
       data.push({
         date: `${d.getMonth() + 1}/${d.getDate()}`,
-        rate: Math.max(0, Math.min(100, Math.round(base + fluctuation))),
+        rate,
       });
     }
     return data;
-  }, [calendar, userStats]);
+  }, [calendar]);
 
-  // Rank progress — derived from real rank
+  // Engagement growth — cumulative submissions over time (real data)
   const rankData = useMemo(() => {
-    const baseRank = userStats?.rank || 1;
+    const today = new Date();
+    let cumulative = 0;
     const data = [];
     for (let i = 29; i >= 0; i--) {
-      const d = new Date();
+      const d = new Date(today);
       d.setDate(d.getDate() - i);
-      const progress = Math.max(0, (30 - i) / 30);
-      const rank = Math.round(baseRank + (1 - progress) * 5000 * Math.random());
+      const ds = d.toISOString().split('T')[0];
+      const entry = calendar.find(c => c.date === ds);
+      cumulative += entry?.count || 0;
       data.push({
         date: `${d.getMonth() + 1}/${d.getDate()}`,
-        rank: Math.max(1, rank),
+        submissions: cumulative,
       });
     }
     return data;
-  }, [userStats]);
+  }, [calendar]);
 
   const hasData = submissionData.some(d => d.submissions > 0);
 
@@ -117,15 +119,15 @@ const AnalyticsCharts = ({ calendar, userStats, streak }) => {
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--glass-border)" vertical={false} />
                 <XAxis dataKey="date" tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} interval={6} />
-                <YAxis tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} domain={[0, 100]} />
+                <YAxis tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} domain={[0, 100]} allowDataOverflow />
                 <Tooltip content={<ChartTooltip />} />
-                <Area type="monotone" dataKey="rate" name="Acceptance %" stroke="#22c55e" strokeWidth={2} fill="url(#acceptGrad)" />
+                <Area type="monotone" dataKey="rate" name="Acceptance %" stroke="#22c55e" strokeWidth={2} fill="url(#acceptGrad)" connectNulls />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Rank Progress */}
+        {/* Engagement Growth */}
         <div className="analytics__card">
           <h4 className="analytics__card-title"><Award size={14} />{RANK_PROGRESS_TITLE}</h4>
           <div className="analytics__chart-wrap">
@@ -133,9 +135,9 @@ const AnalyticsCharts = ({ calendar, userStats, streak }) => {
               <LineChart data={rankData} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--glass-border)" vertical={false} />
                 <XAxis dataKey="date" tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} interval={6} />
-                <YAxis tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} reversed />
+                <YAxis tick={{ fontSize: 9, fill: 'var(--text-muted)' }} axisLine={false} tickLine={false} allowDecimals={false} />
                 <Tooltip content={<ChartTooltip />} />
-                <Line type="monotone" dataKey="rank" name="Rank" stroke="#3b82f6" strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="submissions" name="Total Submissions" stroke="#3b82f6" strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>

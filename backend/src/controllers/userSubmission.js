@@ -2,6 +2,8 @@ const Problem = require("../models/problem");
 const Submission = require("../models/submission");
 const User = require("../models/user");
 const {getLanguageById,submitBatch,submitToken} = require("../utils/problemUtility");
+const {syncLeaderboard} = require("./leaderboard");
+const {autoGenerateActivity} = require("./activity");
 
 const submitCode = async (req,res)=>{
    
@@ -97,6 +99,11 @@ const submitCode = async (req,res)=>{
     if(!req.result.problemSolved.includes(problemId)){
       req.result.problemSolved.push(problemId);
       await req.result.save();
+    }
+    
+    if(status === 'accepted'){
+      syncLeaderboard(userId);
+      autoGenerateActivity(userId, 'solved', problemId);
     }
     
     const accepted = (status == 'accepted')

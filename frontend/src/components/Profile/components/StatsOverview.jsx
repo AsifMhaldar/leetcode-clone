@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code2, Eye, MessageCircle, Star } from 'lucide-react';
+import { Code2, Eye, CalendarDays, Star } from 'lucide-react';
 import { PROBLEM_SOLVING_TITLE, PROGRESS_LABELS, ACCEPTANCE_LABEL, COMMUNITY_STATS_TITLE, LANGUAGES_TITLE, STAT_LABELS } from '../constants';
 import EmptyState from './EmptyState';
 import './StatsOverview.scss';
@@ -9,10 +9,11 @@ const langColors = {
   'python': '#3572A5', 'typescript': '#3178c6',
 };
 
-const StatsOverview = ({ userStats, languages }) => {
+const StatsOverview = ({ userStats, languages, calendar }) => {
   const totalSolved = userStats?.totalSolved || 0;
   const totalProblems = userStats?.totalProblems || 0;
   const acceptance = userStats?.acceptanceRate || 0;
+  const daysActive = calendar ? calendar.filter(d => d.count > 0).length : 0;
 
   const difficulties = [
     { key: 'easy', label: PROGRESS_LABELS.easy, solved: userStats?.easySolved || 0, total: userStats?.totalEasy || 0, color: '#4ade80' },
@@ -97,9 +98,9 @@ const StatsOverview = ({ userStats, languages }) => {
             <span className="stats-overview__community-lbl">{STAT_LABELS.solutions}</span>
           </div>
           <div className="stats-overview__community-item">
-            <MessageCircle size={14} className="stats-overview__community-icon" />
-            <span className="stats-overview__community-val">0</span>
-            <span className="stats-overview__community-lbl">{STAT_LABELS.discussions}</span>
+            <CalendarDays size={14} className="stats-overview__community-icon" />
+            <span className="stats-overview__community-val">{daysActive.toLocaleString()}</span>
+            <span className="stats-overview__community-lbl">{STAT_LABELS.daysActive}</span>
           </div>
           <div className="stats-overview__community-item">
             <Star size={14} className="stats-overview__community-icon" />

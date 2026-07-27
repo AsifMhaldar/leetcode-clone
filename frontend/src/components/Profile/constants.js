@@ -43,7 +43,7 @@ export const LANGUAGES_TITLE = 'Languages';
 export const STAT_LABELS = {
   submissions: 'Submissions',
   solutions: 'Solutions',
-  discussions: 'Discuss',
+  daysActive: 'Days Active',
   reputation: 'Reputation',
 };
 
@@ -71,7 +71,7 @@ export const NEXT_MILESTONE = 'Next milestone';
 export const ANALYTICS_TITLE = 'Analytics';
 export const SUBMISSION_HISTORY_TITLE = 'Submission History';
 export const ACCEPTANCE_TREND_TITLE = 'Acceptance Trend';
-export const RANK_PROGRESS_TITLE = 'Rank Progress';
+export const RANK_PROGRESS_TITLE = 'Engagement Growth';
 export const COMING_SOON = 'Coming soon — more analytics data will appear as you solve problems';
 
 // BadgesCard (reused inside StreakGoals)

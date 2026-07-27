@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import ThemeToggle from '../../../components/ThemeToggle';
 import { BRAND_NAME, LOGO_PATH } from '../constants';
+import { Trophy, Rss } from 'lucide-react';
 import './HomepageHeader.scss';
 
 const HomepageHeader = ({ user, onLogout }) => {
@@ -17,6 +18,18 @@ const HomepageHeader = ({ user, onLogout }) => {
           </div>
           
           <div className="flex items-center space-x-4">
+            <div className="homepage-header__nav-links">
+              <NavLink to="/leaderboard" className="homepage-header__nav-link">
+                <Trophy size={16} />
+                <span>Leaderboard</span>
+              </NavLink>
+              {user && (
+                <NavLink to="/feed" className="homepage-header__nav-link">
+                  <Rss size={16} />
+                  <span>Feed</span>
+                </NavLink>
+              )}
+            </div>
             <ThemeToggle />
             <div className="text-right">
               <p className="text-theme-primary font-medium">{user?.firstName}</p>

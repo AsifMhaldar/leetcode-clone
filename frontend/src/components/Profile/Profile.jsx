@@ -97,7 +97,7 @@ const Profile = () => {
         <div className="profile__dashboard">
           {/* Left Sidebar */}
           <div className="profile__sidebar profile__sidebar--left">
-            <StatsOverview userStats={userStats} languages={languages} />
+            <StatsOverview userStats={userStats} languages={languages} calendar={calendar} />
           </div>
 
           {/* Center Column */}

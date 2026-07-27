@@ -1,0 +1,84 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.comment-form {
+  margin-bottom: 1rem;
+}
+
+.comment-form__textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem;
+  border-radius: $radius-md;
+  background: var(--glass-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+
+  &--reply {
+    min-height: 60px;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+  }
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.comment-form__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.comment-form__count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+
+  &--warn {
+    color: var(--accent-red);
+  }
+}
+
+.comment-form__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.comment-form__cancel {
+  padding: 0.4rem 0.8rem;
+  border-radius: $radius-md;
+  background: var(--glass-bg);
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  font-size: 0.8rem;
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.comment-form__submit {
+  padding: 0.4rem 0.8rem;
+  border-radius: $radius-md;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

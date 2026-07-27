@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Target } from 'lucide-react';
-import { useStatsOverview } from '../hooks/useStats';
+import { useStatsTimeline } from '../hooks/useStats';
 import { WEEKLY_GOAL } from '../constants';
 import './DashboardCharts.scss';
 
 const WeeklyGoal = () => {
-  const { data, isLoading } = useStatsOverview();
+  const { data, isLoading } = useStatsTimeline(7);
+
+  const solvedThisWeek = useMemo(() => {
+    if (!data?.timeline) return 0;
+
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - mondayOffset);
+    monday.setHours(0, 0, 0, 0);
+    const mondayStr = monday.toISOString().split('T')[0];
+
+    let count = 0;
+    data.timeline.forEach(entry => {
+      if (entry.date >= mondayStr) {
+        count += entry.accepted || 0;
+      }
+    });
+    return count;
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -15,7 +35,6 @@ const WeeklyGoal = () => {
     );
   }
 
-  const solvedThisWeek = data?.totalSolved || 0;
   const target = WEEKLY_GOAL.defaultTarget;
   const progress = Math.min((solvedThisWeek / target) * 100, 100);
   const isComplete = solvedThisWeek >= target;

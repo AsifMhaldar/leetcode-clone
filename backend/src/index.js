@@ -11,6 +11,10 @@ const aiRouter = require('./Routes/aiChatting');
 const videoRouter = require('./Routes/videoCreator');
 const adminDashboardRouter = require('./Routes/adminDashboard');
 const userStatsRouter = require('./Routes/userStats');
+const leaderboardRouter = require('./Routes/leaderboard');
+const commentRouter = require('./Routes/comment');
+const followRouter = require('./Routes/follow');
+const activityRouter = require('./Routes/activity');
 const cors = require('cors');
 
 
@@ -38,6 +42,10 @@ app.use('/ai', aiRouter);
 app.use('/video',videoRouter);
 app.use('/admin', adminDashboardRouter);
 app.use('/user/stats', userStatsRouter);
+app.use('/leaderboard', leaderboardRouter);
+app.use('/comment', commentRouter);
+app.use('/user', followRouter);
+app.use('/activity', activityRouter);
 
 
 const initializedConnection = async(req, res)=>{

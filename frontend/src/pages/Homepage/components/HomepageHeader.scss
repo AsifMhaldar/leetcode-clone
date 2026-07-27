@@ -15,6 +15,35 @@
   @include gradient-text;
 }
 
+.homepage-header__nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.homepage-header__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: $radius-md;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.active {
+    color: var(--accent-blue);
+    font-weight: 600;
+  }
+}
+
 .homepage-header__avatar {
   width: 2.5rem;
   height: 2.5rem;

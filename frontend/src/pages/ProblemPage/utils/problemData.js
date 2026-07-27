@@ -51,7 +51,8 @@ export const leftTabs = [
   { id: 'editorial', label: 'Editorial' },
   { id: 'solutions', label: 'Solutions' },
   { id: 'submissions', label: 'Submissions' },
-  { id: 'chatAI', label: 'ChatAI' }
+  { id: 'chatAI', label: 'ChatAI' },
+  { id: 'comments', label: 'Comments' }
 ];
 
 export const rightTabs = [

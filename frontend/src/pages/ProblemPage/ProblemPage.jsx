@@ -188,6 +188,7 @@ const ProblemPage = () => {
                 solutions: Code,
                 submissions: History,
                 chatAI: MessageSquare,
+                comments: MessageSquare,
               }[tab.id];
               return (
                 <button

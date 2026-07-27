@@ -65,6 +65,7 @@ const getProfile = async (req, res) => {
             calendar.push({
                 date: dateString,
                 count: 0,
+                accepted: 0,
                 level: 0,
             });
         }
@@ -73,7 +74,12 @@ const getProfile = async (req, res) => {
             if (sub.createdAt) {
                 const dateString = new Date(sub.createdAt).toISOString().split('T')[0];
                 const entry = calendar.find(c => c.date === dateString);
-                if (entry) entry.count += 1;
+                if (entry) {
+                    entry.count += 1;
+                    if (sub.status === 'accepted') {
+                        entry.accepted = (entry.accepted || 0) + 1;
+                    }
+                }
             }
         });
 

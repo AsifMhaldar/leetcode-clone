@@ -4,6 +4,7 @@ import { getDifficultyColor, getDifficultyIcon, formatTime } from '../utils/prob
 import Editorial from '../../../components/Editorial/Editorial';
 import SubmissionHistory from '../../../components/SubmissionHistory/SubmissionHistory';
 import ChatAi from '../../../components/ChatAi/ChatAi';
+import CommentSection from '../../../components/Comments/CommentSection';
 
 const DescriptionTab = ({ problem, timer, isTimerRunning }) => {
   return (
@@ -128,6 +129,13 @@ const ChatAITab = ({ problem }) => (
   </div>
 );
 
+const CommentsTab = ({ problemId }) => (
+  <div className="desc">
+    <h2 className="tab-heading">Comments</h2>
+    <CommentSection problemId={problemId} />
+  </div>
+);
+
 const LeftPanel = ({ problem, activeLeftTab, timer, isTimerRunning, problemId }) => {
   return (
     <div className="left-panel__content">
@@ -140,6 +148,7 @@ const LeftPanel = ({ problem, activeLeftTab, timer, isTimerRunning, problemId })
           {activeLeftTab === 'solutions' && <SolutionsTab problem={problem} />}
           {activeLeftTab === 'submissions' && <SubmissionsTab problemId={problemId} />}
           {activeLeftTab === 'chatAI' && <ChatAITab problem={problem} />}
+          {activeLeftTab === 'comments' && <CommentsTab problemId={problemId} />}
         </>
       )}
     </div>
