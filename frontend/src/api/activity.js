@@ -1,13 +1,23 @@
 import axiosClient from '../utils/axiosClient';
 
-export const fetchEnhancedFeed = async (page = 1, filter = 'all') => {
-  const { data } = await axiosClient.get(`/activity/feed?page=${page}&filter=${filter}`);
+export const fetchEnhancedFeed = async (page = 1, filter = 'all', sort = 'latest') => {
+  const { data } = await axiosClient.get(`/activity/feed?page=${page}&filter=${filter}&sort=${sort}`);
   return data;
 };
 
-export const createActivity = async (type, problemId, content, codeSnippet) => {
-  const { data } = await axiosClient.post('/activity/create', { type, problemId, content, codeSnippet });
+export const fetchFeedStats = async () => {
+  const { data } = await axiosClient.get('/activity/feed-stats');
+  return data.stats;
+};
+
+export const createActivity = async (postData) => {
+  const { data } = await axiosClient.post('/activity/create', postData);
   return data.activity;
+};
+
+export const fetchPostUploadSignature = async (resourceType = 'image') => {
+  const { data } = await axiosClient.get(`/activity/upload-signature?resourceType=${resourceType}`);
+  return data;
 };
 
 export const toggleActivityLike = async (activityId) => {

@@ -3,11 +3,45 @@ const User = require('../models/user');
 const Submission = require('../models/submission');
 const Problem = require('../models/problem');
 const Leaderboard = require('../models/leaderboard');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const normalizeTags = (tags) => {
     if (Array.isArray(tags)) return tags;
     if (typeof tags === 'string' && tags) return [tags];
     return [];
+};
+
+const getPostUploadSignature = async (req, res) => {
+    try {
+        const userId = req.result._id;
+        const resourceType = req.query.resourceType === 'video' ? 'video' : 'image';
+        const timestamp = Math.round(new Date().getTime() / 1000);
+        const publicId = `posts/${userId}_${timestamp}`;
+
+        const uploadParams = { timestamp, public_id: publicId };
+        const signature = cloudinary.utils.api_sign_request(
+            uploadParams,
+            process.env.CLOUDINARY_API_SECRET
+        );
+
+        res.json({
+            signature,
+            timestamp,
+            public_id: publicId,
+            api_key: process.env.CLOUDINARY_API_KEY,
+            cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+            upload_url: `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`
+        });
+    } catch (error) {
+        console.error('Error generating post upload signature:', error);
+        res.status(500).json({ error: 'Failed to generate upload credentials' });
+    }
 };
 
 const getEnhancedFeed = async (req, res) => {
@@ -17,32 +51,102 @@ const getEnhancedFeed = async (req, res) => {
         const limit = parseInt(req.query.limit) || 20;
         const skip = (page - 1) * limit;
         const filter = req.query.filter || 'all';
+        const sort = req.query.sort || 'latest';
 
         const currentUser = await User.findById(userId).select('following').lean();
         const followingIds = currentUser.following || [];
 
-        let query = { userId: { $in: followingIds } };
+        const visibilityMatch = {
+            $or: [
+                { visibility: { $ne: 'private' } },
+                { userId }
+            ]
+        };
 
-        if (filter === 'solved') query.type = 'solved';
-        else if (filter === 'streak') query.type = 'streak';
-        else if (filter === 'badge') query.type = 'badge';
+        let query = {
+            userId: { $in: [...followingIds, userId] },
+            ...visibilityMatch
+        };
+
+        if (filter === 'following') query = { userId: { $in: followingIds }, ...visibilityMatch };
+        else if (filter === 'solved') query.type = 'solved';
         else if (filter === 'discussed') query.type = 'discussed';
+        else if (filter === 'projects') query.codeSnippet = { $ne: '' };
+        else if (filter === 'badge') query.type = { $in: ['badge', 'streak'] };
+        else if (filter === 'articles') query.type = 'shared';
 
-        const activities = await Activity.find(query)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit)
-            .populate('userId', 'firstName lastName emailId')
-            .populate('problemId', 'title difficulty tags')
-            .lean();
+        let sortOptions = { createdAt: -1 };
+
+        if (sort === 'today') {
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+            query.createdAt = { $gte: startOfDay };
+        } else if (sort === 'week') {
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            query.createdAt = { $gte: weekAgo };
+        } else if (sort === 'following') {
+            query.userId = { $in: followingIds };
+        }
+
+        const useAggregation = filter === 'trending' || sort === 'liked' || sort === 'commented';
+
+        let activities;
+        let total;
+
+        if (useAggregation) {
+            let sortAgg = { createdAt: -1 };
+            if (filter === 'trending') {
+                sortAgg = { engagement: -1, createdAt: -1 };
+            } else if (sort === 'liked') {
+                sortAgg = { likesCount: -1, createdAt: -1 };
+            } else if (sort === 'commented') {
+                sortAgg = { commentsCount: -1, createdAt: -1 };
+            }
+
+            activities = await Activity.aggregate([
+                { $match: query },
+                {
+                    $addFields: {
+                        likesCount: { $size: { $ifNull: ['$likes', []] } },
+                        commentsCount: { $size: { $ifNull: ['$comments', []] } },
+                        engagement: {
+                            $add: [
+                                { $size: { $ifNull: ['$likes', []] } },
+                                { $size: { $ifNull: ['$comments', []] } },
+                                { $ifNull: ['$shares', 0] }
+                            ]
+                        }
+                    }
+                },
+                { $sort: sortAgg },
+                { $skip: skip },
+                { $limit: limit }
+            ]);
+
+            await Activity.populate(activities, [
+                { path: 'userId', select: 'firstName lastName emailId' },
+                { path: 'problemId', select: 'title difficulty tags' }
+            ]);
+
+            total = await Activity.countDocuments(query);
+        } else {
+            activities = await Activity.find(query)
+                .sort(sortOptions)
+                .skip(skip)
+                .limit(limit)
+                .populate('userId', 'firstName lastName emailId')
+                .populate('problemId', 'title difficulty tags')
+                .lean();
+
+            total = await Activity.countDocuments(query);
+        }
 
         activities.forEach(a => {
             if (a.problemId?.tags != null) {
                 a.problemId.tags = normalizeTags(a.problemId.tags);
             }
         });
-
-        const total = await Activity.countDocuments(query);
 
         res.status(200).json({
             activities,
@@ -56,10 +160,75 @@ const getEnhancedFeed = async (req, res) => {
     }
 };
 
+const getFeedStats = async (req, res) => {
+    try {
+        const userId = req.result._id;
+        const currentUser = await User.findById(userId).select('following').lean();
+        const followingIds = currentUser.following || [];
+
+        const baseMatch = {
+            userId: { $in: [...followingIds, userId] },
+            $or: [
+                { visibility: { $ne: 'private' } },
+                { userId }
+            ]
+        };
+        const followedMatch = {
+            userId: { $in: followingIds },
+            $or: [
+                { visibility: { $ne: 'private' } },
+                { userId: { $in: [] } }
+            ]
+        };
+
+        const [
+            posts,
+            following,
+            solved,
+            discussed,
+            projects,
+            achievements,
+            articles
+        ] = await Promise.all([
+            Activity.countDocuments(baseMatch),
+            Activity.countDocuments(followedMatch),
+            Activity.countDocuments({ ...baseMatch, type: 'solved' }),
+            Activity.countDocuments({ ...baseMatch, type: 'discussed' }),
+            Activity.countDocuments({ ...baseMatch, codeSnippet: { $ne: '' } }),
+            Activity.countDocuments({ ...baseMatch, type: { $in: ['badge', 'streak'] } }),
+            Activity.countDocuments({ ...baseMatch, type: 'shared' })
+        ]);
+
+        res.status(200).json({
+            stats: {
+                posts,
+                following,
+                solved,
+                discussed,
+                projects,
+                achievements,
+                articles
+            }
+        });
+    } catch (err) {
+        res.status(500).send('Error fetching feed stats: ' + err.message);
+    }
+};
+
 const createActivity = async (req, res) => {
     try {
         const userId = req.result._id;
-        const { type, problemId, content, codeSnippet } = req.body;
+        const {
+            type,
+            problemId,
+            content,
+            codeSnippet,
+            image,
+            video,
+            codeLanguage,
+            visibility,
+            poll
+        } = req.body;
 
         if (!type) {
             return res.status(400).send('Activity type is required');
@@ -70,10 +239,21 @@ const createActivity = async (req, res) => {
             type,
             problemId: problemId || undefined,
             content: content || '',
-            codeSnippet: codeSnippet || ''
+            codeSnippet: codeSnippet || '',
+            image: image || '',
+            video: video || '',
+            codeLanguage: codeLanguage || 'javascript',
+            visibility: visibility || 'public',
+            poll: Array.isArray(poll) && poll.length ? poll : undefined
         });
 
         const populated = await activity.populate('userId', 'firstName lastName emailId');
+
+        const io = req.app.get('io');
+        if (io) {
+            io.emit('newPost', populated);
+        }
+
         res.status(201).json({ activity: populated });
     } catch (err) {
         res.status(500).send('Error creating activity: ' + err.message);
@@ -319,6 +499,8 @@ const autoGenerateActivity = async (userId, type, problemId) => {
 
 module.exports = {
     getEnhancedFeed,
+    getFeedStats,
+    getPostUploadSignature,
     createActivity,
     toggleLike,
     addComment,

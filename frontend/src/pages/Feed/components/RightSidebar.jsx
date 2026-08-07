@@ -1,36 +1,92 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { Trophy, Zap, TrendingUp, Clock, Users, Flame } from 'lucide-react';
+import { Trophy, Zap, TrendingUp, Clock, Users, Calendar, ChevronRight, Flame, Award } from 'lucide-react';
 import { DIFFICULTY_COLORS, toTagsArray } from '../constants';
 import './RightSidebar.scss';
 
 const RightSidebar = ({ leaderboard, dailyChallenge, trending, activeFriends }) => {
   return (
     <aside className="feed-right">
+      {trending && trending.length > 0 && (
+        <div className="feed-right__section glass-card">
+          <h3 className="feed-right__section-title">
+            <TrendingUp size={16} />
+            <span>Trending Problems</span>
+          </h3>
+          <div className="feed-right__trending">
+            {trending.slice(0, 5).map((prob, i) => (
+              <Link key={prob._id} to={`/problem/${prob._id}`} className="feed-right__trending-item">
+                <span className="feed-right__trending-num">{i + 1}</span>
+                <div className="feed-right__trending-info">
+                  <span className="feed-right__trending-title">{prob.title}</span>
+                  {prob.solves && (
+                    <span className="feed-right__trending-solves">{prob.solves} solves</span>
+                  )}
+                </div>
+                <span
+                  className="feed-right__difficulty"
+                  style={{
+                    background: `${DIFFICULTY_COLORS[prob.difficulty]}20`,
+                    color: DIFFICULTY_COLORS[prob.difficulty]
+                  }}
+                >
+                  {prob.difficulty}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {leaderboard && leaderboard.length > 0 && (
+        <div className="feed-right__section glass-card">
+          <h3 className="feed-right__section-title">
+            <Award size={16} />
+            <span>Leaderboard Preview</span>
+          </h3>
+          <div className="feed-right__leaderboard">
+            {leaderboard.slice(0, 5).map((entry, i) => (
+              <Link key={entry._id} to={`/user/${entry.userId?._id}`} className="feed-right__leader-item">
+                <span className={`feed-right__rank ${i < 3 ? 'feed-right__rank--top' : ''}`}>
+                  {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+                </span>
+                <div className="feed-right__leader-avatar">
+                  {entry.userId?.firstName?.charAt(0)}{entry.userId?.lastName?.charAt(0)}
+                </div>
+                <div className="feed-right__leader-info">
+                  <span className="feed-right__leader-name">
+                    {entry.userId?.firstName} {entry.userId?.lastName}
+                  </span>
+                  <span className="feed-right__leader-score">{entry.points?.toLocaleString()} pts</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <Link to="/leaderboard" className="feed-right__view-all">
+            View Full Leaderboard <ChevronRight size={14} />
+          </Link>
+        </div>
+      )}
+
       <div className="feed-right__section glass-card">
         <h3 className="feed-right__section-title">
-          <Trophy size={16} />
-          <span>Top Performers</span>
+          <Calendar size={16} />
+          <span>Upcoming Contests</span>
         </h3>
-        <div className="feed-right__leaderboard">
-          {leaderboard?.slice(0, 5).map((entry, i) => (
-            <Link key={entry._id} to={`/user/${entry.userId?._id}`} className="feed-right__leader-item">
-              <span className={`feed-right__rank feed-right__rank--${i < 3 ? 'top' : ''}`}>
-                {i + 1}
-              </span>
-              <div className="feed-right__leader-avatar">
-                {entry.userId?.firstName?.charAt(0)}{entry.userId?.lastName?.charAt(0)}
-              </div>
-              <div className="feed-right__leader-info">
-                <span className="feed-right__leader-name">
-                  {entry.userId?.firstName} {entry.userId?.lastName}
-                </span>
-                <span className="feed-right__leader-score">{entry.points} pts</span>
-              </div>
-            </Link>
-          ))}
+        <div className="feed-right__contest">
+          <div className="feed-right__contest-header">
+            <Zap size={14} className="feed-right__contest-icon" />
+            <span className="feed-right__contest-name">Weekly Contest #420</span>
+          </div>
+          <div className="feed-right__contest-meta">
+            <Clock size={12} />
+            <span>Starts in 3 days</span>
+          </div>
+          <div className="feed-right__contest-prize">
+            <Trophy size={12} />
+            <span>Top prize: 500 points</span>
+          </div>
         </div>
-        <Link to="/leaderboard" className="feed-right__view-all">View Full Leaderboard</Link>
       </div>
 
       {dailyChallenge && (
@@ -44,7 +100,10 @@ const RightSidebar = ({ leaderboard, dailyChallenge, trending, activeFriends }) 
               <span className="feed-right__daily-title">{dailyChallenge.title}</span>
               <span
                 className="feed-right__difficulty"
-                style={{ background: `${DIFFICULTY_COLORS[dailyChallenge.difficulty]}20`, color: DIFFICULTY_COLORS[dailyChallenge.difficulty] }}
+                style={{
+                  background: `${DIFFICULTY_COLORS[dailyChallenge.difficulty]}20`,
+                  color: DIFFICULTY_COLORS[dailyChallenge.difficulty]
+                }}
               >
                 {dailyChallenge.difficulty}
               </span>
@@ -64,36 +123,14 @@ const RightSidebar = ({ leaderboard, dailyChallenge, trending, activeFriends }) 
         </div>
       )}
 
-      {trending?.length > 0 && (
-        <div className="feed-right__section glass-card">
-          <h3 className="feed-right__section-title">
-            <TrendingUp size={16} />
-            <span>Trending</span>
-          </h3>
-          <div className="feed-right__trending">
-            {trending.slice(0, 4).map(prob => (
-              <Link key={prob._id} to={`/problem/${prob._id}`} className="feed-right__trending-item">
-                <span className="feed-right__trending-title">{prob.title}</span>
-                <span
-                  className="feed-right__difficulty"
-                  style={{ background: `${DIFFICULTY_COLORS[prob.difficulty]}20`, color: DIFFICULTY_COLORS[prob.difficulty] }}
-                >
-                  {prob.difficulty}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {activeFriends?.length > 0 && (
+      {activeFriends && activeFriends.length > 0 && (
         <div className="feed-right__section glass-card">
           <h3 className="feed-right__section-title">
             <Users size={16} />
-            <span>Active Friends</span>
+            <span>Active Developers</span>
           </h3>
           <div className="feed-right__friends">
-            {activeFriends.slice(0, 5).map(friend => (
+            {activeFriends.slice(0, 4).map(friend => (
               <Link key={friend._id} to={`/user/${friend._id}`} className="feed-right__friend">
                 <div className="feed-right__friend-avatar">
                   {friend.firstName?.charAt(0)}{friend.lastName?.charAt(0)}
@@ -102,7 +139,7 @@ const RightSidebar = ({ leaderboard, dailyChallenge, trending, activeFriends }) 
                   <span className="feed-right__friend-name">{friend.firstName} {friend.lastName}</span>
                   <span className="feed-right__friend-status">
                     <span className="feed-right__online-dot" />
-                    Active recently
+                    Active now
                   </span>
                 </div>
               </Link>
@@ -110,17 +147,6 @@ const RightSidebar = ({ leaderboard, dailyChallenge, trending, activeFriends }) 
           </div>
         </div>
       )}
-
-      <div className="feed-right__section glass-card feed-right__announcements">
-        <h3 className="feed-right__section-title">
-          <span>📢</span>
-          <span>Announcements</span>
-        </h3>
-        <p className="feed-right__announcement-text">
-          New contest starting next week! Prepare for dynamic programming challenges.
-        </p>
-        <span className="feed-right__announcement-date">2 hours ago</span>
-      </div>
     </aside>
   );
 };

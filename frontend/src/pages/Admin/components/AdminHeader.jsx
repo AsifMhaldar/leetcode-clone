@@ -22,7 +22,7 @@ const AdminHeader = () => {
         <div className="admin-nav__actions">
           <ThemeToggle />
           <NavLink 
-            to="/" 
+            to="/home" 
             className="admin-nav__link"
           >
             <Home size={20} />

@@ -24,6 +24,27 @@ const activitySchema = new Schema({
         type: String,
         default: ''
     },
+    image: {
+        type: String,
+        default: ''
+    },
+    video: {
+        type: String,
+        default: ''
+    },
+    codeLanguage: {
+        type: String,
+        default: 'javascript'
+    },
+    visibility: {
+        type: String,
+        enum: ['public', 'followers', 'private'],
+        default: 'public'
+    },
+    poll: {
+        type: [String],
+        default: undefined
+    },
     likes: [{
         type: Schema.Types.ObjectId,
         ref: 'user'

@@ -1,0 +1,19 @@
+.highlighted-text__mention {
+  color: var(--accent-blue);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.highlighted-text__hashtag {
+  color: var(--accent-purple);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

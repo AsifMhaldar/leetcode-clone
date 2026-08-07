@@ -1,0 +1,51 @@
+@use '../../styles/variables' as *;
+
+@keyframes dropdown-menu-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dropdown-menu-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  z-index: $z-overlay;
+  min-width: 180px;
+  padding: 0.4rem;
+  border-radius: $radius-lg;
+  background: var(--glass-bg);
+  backdrop-filter: blur(1.25rem);
+  -webkit-backdrop-filter: blur(1.25rem);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: dropdown-menu-in-bottom 0.14s ease-out;
+
+  &--placement-top {
+    animation-name: dropdown-menu-in-top;
+  }
+
+  &--placement-bottom {
+    animation-name: dropdown-menu-in-bottom;
+  }
+
+  &--compact {
+    padding: 0.5rem;
+  }
+}

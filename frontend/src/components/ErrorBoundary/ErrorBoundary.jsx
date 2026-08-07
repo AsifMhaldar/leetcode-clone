@@ -22,6 +22,13 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback({
+          error: this.state.error,
+          retry: this.handleRetry,
+          reset: this.handleRetry
+        });
+      }
       return (
         <div className="error-boundary page-bg">
           <div className="error-boundary__card glass-card">

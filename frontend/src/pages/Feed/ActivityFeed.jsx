@@ -9,20 +9,30 @@ import RightSidebar from './components/RightSidebar';
 import ActivityCard from './components/ActivityCard';
 import FeedFilters from './components/FeedFilters';
 import SkeletonLoader from './components/SkeletonLoader';
+import StartPost from './components/StartPost';
+import PostComposer from './components/PostComposer';
+import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
+import ContestsFeed from './components/ContestsFeed';
 import { useFeed } from './hooks/useFeed';
+import { useSocket } from '../../hooks/useSocket';
+import { FEED_TABS } from './constants';
 import './ActivityFeed.scss';
 
 const ActivityFeed = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [searchQuery, setSearchQuery] = useState('');
+  const [composerOpen, setComposerOpen] = useState(false);
   const observerRef = useRef(null);
 
   const handleLogout = () => dispatch(logoutUser());
 
+  const socketRef = useSocket(user?._id);
+
   const {
     allActivities,
     feedQuery,
+    feedStats,
     profileQuery,
     suggestedQuery,
     trendingQuery,
@@ -31,11 +41,15 @@ const ActivityFeed = () => {
     leaderboardPreviewQuery,
     activeFilter,
     setActiveFilter,
+    activeSort,
+    setActiveSort,
     toggleLike,
     addComment,
     toggleSave,
-    share
-  } = useFeed(user?._id);
+    share,
+    createPost,
+    createPostStatus
+  } = useFeed(user?._id, socketRef);
 
   const lastActivityRef = useCallback(
     (node) => {
@@ -64,6 +78,9 @@ const ActivityFeed = () => {
       )
     : allActivities;
 
+  const activeTabLabel = FEED_TABS.find(t => t.id === activeFilter)?.label || 'Posts';
+  const isContestsTab = activeFilter === 'contests';
+
   return (
     <div className="page-bg">
       <HomepageHeader user={user} onLogout={handleLogout} />
@@ -77,39 +94,54 @@ const ActivityFeed = () => {
         </div>
 
         <main className="feed-layout__center">
-          <div className="feed-layout__header glass-card">
-            <div className="feed-layout__title-row">
-              <div className="feed-layout__title">
-                <Rss size={20} />
-                <h1>Activity Feed</h1>
+
+          <StartPost
+            onOpenComposer={() => setComposerOpen(true)}
+          />
+
+          <ErrorBoundary
+            fallback={({ reset }) => (
+              <div className="post-composer__fallback glass-card">
+                <h3>Couldn't open the composer</h3>
+                <p>Something went wrong while preparing the post editor.</p>
+                <button
+                  className="post-composer__fallback-close"
+                  onClick={() => {
+                    reset();
+                    setComposerOpen(false);
+                  }}
+                >
+                  Close
+                </button>
               </div>
-              <div className="feed-layout__status">
-                {feedQuery.isLoading ? (
-                  <span className="feed-layout__loading">
-                    <RefreshCw size={14} className="spin" /> Loading...
-                  </span>
-                ) : feedQuery.isError ? (
-                  <span className="feed-layout__error">
-                    <WifiOff size={14} /> Connection error
-                  </span>
-                ) : (
-                  <span className="feed-layout__live">
-                    <Wifi size={14} /> Live
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
+            )}
+          >
+            <PostComposer
+              open={composerOpen}
+              onClose={() => setComposerOpen(false)}
+              onPost={createPost}
+              isPosting={createPostStatus.isPending}
+              isError={createPostStatus.isError}
+              error={createPostStatus.error}
+              onReset={() => createPostStatus.reset()}
+              user={user}
+            />
+          </ErrorBoundary>
 
           <FeedFilters
             activeFilter={activeFilter}
             onFilterChange={setActiveFilter}
+            activeSort={activeSort}
+            onSortChange={setActiveSort}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
+            feedStats={feedStats}
           />
 
-          {feedQuery.isLoading ? (
-            <SkeletonLoader count={4} />
+          {isContestsTab ? (
+            <ContestsFeed />
+          ) : feedQuery.isLoading ? (
+            <SkeletonLoader count={3} />
           ) : feedQuery.isError ? (
             <div className="feed-layout__error-card glass-card">
               <WifiOff size={32} />
@@ -122,8 +154,12 @@ const ActivityFeed = () => {
           ) : filteredActivities.length === 0 ? (
             <div className="feed-layout__empty glass-card">
               <Rss size={40} />
-              <h3>No activity yet</h3>
-              <p>Solve problems, follow developers, and your feed will come alive.</p>
+              <h3>No {activeTabLabel.toLowerCase()} yet</h3>
+              <p>
+                {activeFilter === 'following'
+                  ? 'Follow developers to see their coding activity in your feed.'
+                  : 'Follow developers, solve problems, or create the first post!'}
+              </p>
               <Link to="/home" className="feed-layout__browse-btn">Browse Problems</Link>
             </div>
           ) : (

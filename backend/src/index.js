@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const http = require('http');
+const { Server } = require('socket.io');
 const main = require('./config/db');
 const cookieParser = require('cookie-parser');
 const authRouter = require('./Routes/userAuth');
-// const redisClient = require('./config/redis');
 const problemRouter = require('./Routes/problemCreator');
 const submitRouter = require('./Routes/submit');
 const aiRouter = require('./Routes/aiChatting');
@@ -17,23 +18,22 @@ const followRouter = require('./Routes/follow');
 const activityRouter = require('./Routes/activity');
 const cors = require('cors');
 
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: ['http://localhost:5173'],
+    credentials: true
+  }
+});
 
 app.use(cors({
-    origin: ['http://localhost:5173'],// '*'  multiple accesses   'https://codifycodeasif.netlify.app'
+    origin: ['http://localhost:5173'],
     credentials:true
 }));
 
-// app.use(cors({
-//   origin: "https://codifycodeasif.netlify.app",
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE"],
-//   allowedHeaders: ["Content-Type", "Authorization"]
-// }));
-
-
 app.use(cookieParser());
-app.use(express.json());  // this is used for the convert the data into javascript object
-
+app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 app.use('/user', authRouter);
 app.use('/problem', problemRouter);
@@ -47,30 +47,27 @@ app.use('/comment', commentRouter);
 app.use('/user', followRouter);
 app.use('/activity', activityRouter);
 
+io.on('connection', (socket) => {
+  socket.on('join-feed', (userId) => {
+    if (userId) socket.join(`user:${userId}`);
+  });
+  socket.on('leave-feed', (userId) => {
+    if (userId) socket.leave(`user:${userId}`);
+  });
+});
 
-const initializedConnection = async(req, res)=>{
+app.set('io', io);
 
-    try{
-        
-        await Promise.all([main()]);            //, redisClient.connect()
+const initializedConnection = async () => {
+    try {
+        await Promise.all([main()]);
         console.log("DB connected...");
-        app.listen(process.env.PORT, ()=>{
-            console.log("Server listening at port "+process.env.PORT);
-        })
-
+        server.listen(process.env.PORT, () => {
+            console.log("Server listening at port " + process.env.PORT);
+        });
+    } catch (err) {
+        console.log("Error: " + err);
     }
-    catch(err){
-        console.log("Error: "+err);
-    }
-
-}
+};
 
 initializedConnection();
-
-// main()
-// .then(async ()=>{
-//     app.listen(process.env.PORT, ()=>{
-//     console.log("Server Listening at port number: "+ process.env.PORT);
-//     })
-// })
-// .catch(err=> console.log("Error Occurred: "+err));

@@ -3,6 +3,8 @@ const activityRouter = express.Router();
 const userMiddleware = require('../middleware/userMiddleware');
 const {
     getEnhancedFeed,
+    getFeedStats,
+    getPostUploadSignature,
     createActivity,
     toggleLike,
     addComment,
@@ -16,6 +18,8 @@ const {
 } = require('../controllers/activity');
 
 activityRouter.get('/feed', userMiddleware, getEnhancedFeed);
+activityRouter.get('/feed-stats', userMiddleware, getFeedStats);
+activityRouter.get('/upload-signature', userMiddleware, getPostUploadSignature);
 activityRouter.post('/create', userMiddleware, createActivity);
 activityRouter.post('/:activityId/like', userMiddleware, toggleLike);
 activityRouter.post('/:activityId/comment', userMiddleware, addComment);
